@@ -214,4 +214,6 @@ Please open an issue first for significant changes.
 10. License
 This project is licensed under the terms in LICENSE.
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller.  
+F7-LAS is developed independently and is not affiliated with, endorsed by, or associated with any employer.
+
