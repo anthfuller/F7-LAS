@@ -214,4 +214,4 @@ Please open an issue first for significant changes.
 10. License
 This project is licensed under the terms in LICENSE.
 
-© 2025 IT Security Partners LLC. All rights reserved where applicable.
+© 2025 Anthony L. Fuller. All rights reserved.
