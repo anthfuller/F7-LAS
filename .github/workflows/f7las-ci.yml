@@ -1,0 +1,11 @@
+name: F7-LAS CI (placeholder)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder
+        run: echo "F7-LAS CI pipeline will be added here."
