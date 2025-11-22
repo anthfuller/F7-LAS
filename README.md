@@ -211,12 +211,16 @@ Refinement of the Control Catalog (v0.1 → v1.0)
 Contributions welcome: scenarios, profiles, policies, controls, or code.
 Please open an issue first for significant changes.
 
-10. License
-This project is licensed under the terms in LICENSE.
+## 10. License
+
+This project is licensed under the terms specified in [`LICENSE`](./LICENSE).
 
 © 2025 Anthony L. Fuller. All rights reserved.
 
-This work is developed independently and is not affiliated with, endorsed by,
-or associated with Microsoft or any other employer.
+This work is created independently by the author and is not affiliated with,
+endorsed by, or associated with Microsoft or any other employer. All opinions,
+models, and materials represent the author's personal work.
+
+
 
 
