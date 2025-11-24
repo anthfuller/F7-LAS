@@ -19,7 +19,7 @@ It provides:
 
 ---
 
-## 🧹 What F7-LAS Covers
+## What F7-LAS Covers
 
 F7-LAS models agentic system security across **seven layers**:
 
@@ -45,7 +45,7 @@ It also introduces:
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 
 ```text
 F7-LAS/
@@ -105,12 +105,12 @@ F7-LAS/
 
 ---
 
-🤝 Contributing
+Contributing
 Contributions welcomed — scenarios, policies, controls, tooling, and improvements.
 
 Please open an issue before major changes.
 
-📜 License & Disclaimer
+License & Disclaimer
 © 2025 Anthony L. Fuller. All rights reserved.
 
 This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.
