@@ -30,6 +30,18 @@ Review this checklist together with the Control Catalog and Layer-by-Layer Contr
 
 ## C.3 Checklist Scope
 
+> **🧠 Note on Multi-Agent Systems**  
+> F7-LAS assumes environments where agents may delegate tasks, escalate decision contexts,  
+> or issue tool calls on behalf of other agents. This multi-agent choreography introduces unique  
+> security and observability challenges.  
+>
+> Specific controls are defined in the companion Engineering Review Checklist (items MA.1–MA.5),  
+> which include: delegated trust enforcement, traceability across agent boundaries, separation of duties,  
+> and cross-agent telemetry correlation.  
+>
+> 🔗 [See Multi-Agent Controls in the Checklist →](../../Engineering_Review_Checklist.md)
+
+
 The checklist covers:
 
 Layer 1 — System Prompt
