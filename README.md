@@ -105,12 +105,14 @@ F7-LAS/
 
 ---
 
-## ✏️ Contributing
-We welcome issues, pull requests, and suggestions. Please review the `docs/Engineering-Review-Checklist.md` before contributing to ensure consistency with F7-LAS principles.
+🤝 Contributing
+Contributions welcomed — scenarios, policies, controls, tooling, and improvements.
 
----
+Please open an issue before major changes.
 
-## ⚖️ License
-This project is licensed under the terms of the `LICENSE` file included in the repository.
-f_7_las_readme.txt
-Displaying f_7_las_readme.txt.
+📜 License & Disclaimer
+© 2025 Anthony L. Fuller. All rights reserved.
+
+This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.
+
+Opinions and materials represent the author’s personal work.
