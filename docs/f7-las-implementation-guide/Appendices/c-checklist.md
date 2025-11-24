@@ -5,7 +5,7 @@ It ensures every agentic system is evaluated consistently across all seven layer
 
 ➡️ **Open the full checklist here:**  
 [Engineering-Review-Checklist.md](../../Engineering-Review-Checklist.md)
-C.1 Purpose
+# C.1 Purpose
 
 The Engineering Review Checklist provides a structured method for verifying that an agent or multi-agent system complies with the F7-LAS layered control model.
 It is used during:
