@@ -91,7 +91,7 @@ Represents a single RAG grounding retrieval operation.
 - Retrieval-quality metrics
 - Layer-2 observability
 
-**🧠 Optional Extensions**:
+** Optional Extensions**:
 | Field                 | Type     | Description                                  |
 |----------------------|----------|----------------------------------------------|
 | retrieval_strategy   | string   | "dense", "sparse", "hybrid"                  |
@@ -126,7 +126,7 @@ Represents a request to invoke an external tool.
 - Over-privilege prevention
 - Credential-scope audits
 
-**🧠 Optional Extensions**:
+** Optional Extensions**:
 | Field              | Type     | Description                                     |
 |-------------------|----------|-------------------------------------------------|
 | invocation_channel| string   | "api_gateway", "plugin_runtime"                |
@@ -167,7 +167,7 @@ Represents the decision returned by a PDP.
 - Policy-bypass detection
 - HITL override triggers
 
-**🧠 Optional Extensions**:
+** Optional Extensions**:
 | Field                  | Type     | Purpose                                  |
 |-----------------------|----------|------------------------------------------|
 | decision_explanation  | string   | Explanation or policy reference          |
@@ -203,7 +203,7 @@ Represents the result of a tool execution within a sandbox.
 - Tool reliability scoring
 - Layer-6 blast-radius analysis
 
-**🧠 Optional Extensions**:
+** Optional Extensions**:
 | Field                 | Type     | Description                                     |
 |----------------------|----------|-------------------------------------------------|
 | output_hash          | string   | Hash of output for tamper resistance            |
@@ -282,7 +282,7 @@ Represents a coordination or task handoff event between agents.
 - Escalation modeling
 - Provenance of distributed decisions
 
-**🧠 Optional Extensions**:
+** Optional Extensions**:
 | Field                 | Type     | Description                                     |
 |----------------------|----------|-------------------------------------------------|
 | handoff_type         | string   | E.g., "escalation", "delegation", "handover"    |
