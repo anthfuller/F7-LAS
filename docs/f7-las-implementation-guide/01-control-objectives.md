@@ -11,7 +11,7 @@ F7-LAS defines technical controls across seven layers, each derived from threats
 - Provide measurable safety and reliability through Service Level Objectives (SLOs).
 
 ## 1.2 Control Families
-F7-LAS organizes controls under the following families:
+### F7-LAS organizes controls under the following families:
 - **SP:** System Prompt Controls  
 - **RG:** Retrieval/Grounding Controls  
 - **PL:** Planner & Loop Controls  
