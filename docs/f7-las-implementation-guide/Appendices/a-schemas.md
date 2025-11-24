@@ -9,7 +9,7 @@ These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination.
 
 ---
 
-## A.1 Prompt Event (Layer 1 — System Prompt)
+## A.1 Prompt Event (Layer 1 - System Prompt)
 
 Represents a system-prompt load event or prompt version change.
 
@@ -63,7 +63,7 @@ _Optional additions_: `step_duration_ms`, `trigger_event`
 
 ---
 
-## A.3 RAG Retrieval Event (Layer 2 — Grounding)
+## A.3 RAG Retrieval Event (Layer 2 - Grounding)
 
 Represents a single RAG grounding retrieval operation.
 
@@ -100,7 +100,7 @@ Represents a single RAG grounding retrieval operation.
 
 ---
 
-## A.4 Tool Call Request (Layer 4 — Tool Surface)
+## A.4 Tool Call Request (Layer 4 - Tool Surface)
 
 Represents a request to invoke an external tool.
 
@@ -136,7 +136,7 @@ Represents a request to invoke an external tool.
 
 ---
 
-## A.5 Policy Decision (Layer 5 — Hard Guardrails)
+## A.5 Policy Decision (Layer 5 - Hard Guardrails)
 
 Represents the decision returned by a PDP.
 
@@ -214,7 +214,7 @@ Represents the result of a tool execution within a sandbox.
 
 ---
 
-## A.7 Monitoring & Evaluation Event (Layer 7 — Oversight)
+## A.7 Monitoring & Evaluation Event (Layer 7 - Oversight)
 
 Represents a periodic health, trust, or drift evaluation signal.
 
