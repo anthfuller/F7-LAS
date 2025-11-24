@@ -1,226 +1,196 @@
-# F7-LAS – Fuller 7-Layer Agentic AI Security Framework
-
-F7-LAS (Fuller 7-Layer Agentic AI Security Framework) is a control-oriented security framework and reference implementation for **agentic and multi-agent AI systems**.
-
-This repository contains:
-
-- The **F7-LAS whitepaper** (`docs/Security_Agentic_AI_The_7-Layer_Model_v2.3.pdf`)
-- A **vendor-neutral multi-agent SOC demo** (Coordinator / Investigator / Remediator agents)
-- Example **policies, prompts, tools, and test scenarios** that show how to apply the 7 layers in practice
-- A **Control Catalog** for F7-LAS (L1–L7 + Layer S)
-- An **Engineering Review Checklist** and **DevSecOps pipeline** for CI-enforced controls
-
-> **Status:** v3.0 – Conceptual model stable; implementation patterns, control catalog, and CI/DevSecOps pipeline are evolving.
+# **F7-LAS — Fuller 7-Layer Agentic AI Security Framework**
+*A control-centric security architecture for agentic and multi-agent AI systems.*
 
 ---
 
-## 1. What F7-LAS Is
+## 🌐 Overview
 
-F7-LAS models agentic AI security as a **7-layer control stack**:
+F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
 
-1. **System Prompt (Soft Policy)**  
-   Role, scope, safety posture, escalation rules.
+It provides:
 
-2. **RAG / Grounding (Epistemic Guardrail)**  
-   Trusted context, provenance, and retrieval controls.
+- A **7-layer control stack** (L1–L7)
+- A **supplemental supply-chain layer (Layer S)**
+- A **full implementation guide**, patterns, controls, and engineering checklists
+- A **vendor-neutral reference architecture** for multi-agent systems
+- A **DevSecOps pipeline** enforcing prompt, tool, policy, and scenario integrity  
 
-3. **Agent Planner / Controller**  
-   Reason–act loops, planning contracts, bounded autonomy.
-
-4. **Tools & Integrations (Action Surface)**  
-   The agent’s actuators; what it can actually change or query.
-
-5. **Policy Engine Outside the LLM (Hard Guardrails – PDP/PEP)**  
-   Permit / Deny / Obligations / Human-in-the-loop at runtime.
-
-6. **Sandboxed Execution Environment (Blast Radius Control)**  
-   Tenants, identities, networks, environments that constrain impact.
-
-7. **Monitoring, Evaluation & Assurance**  
-   Telemetry, drift detection, red-teaming, evaluation, and continuous assurance.
-
-The framework is **vendor-neutral** and can be applied with any LLM platform, SIEM, EDR, IdP, or workflow engine.
-
-F7-LAS is designed to **complement**, not replace or formally map to:
-
-- NIST AI RMF  
-- ISO/IEC 42001 / 23894  
-- EU AI Act principles  
-- MITRE ATT&CK / MITRE ATLAS  
-
-It provides **agent-specific controls and patterns** where those standards are high-level.
+> **Status:** v3.1 — Conceptual model stable, with expanding implementation patterns, controls, and CI pipeline integration.
 
 ---
 
-## 2. How F7-LAS Fits with Other Agentic AI Frameworks
+## 🧩 What F7-LAS Covers
 
-F7-LAS is designed to complement, not replace, other frameworks:
+F7-LAS models agentic system security across **seven layers**:
 
-- **MAESTRO (CSA)** – threat modeling and layered architecture for agentic AI.  
-- **AAM (Agentic Access Management)** – identity and access for agents and non-human identities.  
-- **AIGN Agentic AI Governance Framework** – governance, trust, and regulatory alignment.
+1. **System Prompt (Soft Policy)**
+2. **RAG / Grounding (Epistemic Guardrail)**
+3. **Agent Planner / Controller**
+4. **Tools & Integrations (Action Surface)**
+5. **Policy Engine Outside the LLM (PDP/PEP Hard Guardrails)**
+6. **Sandboxed Execution Environment (Blast Radius Control)**
+7. **Monitoring, Evaluation & Assurance**
 
-F7-LAS adds a **control-centric view**:
+It also introduces:
 
-- MAESTRO / AAM / AIGN help you describe risks, access, and governance.  
-- **F7-LAS helps you decide which technical controls to put around agent behavior** – from prompts and planners to tools, policy engines, sandboxes, and monitoring.
+- **Layer S — Supply Chain Security** (SBOM, SCA, attestation)
+- **Model Security Annex**
+- **Risk scoring, metrics, and SLOs**
+- **Operational playbooks**
+- **RACI model**
+- **Implementation profiles**
+
+F7-LAS complements (but does NOT map to):  
+**NIST AI RMF**, **ISO/IEC 42001**, **EU AI Act**, **MITRE ATT&CK**, **MITRE ATLAS**.
 
 ---
 
-## 3. Repository Layout
+## 🗂️ Repository Structure
 
-```text
 F7-LAS/
 ├── README.md
 ├── LICENSE
-├── requirements.txt          # Python deps for examples, tests, CI
+├── requirements.txt
 │
 ├── .github/
-│   └── workflows/
-│       └── f7las-ci.yml      # CI: lint, tests, golden eval, config checks, SCA hook
+│ └── workflows/
+│ └── f7las-ci.yml
 │
-├── scripts/                  # Helper scripts used by CI and local checks
-│   ├── validate_prompts.py       # L1: schema/guardrails for config/prompts/*.txt
-│   ├── validate_policies.py      # L5: schema/consistency for config/policies/*.yaml
-│   ├── validate_settings.py      # L3: safety bounds for config/settings.yaml
-│   └── check_golden_thresholds.py# L7: enforce min scores on golden_dataset results
+├── scripts/
+│ ├── validate_prompts.py
+│ ├── validate_policies.py
+│ ├── validate_settings.py
+│ └── check_golden_thresholds.py
 │
 ├── docs/
-│   ├── Security_Agentic_AI_The_7-Layer_Model_v2.3.pdf      # Core whitepaper (F7-LAS model)
-│   ├── F7-LAS_Implementation_Guide_v3.0.pdf                # Full engineering blueprint
-│   ├── F7-LAS_Control_Catalog_v0.1.md                      # Layered control set for agentic systems
-│   ├── F7-LAS_Strength-Weakness-Improvement-Report.pdf     # Design review & roadmap
-│   ├── F7-LAS_DevSecOps_Pipeline.pdf                       # GitHub-based DevSecOps pipeline
-│   ├── Engineering_Review_Checklist.md                     # F7-LAS engineering review checklist
-│   ├── Multi-Agent_F7-LAS_Architecture.png
-│   └── ...                                                 # Diagrams, worksheets, appendices
+│ ├── Security_Agentic_AI_The_7-Layer_Model_v2.4.pdf
+│ ├── F7-LAS_Implementation_Guide_v3.1/
+│ │ ├── 00-Introduction.md
+│ │ ├── 01-Control-Objectives.md
+│ │ ├── 02-Layer-by-Layer-Controls.md
+│ │ ├── 03-Suppplemental-Layer-S.md
+│ │ ├── 04-Model-Security-Annex.md
+│ │ ├── 05-Metrics-and-SLOs.md
+│ │ ├── 06-Operational-Playbooks.md
+│ │ ├── 07-RACI-Model.md
+│ │ ├── 08-Implementation-Profiles.md
+│ │ └── appendices/
+│ │ ├── a-schemas.md
+│ │ ├── b-templates.md
+│ │ ├── c-engineering-review-checklist.md
+│ │ └── d-reference-architectures.md
+│ │
+│ ├── Engineering-Review-Checklist.md
+│ ├── Multi-Agent_F7-LAS_Architecture.png
+│ └── F7-LAS_Control_Catalog_v0.1.md
 │
 ├── config/
-│   ├── prompts/
-│   │   ├── coordinator_system_prompt.txt
-│   │   ├── investigator_system_prompt.txt
-│   │   └── remediation_system_prompt.txt
-│   ├── policies/
-│   │   ├── protected_assets.yaml
-│   │   ├── whitelisted_ips.yaml
-│   │   └── do_not_isolate.yaml
-│   └── settings.yaml             # model names, max steps, timeouts, etc.
+│ ├── prompts/
+│ ├── policies/
+│ └── settings.yaml
 │
 ├── src/
-│   ├── core/
-│   │   ├── llm_client.py
-│   │   ├── state_manager.py
-│   │   ├── safety_harness.py
-│   │   └── protocol_types.py
-│   ├── agents/
-│   │   ├── coordinator_agent.py
-│   │   ├── investigator_agent.py
-│   │   └── remediation_agent.py
-│   ├── tools/
-│   │   ├── mock_siem.py
-│   │   ├── mock_edr.py
-│   │   └── mock_idp.py
-│   └── demo_runner/
-│       ├── run_single_scenario.py
-│       └── run_golden_dataset.py
+│ ├── core/
+│ ├── agents/
+│ ├── tools/
+│ └── demo_runner/
 │
 ├── tests/
-│   ├── golden_dataset/
-│   │   ├── scenarios.json
-│   │   └── rubric.json
-│   └── test_agents_basic.py
+│ ├── golden_dataset/
+│ └── test_agents_basic.py
 │
 └── examples/
-    ├── walkthrough_false_positive.md
-    ├── walkthrough_ransomware_case.md
-    └── README.md
-4. Core Documents
-F7-LAS Whitepaper (Model):
-docs/Security_Agentic_AI_The_7-Layer_Model_v2.3.pdf
 
-F7-LAS Implementation Guide v3.0:
-docs/F7-LAS_Implementation_Guide_v3.0.pdf
-
-F7-LAS Control Catalog v0.1:
-docs/F7-LAS_Control_Catalog_v0.1.md
-
-Strength, Weakness & Improvement Report:
-docs/F7-LAS_Strength-Weakness-Improvement-Report.pdf
-
-DevSecOps Pipeline for F7-LAS:
-docs/F7-LAS_DevSecOps_Pipeline.pdf
-
-F7-LAS Engineering Review Checklist:
-docs/Engineering_Review_Checklist.md
-
-5. Quickstart (Local)
-bash
+yaml
 Copy code
+
+---
+
+## 📘 Core Documents
+
+- **F7-LAS Whitepaper** — conceptual model  
+- **Implementation Guide v3.1** — engineering blueprint  
+- **Control Catalog v0.1** — 7-layer + Layer S controls  
+- **Engineering Review Checklist** — design/go-live validation  
+- **DevSecOps Pipeline** — CI-driven enforcement  
+
+All located under `/docs`.
+
+---
+
+## ▶️ Quickstart
+
+```bash
 git clone https://github.com/<your-org>/F7-LAS.git
 cd F7-LAS
 
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-
+source .venv/bin/activate
 pip install -r requirements.txt
+Run basic tests:
+
+bash
+Copy code
 pytest -q tests/test_agents_basic.py
-
-python -m src.demo_runner.run_golden_dataset \
-  --scenarios tests/golden_dataset/scenarios.json \
-  --rubric tests/golden_dataset/rubric.json \
-  --output-file golden_eval_results.json
-
-python scripts/check_golden_thresholds.py golden_eval_results.json
-Run a single demo scenario:
+Run a demo scenario:
 
 bash
 Copy code
 python -m src.demo_runner.run_single_scenario --scenario-id "A"
-6. F7-LAS + DevSecOps (CI/CD Alignment)
-The .github/workflows/f7las-ci.yml pipeline enforces F7-LAS controls over:
+Run full golden dataset evaluation:
 
-Code (core, agents, tools)
+bash
+Copy code
+python -m src.demo_runner.run_golden_dataset \
+  --scenarios tests/golden_dataset/scenarios.json \
+  --rubric tests/golden_dataset/rubric.json
+🔒 DevSecOps Integration
+The pipeline enforces:
 
-Prompts, policies, and settings
+Prompt schema validation
 
-Golden scenario evaluations
+Policy consistency checks
 
-SBOM/SCA checks for dependencies
+Settings guardrails
 
-No merges to main if any job fails.
+Golden scenario baseline performance
 
-7. Use Cases
-Security copilots / SOC assistants
+SBOM + SCA checks
 
-Agentic automation on top of SIEM/XDR/SOAR
+Tool schema validation
 
-Multi-agent security workflows (Coordinator / Investigator / Remediator)
+Prevent unsafe merges to main
 
-Vendor-agnostic agent governance
+📡 Use Cases
+Multi-agent SOC copilots
 
-8. Roadmap (High-Level)
-More reference implementations
+SIEM/XDR/SOAR automation
 
-More golden scenarios and adversarial tests
+AI-driven IR workflows
 
-Policy packs for common SOC patterns
+Secure internal copilots
 
-Refinement of the Control Catalog (v0.1 → v1.0)
+Governance modules for agent platforms
 
-9. Contributing
-Contributions welcome: scenarios, profiles, policies, controls, or code.
-Please open an issue first for significant changes.
+🧭 Roadmap
+Expanded control catalog (v1.0)
 
-## 10. License
+More reference architectures
 
-This project is licensed under the terms specified in [`LICENSE`](./LICENSE).
+Public scenario pack
 
+Advanced metrics/SLO suite
+
+Multi-agent trust scoring
+
+🤝 Contributing
+Contributions welcomed — scenarios, policies, controls, tooling, and improvements.
+
+Please open an issue before major changes.
+
+📜 License & Disclaimer
 © 2025 Anthony L. Fuller. All rights reserved.
 
-This work is created independently by the author and is not affiliated with,
-endorsed by, or associated with Microsoft or any other employer. All opinions,
-models, and materials represent the author's personal work.
+This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.
 
-
-
-
+Opinions and materials represent the author’s personal work.
