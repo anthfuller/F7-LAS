@@ -268,15 +268,14 @@ Represents a coordination or task handoff event between agents.
   "task_context": {
     "alert_id": "A-55210",
     "severity": "high"
-  },
-   // Optional Enhancements
+},
+  // Optional Enhancements
   "handoff_type": "escalation",
   "handoff_trace_id": "handoff-9912",
   "trust_transfer_score": 0.87,
   "requires_ack": true,
   "ack_timestamp": "2025-01-01T12:50:15Z"
 }
-```
 
 **Supports**:
 - Multi-agent audit trails
