@@ -18,7 +18,7 @@ Post-incident corrective review
 
 Material change assessments
 
-C.2 How to Use
+## C.2 How to Use
 
 For each control, mark: Yes / Partial / No / N/A.
 
@@ -28,7 +28,7 @@ Attach the completed checklist to internal evidence sources (GitHub Issues, Azur
 
 Review this checklist together with the Control Catalog and Layer-by-Layer Controls.
 
-C.3 Checklist Scope
+## C.3 Checklist Scope
 
 The checklist covers:
 
@@ -50,11 +50,11 @@ Multi-Agent Governance (if applicable)
 
 This appendix does not duplicate the checklist — it provides structure around it and links to the authoritative version.
 
-C.4 Advanced Review Add-On (Optional)
+## C.4 Advanced Review Add-On (Optional)
 
 For high-assurance deployments (security operations, financial systems, regulated workloads), reviewers may include:
 
-C.4.1 Drift & Regression Checks
+## C.4.1 Drift & Regression Checks
 
 Prompt drift analysis
 
@@ -66,7 +66,7 @@ Tool-permission deltas
 
 Sandbox permission-widening detection
 
-C.4.2 Adversarial Testing Requirements
+## C.4.2 Adversarial Testing Requirements
 
 MITRE ATLAS coverage
 
@@ -78,7 +78,7 @@ RAG-poisoning attack tests
 
 PDP bypass attempts
 
-C.4.3 Compliance Integration
+## C.4.3 Compliance Integration
 
 Attach results to CAB review artifacts
 
@@ -86,7 +86,7 @@ Link to System Security Plan (SSP) or internal equivalents
 
 Validate evidence for internal audit
 
-C.5 Versioning
+## C.5 Versioning
 
 This appendix always links to the canonical checklist stored at:
 
