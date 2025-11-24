@@ -291,3 +291,10 @@ Represents a coordination or task handoff event between agents.
 | trust_transfer_score | float    | Confidence score in target agent                |
 | requires_ack         | boolean  | Whether target agent must confirm handoff       |
 | ack_timestamp        | string   | When the handoff was acknowledged               |
+
+
+## License & Disclaimer
+
+© 2025 Anthony L. Fuller. All rights reserved.
+
+#### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. Opinions and materials represent the author’s personal work.
