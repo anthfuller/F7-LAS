@@ -35,7 +35,7 @@ _No optional fields recommended for this baseline event._
 
 ---
 
-## A.2 Planner Step Event (Layer 3 — Planner / Controller)
+## A.2 Planner Step Event (Layer 3 - Planner / Controller)
 
 Represents a single reasoning step within a ReAct, PDDL, or hybrid planning loop.
 
