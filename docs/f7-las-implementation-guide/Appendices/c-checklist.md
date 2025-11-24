@@ -39,7 +39,7 @@ Review this checklist together with the Control Catalog and Layer-by-Layer Contr
 > which include: delegated trust enforcement, traceability across agent boundaries, separation of duties,  
 > and cross-agent telemetry correlation.  
 >
-> 🔗 [See Multi-Agent Controls in the Checklist →](../../Engineering_Review_Checklist.md)
+> 🔗 [See Multi-Agent Controls in the Checklist →][Engineering-Review-Checklist.md](../../Engineering-Review-Checklist.md)
 
 
 The checklist covers:
