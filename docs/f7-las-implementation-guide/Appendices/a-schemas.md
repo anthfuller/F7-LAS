@@ -1,7 +1,7 @@
 
 # 📚 Appendix A — Reference Telemetry Schemas
 
-> 📘 **Note:** These schemas are based on research and prototyping.  
+> **Note:** These schemas are based on research and prototyping.  
 > Implementers should validate them within their specific architecture and threat model.
 
 
