@@ -113,6 +113,6 @@ Please open an issue before major changes.
 ### License & Disclaimer
 © 2025 Anthony L. Fuller. All rights reserved.
 
-## This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.
+### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.
 
 Opinions and materials represent the author’s personal work.
