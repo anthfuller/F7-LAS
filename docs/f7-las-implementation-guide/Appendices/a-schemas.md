@@ -1,5 +1,5 @@
 
-# 📚 Appendix A - Reference Telemetry Schemas
+# 📚 Appendix A — Reference Telemetry Schemas
 
 These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination. Each is designed to be:
 
@@ -9,7 +9,7 @@ These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination.
 
 ---
 
-## A.1 Prompt Event (Layer 1 - System Prompt)
+## A.1 Prompt Event (Layer 1 — System Prompt)
 
 Represents a system-prompt load event or prompt version change.
 
@@ -35,7 +35,7 @@ _No optional fields recommended for this baseline event._
 
 ---
 
-## A.2 Planner Step Event (Layer 3 - Planner / Controller)
+## A.2 Planner Step Event (Layer 3 — Planner / Controller)
 
 Represents a single reasoning step within a ReAct, PDDL, or hybrid planning loop.
 
@@ -63,7 +63,7 @@ _Optional additions_: `step_duration_ms`, `trigger_event`
 
 ---
 
-## A.3 RAG Retrieval Event (Layer 2 - Grounding)
+## A.3 RAG Retrieval Event (Layer 2 — Grounding)
 
 Represents a single RAG grounding retrieval operation.
 
@@ -91,7 +91,7 @@ Represents a single RAG grounding retrieval operation.
 - Retrieval-quality metrics
 - Layer-2 observability
 
-** Optional Extensions**:
+**🧠 Optional Extensions**:
 | Field                 | Type     | Description                                  |
 |----------------------|----------|----------------------------------------------|
 | retrieval_strategy   | string   | "dense", "sparse", "hybrid"                  |
@@ -100,7 +100,7 @@ Represents a single RAG grounding retrieval operation.
 
 ---
 
-## A.4 Tool Call Request (Layer 4 - Tool Surface)
+## A.4 Tool Call Request (Layer 4 — Tool Surface)
 
 Represents a request to invoke an external tool.
 
@@ -126,7 +126,7 @@ Represents a request to invoke an external tool.
 - Over-privilege prevention
 - Credential-scope audits
 
-** Optional Extensions**:
+**🧠 Optional Extensions**:
 | Field              | Type     | Description                                     |
 |-------------------|----------|-------------------------------------------------|
 | invocation_channel| string   | "api_gateway", "plugin_runtime"                |
@@ -136,7 +136,7 @@ Represents a request to invoke an external tool.
 
 ---
 
-## A.5 Policy Decision (Layer 5 - Hard Guardrails)
+## A.5 Policy Decision (Layer 5 — Hard Guardrails)
 
 Represents the decision returned by a PDP.
 
@@ -167,7 +167,7 @@ Represents the decision returned by a PDP.
 - Policy-bypass detection
 - HITL override triggers
 
-** Optional Extensions**:
+**🧠 Optional Extensions**:
 | Field                  | Type     | Purpose                                  |
 |-----------------------|----------|------------------------------------------|
 | decision_explanation  | string   | Explanation or policy reference          |
@@ -203,7 +203,7 @@ Represents the result of a tool execution within a sandbox.
 - Tool reliability scoring
 - Layer-6 blast-radius analysis
 
-** Optional Extensions**:
+**🧠 Optional Extensions**:
 | Field                 | Type     | Description                                     |
 |----------------------|----------|-------------------------------------------------|
 | output_hash          | string   | Hash of output for tamper resistance            |
@@ -214,7 +214,7 @@ Represents the result of a tool execution within a sandbox.
 
 ---
 
-## A.7 Monitoring & Evaluation Event (Layer 7 - Oversight)
+## A.7 Monitoring & Evaluation Event (Layer 7 — Oversight)
 
 Represents a periodic health, trust, or drift evaluation signal.
 
@@ -268,7 +268,7 @@ Represents a coordination or task handoff event between agents.
   "task_context": {
     "alert_id": "A-55210",
     "severity": "high"
-},
+  },
   // Optional Enhancements
   "handoff_type": "escalation",
   "handoff_trace_id": "handoff-9912",
@@ -276,13 +276,14 @@ Represents a coordination or task handoff event between agents.
   "requires_ack": true,
   "ack_timestamp": "2025-01-01T12:50:15Z"
 }
+```
 
 **Supports**:
 - Multi-agent audit trails
 - Escalation modeling
 - Provenance of distributed decisions
 
-** Optional Extensions**:
+**🧠 Optional Extensions**:
 | Field                 | Type     | Description                                     |
 |----------------------|----------|-------------------------------------------------|
 | handoff_type         | string   | E.g., "escalation", "delegation", "handover"    |
@@ -290,10 +291,3 @@ Represents a coordination or task handoff event between agents.
 | trust_transfer_score | float    | Confidence score in target agent                |
 | requires_ack         | boolean  | Whether target agent must confirm handoff       |
 | ack_timestamp        | string   | When the handoff was acknowledged               |
-
-
-## License & Disclaimer
-
-© 2025 Anthony L. Fuller. All rights reserved.
-
-#### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. Opinions and materials represent the author’s personal work.
