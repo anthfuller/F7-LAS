@@ -177,7 +177,7 @@ Ensures tools exposed to the planner are properly described and validated.
 
 ## B.5 Sandbox Profile Template
 
-## Defines the isolation and blast-radius controls for Layer 6.
+Defines the isolation and blast-radius controls for Layer 6.
 
 ## Sandbox Profile — <System or Agent Name>
 
@@ -210,7 +210,7 @@ Ensures tools exposed to the planner are properly described and validated.
 
 ## B.6 Multi-Agent Choreography Template
 
-## For Coordinator → Investigator → Remediator style systems.
+For Coordinator → Investigator → Remediator style systems.
 
 ## Multi-Agent Choreography — <System Name>
 
