@@ -95,7 +95,7 @@ This appendix always links to the canonical checklist stored at:
 
 The Implementation Guide should not rewrite the checklist; it references the source of truth so updates can be tracked independently.
 
-C.6 Copyright Notice
+### C.6 Copyright Notice
 
 © 2025 Anthony L. Fuller. All rights reserved.
 This work is independent of Microsoft and does not represent the views of any employer.
