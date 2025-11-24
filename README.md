@@ -47,6 +47,7 @@ F7-LAS complements (but does NOT map to):
 
 ## 🗂️ Repository Structure
 
+```text
 F7-LAS/
 ├── README.md
 ├── LICENSE
@@ -100,6 +101,8 @@ F7-LAS/
 │ └── test_agents_basic.py
 │
 └── examples/
+```
+
 ---
 
 ## 📘 Core Documents
