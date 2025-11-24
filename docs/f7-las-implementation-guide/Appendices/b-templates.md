@@ -1,4 +1,4 @@
-Appendix B — Templates
+# Appendix B — Templates
 
 This appendix provides ready-to-use templates that support the deployment, governance, and review of systems built using the F7-LAS framework.
 
@@ -8,9 +8,9 @@ B.1 Implementation Profile Template
 
 A full Implementation Profile defines how your environment implements each F7-LAS layer, including controls, telemetry expectations, and multi-agent patterns.
 
-# F7-LAS Implementation Profile — <System Name>
+## F7-LAS Implementation Profile — <System Name>
 
-## 1. Metadata
+### 1. Metadata
 - System name:
 - Owner team:
 - Review date:
@@ -19,7 +19,7 @@ A full Implementation Profile defines how your environment implements each F7-LA
 - Agent runtime/framework:
 - Multi-agent? (yes/no)
 
-## 2. Architecture Summary
+### 2. Architecture Summary
 - High-level description:
 - Deployment pattern:
 - Supported use cases:
@@ -85,13 +85,13 @@ A full Implementation Profile defines how your environment implements each F7-LA
 - Red-team logs:
 - Policy review notes:
 
-B.2 Prompt Security Profile (PSP) Template
+## B.2 Prompt Security Profile (PSP) Template
 
 A PSP defines the security boundaries, escalation rules, and governance around a system prompt.
 
-# Prompt Security Profile (PSP) — <Agent Name>
+## Prompt Security Profile (PSP) — <Agent Name>
 
-## 1. Metadata
+### 1. Metadata
 - PSP ID:
 - Agent role:
 - Owner team:
