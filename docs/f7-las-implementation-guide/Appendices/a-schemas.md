@@ -1,6 +1,10 @@
 
 # 📚 Appendix A — Reference Telemetry Schemas
 
+> 📘 **Note:** These schemas are based on research and prototyping.  
+> Implementers should validate them within their specific architecture and threat model.
+
+
 These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination. Each is designed to be:
 
 - Minimal (for baseline observability)
