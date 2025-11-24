@@ -1,5 +1,5 @@
 
-# 📚 Appendix A — Reference Telemetry Schemas
+# 📚 Appendix A - Reference Telemetry Schemas
 
 These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination. Each is designed to be:
 
