@@ -1,0 +1,34 @@
+# F7-LAS Sandbox Profile (Layer 6)
+
+version: v0.1
+description: Baseline sandbox and blast-radius limits for remediation tools.
+
+environments:
+  - name: soc-playground
+    type: nonprod
+    network_access:
+      allowed:
+        - internal-lab-apis
+      denied:
+        - internet
+        - production-subscriptions
+    identities:
+      use_managed_identity: true
+      per_agent_service_principal: true
+
+  - name: soc-production
+    type: prod
+    network_access:
+      allowed:
+        - soc-apis
+        - xdr-api
+      denied:
+        - general-internet
+    identities:
+      use_managed_identity: true
+      per_agent_service_principal: true
+
+egress_controls:
+  log_all_requests: true
+  block_unknown_destinations: true
+  require_policy_decision_for_high_risk: true
