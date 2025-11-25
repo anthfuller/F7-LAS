@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/f7las/psp-schema.json",
+  "title": "F7-LAS Prompt Security Profile (PSP)",
+  "type": "object",
+  "required": [
+    "psp_id",
+    "agent_name",
+    "role",
+    "risk_tier",
+    "version",
+    "approved_by",
+    "change_ticket",
+    "approval_date",
+    "scope",
+    "forbidden_actions",
+    "escalation_rules"
+  ],
+  "properties": {
+    "psp_id": {
+      "type": "string",
+      "description": "Unique PSP identifier (e.g., Coordinator-PSP-001)"
+    },
+    "agent_name": {
+      "type": "string",
+      "description": "Agent name (Coordinator, Investigator, Remediator, etc.)"
+    },
+    "role": {
+      "type": "string",
+      "description": "High-level description of the agent’s role"
+    },
+    "version": {
+      "type": "string",
+      "description": "PSP definition version (e.g., v1.0, 2025-01-01)"
+    },
+    "risk_tier": {
+      "type": "string",
+      "enum": ["low", "medium", "medium-low", "high", "critical"],
+      "description": "Risk tier for this agent"
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Name or group that approved this PSP"
+    },
+    "change_ticket": {
+      "type": "string",
+      "description": "Change ticket or CAB reference ID"
+    },
+    "approval_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of last approval"
+    },
+    "owner_team": {
+      "type": "string",
+      "description": "Team responsible for this agent"
+    },
+    "scope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "In-scope tasks"
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicitly out-of-scope tasks"
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Actions the agent must never perform"
+    },
+    "escalation_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Conditions requiring human escalation"
+    },
+    "approved_rag_sources": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Allowed retrieval sources"
+    },
+    "disallowed_domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Forbidden data domains"
+    },
+    "input_validation_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Validation rules for incoming requests"
+    },
+    "output_format_rules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Response formatting requirements"
+    },
+    "logging_requirements": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Mandatory logging fields"
+    },
+    "telemetry_fields": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Telemetry keys required for Layer 7"
+    },
+    "related_artifacts": {
+      "type": "object",
+      "description": "Cross-links to F7-LAS artifacts",
+      "properties": {
+        "implementation_profile_ref": { "type": "string" },
+        "rag_policy_ref": { "type": "string" },
+        "tool_policy_ref": { "type": "string" },
+        "sandbox_profile_ref": { "type": "string" },
+        "slos_ref": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form notes, limitations, or extra context"
+    }
+  },
+  "additionalProperties": false
+}
