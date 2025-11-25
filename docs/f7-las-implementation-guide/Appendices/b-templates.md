@@ -172,7 +172,13 @@ Ensures tools exposed to the planner are properly described and validated.
   },
   "credential_scope": "sp-helpdesk-reset",
   "risk_tier": "medium",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "tool_id": "tool-reset-001",
+  "tool_version_hash": "sha256:ab12cd34ef5678...",
+  "approved_by": "sec-arch",
+  "CAB_ticket": "CAB-2025-101",
+  "timeout_ms": 3000,
+  "dry_run_supported": true
 }
 
 ## B.5 Sandbox Profile Template
