@@ -114,7 +114,7 @@ F7-LAS/
     ├── coordinator-v1.txt
     ├── investigator-v1.txt
     └── remediator-v1.txt
-    ```
+```
 ---
 
 ## Quick Start
