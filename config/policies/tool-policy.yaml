@@ -1,0 +1,39 @@
+# F7-LAS Tool Policy (Layer 4 + Layer 5 inputs)
+
+version: v0.1
+description: Tool whitelisting and risk tiers for F7-LAS agents.
+
+tools:
+  - name: list_incidents
+    id: tool.list_incidents
+    risk_tier: low
+    allowed_agents: [coordinator, investigator]
+    requires_human_approval: false
+
+  - name: get_incident_details
+    id: tool.get_incident_details
+    risk_tier: low
+    allowed_agents: [coordinator, investigator]
+    requires_human_approval: false
+
+  - name: create_ticket
+    id: tool.create_ticket
+    risk_tier: medium
+    allowed_agents: [coordinator, remediator]
+    requires_human_approval: false
+
+  - name: isolate_host
+    id: tool.isolate_host
+    risk_tier: high
+    allowed_agents: [remediator]
+    requires_human_approval: true
+
+  - name: block_ip
+    id: tool.block_ip
+    risk_tier: high
+    allowed_agents: [remediator]
+    requires_human_approval: true
+
+default_behavior:
+  unknown_tool: deny
+  missing_policy: escalate
