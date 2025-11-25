@@ -1,0 +1,29 @@
+# F7-LAS RAG Policy (Layer 2)
+
+version: v0.1
+description: Baseline RAG / grounding policy for F7-LAS agents.
+
+allowed_sources:
+  - id: policy-kb
+    trust_tier: high
+  - id: soc-runbook-kb
+    trust_tier: high
+  - id: public-docs
+    trust_tier: medium
+
+forbidden_domains:
+  - hr-sensitive
+  - legal-privileged
+  - finance-confidential
+
+max_docs_per_query: 10
+min_trust_score: 0.8
+
+poisoning_detection:
+  enabled: true
+  rules:
+    - name: out_of_domain_terms
+      action: flag
+    - name: unusually_low_trust
+      threshold: 0.7
+      action: escalate
