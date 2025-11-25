@@ -1,6 +1,4 @@
 {
-  "A": {
-    "description": "Placeholder rubric for scenario A",
-    "criteria": []
-  }
+  "minimum_success_rate": 0.8,
+  "minimum_scenarios": 1
 }
