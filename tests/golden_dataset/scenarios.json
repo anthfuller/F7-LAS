@@ -1,8 +1,8 @@
 [
   {
-    "id": "A",
-    "description": "Placeholder scenario for F7-LAS golden dataset",
-    "inputs": {},
-    "expected": {}
+    "id": "SCN-001",
+    "name": "placeholder-coordinator-scenario",
+    "description": "Minimal scenario to exercise golden dataset pipeline.",
+    "expected_outcome": "pass"
   }
 ]
