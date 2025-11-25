@@ -110,10 +110,7 @@ F7-LAS/
 │   └── test-agents-basic.py
 │
 └── examples/
-    ├── system-prompt-v1.txt
-    ├── coordinator-v1.txt
-    ├── investigator-v1.txt
-    └── remediator-v1.txt
+  
 ```
 ---
 
