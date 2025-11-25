@@ -18,7 +18,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROMPT_DIR = REPO_ROOT / "config" / "prompts"
 
 # Validate ALL .txt prompts (hyphens included)
-prompt_files_glob = "*.txt"
+prompt_files = sorted([
+    *PROMPT_DIR.glob("*-agent-prompt-*.txt"),
+    *PROMPT_DIR.glob("system-prompt-*.txt"),
+])
 
 REQUIRED_SECTIONS = [
     "[ROLE]",
@@ -114,3 +117,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
