@@ -155,6 +155,22 @@ You may optionally assign **risk levels** (Low / Medium / High) per item.
 
 ---
 
+
+---
+
+## Supplemental Layer S – Software Supply Chain & Framework Security
+
+**Goal:** Supply chain and framework risks are mitigated through SBOMs, scanning, and governance.
+
+| ID | Checklist Item | Status | Notes / Actions |
+|----|----------------|--------|-----------------|
+| LS.1 | An **SBOM** is generated and maintained for agent dependencies. |  |  |
+| LS.2 | All dependencies are scanned for **known vulnerabilities** (SCA). |  |  |
+| LS.3 | Critical agent libraries/frameworks are **version-pinned** and reviewed before upgrades. |  |  |
+| LS.4 | Third-party **plugins/tools undergo review** before use (risk, owner, approval). |  |  |
+| LS.5 | Telemetry includes **framework version + build attestation** metadata. |  |  |
+
+
 ## Overall Assessment
 
 - **Overall F7‑LAS Alignment Rating (1–5):** ______  
