@@ -3,7 +3,7 @@
 This appendix links to the canonical F7-LAS Engineering Review Checklist, used for architecture reviews, readiness checks, and pre-production validation.
 It ensures every agentic system is evaluated consistently across all seven layers.
 
-➡️ **Open the full checklist here:**  
+**Open the full checklist here:**  
 [Engineering-Review-Checklist.md](../../Engineering-Review-Checklist.md)
 ## C.1 Purpose
 
@@ -30,7 +30,7 @@ Review this checklist together with the Control Catalog and Layer-by-Layer Contr
 
 ## C.3 Checklist Scope
 
-> **🧠 Note on Multi-Agent Systems**  
+> ** Note on Multi-Agent Systems**  
 > F7-LAS assumes environments where agents may delegate tasks, escalate decision contexts,  
 > or issue tool calls on behalf of other agents. This multi-agent choreography introduces unique  
 > security and observability challenges.  
@@ -39,7 +39,7 @@ Review this checklist together with the Control Catalog and Layer-by-Layer Contr
 > which include: delegated trust enforcement, traceability across agent boundaries, separation of duties,  
 > and cross-agent telemetry correlation.  
 >
-> 🔗 [See Multi-Agent Controls in the Checklist →](../../Engineering-Review-Checklist.md)
+> [See Multi-Agent Controls in the Checklist →](../../Engineering-Review-Checklist.md)
 
 
 The checklist covers:
