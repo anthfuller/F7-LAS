@@ -633,7 +633,7 @@ Together, they define a full lifecycle for designing, implementing, and assuring
 
 © 2025 Anthony L. Fuller. All rights reserved.
 
-### This work is created independently by the author and is not affiliated with,
-endorsed by, or associated with Microsoft or any other employer. All opinions,
-models, and materials represent the author's personal work.
+#### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. All opinions,
+#### models, and materials represent the author's personal work.
+
 
