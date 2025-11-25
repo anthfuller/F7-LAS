@@ -67,14 +67,14 @@ F7-LAS/
 │       └── f7las-ci.yml
 │
 ├── scripts/
-│   ├── validate_prompts.py
-│   ├── validate_policies.py
-│   ├── validate_settings.py
-│   └── check_golden_thresholds.py
+│   ├── validate-prompts.py
+│   ├── validate-policies.py
+│   ├── validate-settings.py
+│   └── check-golden-thresholds.py
 │
 ├── docs/
-│   ├── Security_Agentic_AI_The_7-Layer_Model_v2.4.pdf
-│   ├── F7-LAS_Implementation_Guide_v3.1/
+│   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
+│   ├── F7-LAS-Implementation-Guide-v3.1/
 │   │   ├── 00-Introduction.md
 │   │   ├── 01-Control-Objectives.md
 │   │   ├── 02-Layer-by-Layer-Controls.md
@@ -91,8 +91,8 @@ F7-LAS/
 │   │       └── d-reference-architectures.md
 │   │
 │   ├── Engineering-Review-Checklist.md
-│   ├── Multi-Agent_F7-LAS_Architecture.png
-│   └── F7-LAS_Control_Catalog_v0.1.md
+│   ├── Multi-Agent-F7-LAS-Architecture.png
+│   └── F7-LAS-Control-Catalog-v0.1.md
 │
 ├── config/
 │   ├── prompts/
@@ -103,11 +103,11 @@ F7-LAS/
 │   ├── core/
 │   ├── agents/
 │   ├── tools/
-│   └── demo_runner/
+│   └── demo-runner/
 │
 ├── tests/
-│   ├── golden_dataset/
-│   └── test_agents_basic.py
+│   ├── golden-dataset/
+│   └── test-agents-basic.py
 │
 └── examples/
 ```
@@ -119,10 +119,10 @@ F7-LAS/
 ```bash
 git clone https://github.com/anthfuller/F7-LAS.git
 cd F7-LAS
-python scripts/validate_prompts.py
+python scripts/validate-prompts.py
 ```
 
-See `demo_runner/` for sample agent orchestration.
+See `demo-runner/` for sample agent orchestration.
 
 ---
 
