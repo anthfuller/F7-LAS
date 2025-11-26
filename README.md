@@ -1,3 +1,9 @@
+# F7-LAS Documentation
+
+![F7-LAS CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg?branch=main)
+
+A multi-layer agentic security framework for governing, evaluating, and enforcing controls across AI agents, models, and orchestration pipelines.
+
 # F7-LAS — Fuller 7-Layer Agentic AI Security Framework
 
 ![Version](https://img.shields.io/badge/version-v3.1-blue)
