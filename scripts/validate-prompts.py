@@ -17,6 +17,18 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROMPT_DIR = REPO_ROOT / "config" / "prompts"
 
+# Added, was missing during updated code
+
+prompt_files_glob = "*.txt"
+
+REQUIRED_SECTIONS = [
+    "[ROLE]",
+    "[SCOPE]",
+    "[PROHIBITED ACTIONS]",
+    "[ESCALATION RULES]",
+    "[PROMPT SECURITY PROFILE METADATA]",
+]
+
 # Validate ALL .txt prompts (hyphens included)
 prompt_files = sorted([
     *PROMPT_DIR.glob("*-agent-prompt-*.txt"),
@@ -117,4 +129,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
