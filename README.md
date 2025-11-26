@@ -8,6 +8,20 @@
 ![license](https://img.shields.io/badge/license-Proprietary-lightgrey)
 ![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
 
+> **Maturity roadmap:**  
+> F7-LAS is currently at **Stage 0 – Experimental**. The core model, controls, and repo structure are being defined, documented, and wired into CI. Future stages will add hardened CI, golden datasets, reference implementations, and production-ready playbooks.
+
+### F7-LAS Maturity Stages
+
+| Stage | Label                     | Description                                     | Use Readiness            |
+|-------|---------------------------|-------------------------------------------------|--------------------------|
+| 0     | Experimental              | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
+| 1     | Alpha                     | Core logic working end-to-end with gaps.        | Internal sandbox only     |
+| 2     | Beta                      | CI + tests in place, coverage improving.        | Controlled pilot / lab    |
+| 3     | Stable                    | Versioned, test-covered, documented patterns.   | Production-ready          |
+
+F7-LAS is intentionally **opinionated** and will move through these stages as the implementation guide, control catalog, golden datasets, and CI hardening mature.
+
 ## 🌐 Overview
 F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
 
