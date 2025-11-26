@@ -176,6 +176,62 @@ python scripts/check_golden_thresholds.py golden_eval_results.json
 - CI workflow and validators  
 
 ---
+## Roadmap
+
+F7-LAS is evolving through clearly defined maturity stages to ensure transparency, stability, and long-term governance.
+
+### Current Maturity Stage
+
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
+
+F7-LAS is currently **Stage 0 — Experimental**.  
+The framework structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
+
+### Maturity Model
+
+| Stage | Label         | Description                                              | Intended Use                |
+|-------|--------------|----------------------------------------------------------|-----------------------------|
+| 0     | Experimental | Design, scaffolding, control definitions, CI bootstrapping | Evaluation & research        |
+| 1     | Alpha        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
+| 2     | Beta         | CI-tested, partial coverage, validated controls           | Controlled pilot deployments |
+| 3     | Stable       | Versioned, test-covered, production-ready patterns        | Enterprise / production use  |
+
+### Planned Future Enhancements
+
+#### ✔ CI & Security
+- Full golden dataset testing
+- Secret scanning
+- SBOM & dependency scanning
+- Policy schema validation
+- Prompt security linting
+
+#### ✔ Documentation & Controls
+- Additional reference architectures
+- Expanded control catalog
+- Tooling examples and agent demos
+- Public Owner’s Guide
+
+#### ✔ Agent & Framework Enhancements
+- Example multi-agent orchestration
+- Tooling adapters (OpenAI MCP / LangChain / Azure / AWS)
+- Real-world security playbooks
+
+### Badge Palette for Future Stages
+
+- Stage 1 — Alpha  
+  `![maturity](https://img.shields.io/badge/maturity-Stage%201%20%E2%80%94%20Alpha-yellowgreen)`
+
+- Stage 2 — Beta  
+  `![maturity](https://img.shields.io/badge/maturity-Stage%202%20%E2%80%94%20Beta-orange)`
+
+- Stage 3 — Stable  
+  `![maturity](https://img.shields.io/badge/maturity-Stage%203%20%E2%80%94%20Stable-brightgreen)`
+
+---
+
+### Visual Roadmap Diagram (Coming Soon)
+
+A visual maturity diagram for F7-LAS will be published in the documentation.
 
 ## Contributing
 
