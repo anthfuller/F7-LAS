@@ -1,4 +1,4 @@
-# F7-LAS — Fuller 7-Layer Agentic AI Security Framework™
+# F7-LAS™ — Fuller 7-Layer Agentic AI Security Framework
 
 *A layered, control-centric security architecture for agentic and multi-agent AI systems.*
 
