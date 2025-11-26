@@ -41,7 +41,6 @@ jobs:
           python src/demo_runner/run_golden_dataset.py \
             --scenarios tests/golden_dataset/scenarios.json \
             --rubric tests/golden_dataset/rubric.json \
-            --output golden_eval_results.json
             --output tests/golden_dataset/golden_eval_results.json
 
       # 6 — Enforce golden dataset threshold
