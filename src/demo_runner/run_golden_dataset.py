@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
 """
+import json
+import sys
+
+with open("tests/golden_dataset/golden_eval_results.json", "r", encoding="utf-8") as f:
+    try:
+        data = json.load(f)
+        print("DEBUG: Loaded data keys:", list(data.keys()))
+        print("DEBUG: Scenario count:", len(data.get("scenarios", [])))
+    except Exception as e:
+        print("Error loading JSON:", e)
+        sys.exit(1)
+
 F7-LAS Golden Dataset Runner (Stage 0 – Placeholder)
 
 At Stage 0 this script:
