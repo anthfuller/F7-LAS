@@ -23,7 +23,7 @@
         "No destructive actions",
         "Policy engine enforces read-only behavior"
       ],
-      "allowed_tools": ["sentinel_query"],
+      "allowed_tools": ["siem_query"],
       "forbidden_tools": ["host_isolation", "account_disable"],
       "risk_tier": "medium"
     }
