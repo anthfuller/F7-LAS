@@ -2,44 +2,68 @@ name: F7-LAS CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
+      # 1 — Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2 — Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # 3 — Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No requirements.txt found"; fi
+          pip install -r requirements.txt
 
-      - name: Run placeholder tests
+      # 4 — Run placeholder unit test
+      - name: Run unit tests
         run: |
-          pytest -q || echo "No tests configured yet"
+          pytest -q tests/test_agents_basic.py
 
-      - name: Validate prompts
+      # 5 — Run golden dataset evaluator
+      - name: Golden dataset evaluation
         run: |
-          python scripts/validate-prompts.py || echo "Prompt validation placeholder"
+          python src/demo_runner/run_golden_dataset.py \
+            --scenarios tests/golden_dataset/scenarios.json \
+            --rubric tests/golden_dataset/rubric.json \
+            --output golden_eval_results.json
 
-      - name: Validate policies
-        run: |
-          if [ -d config/policies ]; then python scripts/validate_policies.py; else echo "No policies yet"; fi
-
-      - name: Validate settings
-        run: |
-          python scripts/validate_settings.py config/settings.yaml || echo "Settings validation placeholder"
-
+      # 6 — Enforce golden dataset threshold
       - name: Check golden thresholds
         run: |
-          python scripts/check_golden_thresholds.py || echo "Golden dataset placeholder"
+          python scripts/check_golden_thresholds.py golden_eval_results.json
+
+      # 7 — Validate prompts
+      - name: Validate prompts
+        run: |
+          python scripts/validate-prompts.py
+
+      # 8 — Validate policies
+      - name: Validate policies
+        run: |
+          if [ -d config/policies ]; then python scripts/validate-policies.py; else echo "No policies yet"; fi
+
+      # 9 — Validate settings
+      - name: Validate settings
+        run: |
+          python scripts/validate-settings.py config/settings.yaml
+
+      # 10 — Placeholder SBOM scanning hook
+      - name: SBOM scan (placeholder)
+        run: |
+          echo "SBOM/SCA step can be added here later."
