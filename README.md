@@ -198,20 +198,20 @@ The framework structure, control catalog, prompt standards, and initial CI valid
 
 ### Planned Future Enhancements
 
-#### ✔ CI & Security
+#### CI & Security
 - Full golden dataset testing
 - Secret scanning
 - SBOM & dependency scanning
 - Policy schema validation
 - Prompt security linting
 
-#### ✔ Documentation & Controls
+#### Documentation & Controls
 - Additional reference architectures
 - Expanded control catalog
 - Tooling examples and agent demos
 - Public Owner’s Guide
 
-#### ✔ Agent & Framework Enhancements
+#### Agent & Framework Enhancements
 - Example multi-agent orchestration
 - Tooling adapters (OpenAI MCP / LangChain / Azure / AWS)
 - Real-world security playbooks
