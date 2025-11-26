@@ -1,21 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.com/f7las/psp-schema.json",
+  "$id": "https://f7las.ai/schema/psp-schema.json",
   "title": "F7-LAS Prompt Security Profile (PSP)",
   "type": "object",
+
   "required": [
     "psp_id",
     "agent_name",
     "role",
-    "risk_tier",
     "version",
+    "risk_tier",
     "approved_by",
     "change_ticket",
     "approval_date",
     "scope",
     "forbidden_actions",
-    "escalation_rules"
+    "escalation_rules",
+    "approved_rag_sources",
+    "logging_requirements"
   ],
+
   "properties": {
     "psp_id": {
       "type": "string",
@@ -23,104 +27,113 @@
     },
     "agent_name": {
       "type": "string",
-      "description": "Agent name (Coordinator, Investigator, Remediator, etc.)"
+      "description": "Agent name (coordinator, investigator, remediator)"
     },
     "role": {
       "type": "string",
-      "description": "High-level description of the agent’s role"
+      "description": "High-level agent function"
     },
     "version": {
       "type": "string",
-      "description": "PSP definition version (e.g., v1.0, 2025-01-01)"
+      "description": "PSP version identifier (e.g., v1.0)"
     },
     "risk_tier": {
       "type": "string",
       "enum": ["low", "medium", "medium-low", "high", "critical"],
-      "description": "Risk tier for this agent"
+      "description": "Overall risk tier for this agent"
     },
     "approved_by": {
       "type": "string",
-      "description": "Name or group that approved this PSP"
+      "description": "Reviewer or group that approved this PSP"
     },
     "change_ticket": {
       "type": "string",
-      "description": "Change ticket or CAB reference ID"
+      "description": "CAB or change reference"
     },
     "approval_date": {
       "type": "string",
       "format": "date",
-      "description": "Date of last approval"
+      "description": "Last PSP approval date"
     },
     "owner_team": {
       "type": "string",
-      "description": "Team responsible for this agent"
+      "description": "Team maintaining this agent"
     },
+
     "scope": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "In-scope tasks"
+      "description": "Allowed tasks or operational scope",
+      "items": { "type": "string" }
     },
     "out_of_scope": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Explicitly out-of-scope tasks"
+      "description": "Explicitly forbidden task domains",
+      "items": { "type": "string" }
     },
+
     "forbidden_actions": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Actions the agent must never perform"
+      "description": "Actions that must never be performed",
+      "items": { "type": "string" }
     },
+
     "escalation_rules": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Conditions requiring human escalation"
+      "description": "When HITL is required",
+      "items": { "type": "string" }
     },
+
     "approved_rag_sources": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Allowed retrieval sources"
+      "description": "Allowed RAG search collections",
+      "items": { "type": "string" }
     },
     "disallowed_domains": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Forbidden data domains"
+      "description": "Data domains that must never be accessed",
+      "items": { "type": "string" }
     },
+
     "input_validation_rules": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Validation rules for incoming requests"
+      "description": "Validation rules for user inputs",
+      "items": { "type": "string" }
     },
     "output_format_rules": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Response formatting requirements"
+      "description": "Formatting constraints for agent output",
+      "items": { "type": "string" }
     },
+
     "logging_requirements": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Mandatory logging fields"
+      "description": "Required logging fields (Layer 7 observability)",
+      "items": { "type": "string" }
     },
     "telemetry_fields": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Telemetry keys required for Layer 7"
+      "description": "Additional telemetry fields for cross-agent correlation",
+      "items": { "type": "string" }
     },
+
     "related_artifacts": {
       "type": "object",
-      "description": "Cross-links to F7-LAS artifacts",
+      "description": "Cross-links to F7-LAS controls",
       "properties": {
         "implementation_profile_ref": { "type": "string" },
         "rag_policy_ref": { "type": "string" },
         "tool_policy_ref": { "type": "string" },
-        "sandbox_profile_ref": { "type": "string" },
+        "sandbox_policy_ref": { "type": "string" },
         "slos_ref": { "type": "string" }
       },
       "additionalProperties": false
     },
+
     "notes": {
       "type": "string",
-      "description": "Free-form notes, limitations, or extra context"
+      "description": "Optional free-form notes"
     }
   },
+
   "additionalProperties": false
 }
