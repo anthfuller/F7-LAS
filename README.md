@@ -1,10 +1,12 @@
 # F7-LAS — Fuller 7-Layer Agentic AI Security Framework™
+
 *A layered, control-centric security architecture for agentic and multi-agent AI systems.*
 
-[![F7-LAS CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml)
-![Version](https://img.shields.io/badge/version-v3.1-blue)
-![License](https://img.shields.io/badge/license-Proprietary-lightgrey)
-![Status](https://img.shields.io/badge/status-Experimental-yellow)
+![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
+![status](https://img.shields.io/badge/status-passing-brightgreen)
+![version](https://img.shields.io/badge/version-v3.1-blue)
+![license](https://img.shields.io/badge/license-Proprietary-lightgrey)
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
 
 ## 🌐 Overview
 F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
