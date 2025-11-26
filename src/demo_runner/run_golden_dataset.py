@@ -51,7 +51,7 @@ def _annotate_scenarios(scenarios: list[dict]) -> list[dict]:
 
 def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any]:
     scenarios_raw = _safe_load_json(scenarios_path)
-    rubric = _safe_load_json(rubric_path)
+    rubric = _safe_load_json(rubric_path) or {}
 
     scenario_list = []
     if isinstance(scenarios_raw, dict) and "scenarios" in scenarios_raw:
@@ -59,8 +59,9 @@ def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any
             scenario_list = _annotate_scenarios(scenarios_raw["scenarios"])
 
     total_scenarios = len(scenario_list)
-    passed = total_scenarios
-    failed = 0
+    passed = sum(1 for s in scenario_list if s.get("passed") is True)
+    failed = total_scenarios - passed
+    success_rate = passed / total_scenarios if total_scenarios else 0.0
 
     now = datetime.now(timezone.utc).isoformat()
 
@@ -71,13 +72,18 @@ def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any
             "scenarios_path": str(scenarios_path),
             "rubric_path": str(rubric_path),
             "scenarios_loaded": scenarios_raw is not None,
-            "rubric_loaded": rubric is not None
+            "rubric_loaded": bool(rubric)
         },
         "summary": {
-            "total_scenarios": total_scenarios,
+            "scenarios_total": total_scenarios,
+            "success_rate": round(success_rate, 3),
             "passed": passed,
             "failed": failed,
             "status": "placeholder"
+        },
+        "rubric": {
+            "minimum_scenarios": rubric.get("minimum_scenarios", 1),
+            "minimum_success_rate": rubric.get("minimum_success_rate", 0.8)
         },
         "scenarios": scenario_list,
         "notes": "Stage 0 runner – replace with real evaluation logic as the framework matures."
