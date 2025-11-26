@@ -1,0 +1,53 @@
+{
+  "policy_id": "escalation-default-v1",
+  "version": "v1.0",
+  "description": "Default escalation and human-in-the-loop behavior for F7-LAS agents.",
+  "layer": "L5",
+  "applicable_agents": ["coordinator", "investigator", "remediator"],
+  "risk_tier": "high",
+  "rules": [
+    {
+      "rule_id": "ESC-001",
+      "description": "Escalate when a task is tagged as high business impact or involves crown-jewel assets.",
+      "effect": "obligation",
+      "conditions": [
+        "task.business_impact in ['high', 'critical']",
+        "or resource.classification in ['crown_jewel', 'regulatory']"
+      ],
+      "obligations": [
+        "escalate.to = 'incident_commander'",
+        "escalate.channel = 'ticketing_system'",
+        "log.flag = 'high_impact_task'",
+        "log.reason = 'High-impact task requires manual approval'"
+      ]
+    },
+    {
+      "rule_id": "ESC-002",
+      "description": "Escalate when policy decisions conflict or multiple rules apply with different effects.",
+      "effect": "obligation",
+      "conditions": [
+        "policy.decision == 'conflict'"
+      ],
+      "obligations": [
+        "escalate.to = 'human'",
+        "escalate.reason = 'Policy conflict detected – human review required'",
+        "log.flag = 'policy_conflict'"
+      ]
+    },
+    {
+      "rule_id": "ESC-003",
+      "description": "Require human approval for any irreversible remediation action.",
+      "effect": "obligation",
+      "conditions": [
+        "action.irreversible == true"
+      ],
+      "obligations": [
+        "escalate.to = 'change_advisory_board'",
+        "escalate.channel = 'change_mgmt'",
+        "require.approval = true",
+        "log.reason = 'Irreversible remediation must be manually approved'"
+      ]
+    }
+  ],
+  "notes": "This policy centralizes when and how to bring humans into the loop for agent decisions."
+}
