@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
 """
-import json
-import sys
-
-with open("tests/golden_dataset/golden_eval_results.json", "r", encoding="utf-8") as f:
-    try:
-        data = json.load(f)
-        print("DEBUG: Loaded data keys:", list(data.keys()))
-        print("DEBUG: Scenario count:", len(data.get("scenarios", [])))
-    except Exception as e:
-        print("Error loading JSON:", e)
-        sys.exit(1)
-
 F7-LAS Golden Dataset Runner (Stage 0 – Placeholder)
 
 At Stage 0 this script:
@@ -46,20 +34,31 @@ def _safe_load_json(path: Path) -> Any:
         return None
 
 
+def _annotate_scenarios(scenarios: list[dict]) -> list[dict]:
+    """
+    Add placeholder result fields to each scenario.
+    """
+    return [
+        {
+            **s,
+            "score": 1.0,
+            "passed": True,
+            "note": "Stage 0 placeholder result"
+        }
+        for s in scenarios if isinstance(s, dict)
+    ]
+
+
 def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any]:
-    scenarios = _safe_load_json(scenarios_path)
+    scenarios_raw = _safe_load_json(scenarios_path)
     rubric = _safe_load_json(rubric_path)
 
-    # Derive a simple scenario count if possible.
-    total_scenarios = 0
-    if isinstance(scenarios, list):
-        total_scenarios = len(scenarios)
-    elif isinstance(scenarios, dict):
-        if "scenarios" in scenarios and isinstance(scenarios["scenarios"], list):
-            total_scenarios = len(scenarios["scenarios"])
+    scenario_list = []
+    if isinstance(scenarios_raw, dict) and "scenarios" in scenarios_raw:
+        if isinstance(scenarios_raw["scenarios"], list):
+            scenario_list = _annotate_scenarios(scenarios_raw["scenarios"])
 
-    # Stage 0 behaviour: if we have any scenarios at all, we simply mark them as "passed"
-    # without real scoring. This keeps the path alive without implying correctness.
+    total_scenarios = len(scenario_list)
     passed = total_scenarios
     failed = 0
 
@@ -71,7 +70,7 @@ def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any
         "inputs": {
             "scenarios_path": str(scenarios_path),
             "rubric_path": str(rubric_path),
-            "scenarios_loaded": scenarios is not None,
+            "scenarios_loaded": scenarios_raw is not None,
             "rubric_loaded": rubric is not None
         },
         "summary": {
@@ -80,6 +79,7 @@ def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any
             "failed": failed,
             "status": "placeholder"
         },
+        "scenarios": scenario_list,
         "notes": "Stage 0 runner – replace with real evaluation logic as the framework matures."
     }
 
