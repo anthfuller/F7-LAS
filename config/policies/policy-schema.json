@@ -1,81 +1,111 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/f7las/policy-schema.json",
-  "title": "F7-LAS Layer 5 Policy Document",
+  "title": "F7-LAS Policy Document",
   "type": "object",
   "required": [
     "policy_id",
-    "version",
+    "policy_type",
     "description",
-    "layer",
+    "version",
+    "target_layer",
+    "default_decision",
     "rules"
   ],
   "properties": {
     "policy_id": {
       "type": "string",
-      "description": "Unique identifier for the policy document"
+      "description": "Unique identifier for this policy document"
     },
-    "version": {
+    "policy_type": {
       "type": "string",
-      "description": "Version string (e.g., v1.0)"
+      "enum": ["agent", "tool", "sandbox", "rag"],
+      "description": "What this policy governs"
     },
     "description": {
       "type": "string",
-      "description": "Human-readable description of the policy"
+      "description": "Human-readable summary of this policy"
     },
-    "layer": {
+    "version": {
       "type": "string",
-      "description": "F7-LAS layer this policy primarily applies to",
-      "enum": ["L5", "L6", "L7", "Layer-S"]
+      "description": "Policy version or date tag (e.g., v1.0 or 2025-01-01)"
     },
-    "applicable_agents": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "Optional list of agents (coordinator, investigator, remediator) to which this policy applies"
-    },
-    "risk_tier": {
+    "target_layer": {
       "type": "string",
-      "description": "Overall risk tier for this policy",
-      "enum": ["low", "medium", "high", "critical"]
+      "description": "F7-LAS layer this policy primarily maps to (e.g., L3-Agent-Planner)"
     },
-    "rules": {
-      "type": "array",
-      "description": "List of individual policy rules",
-      "items": {
-        "type": "object",
-        "required": ["rule_id", "description", "effect"],
-        "properties": {
-          "rule_id": {
-            "type": "string",
-            "description": "Unique identifier for the rule"
-          },
-          "description": {
-            "type": "string",
-            "description": "Human-readable description of the rule"
-          },
-          "effect": {
-            "type": "string",
-            "description": "Policy decision effect",
-            "enum": ["permit", "deny", "obligation"]
-          },
-          "conditions": {
-            "type": "array",
-            "description": "List of condition expressions evaluated by the policy engine",
-            "items": { "type": "string" }
-          },
-          "obligations": {
-            "type": "array",
-            "description": "Obligations or side-effects to apply when this rule matches",
-            "items": { "type": "string" }
-          }
-        },
-        "additionalProperties": false
-      }
+    "owner_team": {
+      "type": "string",
+      "description": "Team responsible for maintaining this policy"
+    },
+    "last_reviewed": {
+      "type": "string",
+      "description": "Last review date in ISO-8601 format (YYYY-MM-DD)"
+    },
+    "default_decision": {
+      "type": "string",
+      "enum": ["allow", "deny", "log-only"],
+      "description": "Baseline decision when no rule matches"
     },
     "notes": {
       "type": "string",
-      "description": "Optional free-form notes"
+      "description": "Free-form notes or implementation guidance"
+    },
+    "rules": {
+      "type": "array",
+      "description": "Ordered set of policy rules",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "effect"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Rule identifier"
+          },
+          "description": {
+            "type": "string",
+            "description": "What this rule enforces"
+          },
+          "effect": {
+            "type": "string",
+            "enum": ["allow", "deny", "log-only"],
+            "description": "Decision if this rule matches"
+          },
+          "conditions": {
+            "type": "object",
+            "description": "Simple structured conditions",
+            "properties": {
+              "applies_to_agents": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "applies_to_tools": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "max_risk_tier": {
+                "type": "string",
+                "description": "Highest allowed risk tier for this rule (e.g., medium)"
+              },
+              "requires_hitl": {
+                "type": "boolean",
+                "description": "Whether human-in-the-loop is required"
+              },
+              "allowed_collections": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "denied_collections": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": true
 }
