@@ -1,0 +1,50 @@
+{
+  "policy_id": "rag-policy-default-v1",
+  "policy_type": "rag",
+  "description": "RAG and grounding policy for which knowledge sources agents may use.",
+  "version": "v1.0",
+  "target_layer": "L2-RAG-and-Grounding",
+  "owner_team": "Knowledge Engineering",
+  "last_reviewed": "2025-01-01",
+  "default_decision": "deny",
+  "notes": "Protects against using unvetted or sensitive collections as grounding for agent responses.",
+  "rules": [
+    {
+      "id": "RAG-001",
+      "description": "Allow security knowledge bases and playbooks.",
+      "effect": "allow",
+      "conditions": {
+        "allowed_collections": [
+          "kb_security_playbooks",
+          "kb_detection_engineering",
+          "kb_f7las_docs"
+        ],
+        "max_risk_tier": "medium"
+      }
+    },
+    {
+      "id": "RAG-002",
+      "description": "Deny HR, legal, and raw PII document corpora as RAG inputs.",
+      "effect": "deny",
+      "conditions": {
+        "denied_collections": [
+          "hr_records",
+          "legal_case_files",
+          "customer_pii_raw"
+        ]
+      }
+    },
+    {
+      "id": "RAG-003",
+      "description": "Log-only rule for experimental collections in Stage 0.",
+      "effect": "log-only",
+      "conditions": {
+        "allowed_collections": [
+          "exp_labs",
+          "exp_partner_data"
+        ],
+        "max_risk_tier": "medium"
+      }
+    }
+  ]
+}
