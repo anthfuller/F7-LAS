@@ -1,1 +1,53 @@
+version: "0.1"
+description: >
+  F7-LAS agent runtime and safety settings.
+  These values are examples/placeholders, not production defaults.
+
+agent_runtime:
+  model_name: "gpt-4.1-mini"
+  max_steps: 8          # Layer 3: planner loop bound
+  max_tokens: 2048
+  temperature: 0.2
+  top_p: 0.9
+
+planner:
+  enable_react_pattern: true
+  max_reasoning_loops: 8
+  stop_conditions:
+    - "no_more_tools_helpful"
+    - "user_goal_reached"
+    - "risk_score_too_high"
+
+risk:
+  default_risk_tier: "medium"
+  high_risk_actions_require_hitl: true
+  max_auto_remediation_risk_tier: "medium"
+
+logging:
+  enable_structured_logging: true
+  log_tool_calls: true
+  log_rag_queries: true
+  log_policy_decisions: true
+  log_sandbox_context: true
+
+telemetry:
+  sink_type: "stdout"   # e.g., stdout | file | opentelemetry
+  min_fields:
+    - "trace_id"
+    - "agent_id"
+    - "layer"
+    - "event_type"
+    - "risk_score"
+    - "timestamp"
+
+sandbox:
+  environment: "dev"
+  max_concurrent_runs: 3
+  allow_network_egress: false
+
+experiments:
+  enable_golden_dataset_run: false
+  golden_dataset:
+    min_accept_score: 0.8
+    fail_ci_below_threshold: true
 
