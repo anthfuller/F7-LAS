@@ -1,0 +1,12 @@
+{
+  "total_scenarios": 1,
+  "passed_scenarios": 1,
+  "failed_scenarios": 0,
+  "details": [
+    {
+      "scenario_id": "demo-001",
+      "status": "passed",
+      "notes": "Placeholder evaluation result for CI Stage 0."
+    }
+  ]
+}
