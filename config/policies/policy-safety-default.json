@@ -1,0 +1,50 @@
+{
+  "policy_id": "safety-default-v1",
+  "version": "v1.0",
+  "description": "Baseline safety policy for F7-LAS agents. Applies to all coordinator, investigator, and remediator agents unless overridden.",
+  "layer": "L5",
+  "applicable_agents": ["coordinator", "investigator", "remediator"],
+  "risk_tier": "medium",
+  "rules": [
+    {
+      "rule_id": "SAF-001",
+      "description": "Disallow high-risk, destructive, or irreversible actions.",
+      "effect": "deny",
+      "conditions": [
+        "action.category in ['delete_data', 'disable_security_control', 'modify_authn', 'modify_authz']",
+        "action.impact in ['high', 'critical']"
+      ],
+      "obligations": [
+        "log.reason = 'High-risk or destructive action blocked by SAF-001'",
+        "escalate.to = 'human'",
+        "escalate.reason = 'High-impact action requires manual approval'"
+      ]
+    },
+    {
+      "rule_id": "SAF-002",
+      "description": "Require human review when uncertainty is high or model confidence is low.",
+      "effect": "obligation",
+      "conditions": [
+        "model.confidence < 0.6 or model.safety_score < 0.7"
+      ],
+      "obligations": [
+        "escalate.to = 'human'",
+        "escalate.reason = 'Low model confidence or safety score'",
+        "log.flag = 'low_confidence_escalation'"
+      ]
+    },
+    {
+      "rule_id": "SAF-003",
+      "description": "Disallow access to explicitly forbidden data domains.",
+      "effect": "deny",
+      "conditions": [
+        "resource.domain in ['HR', 'payroll', 'legal-privileged', 'executive-email']"
+      ],
+      "obligations": [
+        "log.reason = 'Attempted access to forbidden domain'",
+        "notify.security_team = true"
+      ]
+    }
+  ],
+  "notes": "This is a baseline policy and is intentionally conservative for Stage 0 (Experimental)."
+}
