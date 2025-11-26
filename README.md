@@ -71,7 +71,7 @@ schemas, and CI checks — **not** a full production system.
 
 ```bash
 git clone https://github.com/anthfuller/F7-LAS.git
-`cd F7-LAS` .
+cd F7-LAS
 
 ---
 
