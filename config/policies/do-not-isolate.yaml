@@ -1,0 +1,20 @@
+version: "0.1"
+description: >
+  F7-LAS Layer 5 policy: assets that must NOT be automatically isolated
+  by an agent, even if high risk is detected. Requires human approval.
+
+do_not_isolate:
+  - id: "prod-domain-controller-01"
+    reason: "Core authentication dependency for entire org."
+    owner_team: "Identity Platform"
+    notes: "Isolation requires explicit CAB approval."
+
+  - id: "core-firewall-cluster"
+    reason: "Network edge; isolation could cause global outage."
+    owner_team: "Network Security"
+    notes: "Use policy action 'tighten_rules' instead of isolation."
+
+  - id: "siem-main-ingestor"
+    reason: "Critical for telemetry and forensics."
+    owner_team: "SOC"
+    notes: "Never isolate automatically; raise P1 incident instead."
