@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/f7las/policy-schema.json",
+  "title": "F7-LAS Layer 5 Policy Document",
+  "type": "object",
+  "required": [
+    "policy_id",
+    "version",
+    "description",
+    "layer",
+    "rules"
+  ],
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "description": "Unique identifier for the policy document"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version string (e.g., v1.0)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the policy"
+    },
+    "layer": {
+      "type": "string",
+      "description": "F7-LAS layer this policy primarily applies to",
+      "enum": ["L5", "L6", "L7", "Layer-S"]
+    },
+    "applicable_agents": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional list of agents (coordinator, investigator, remediator) to which this policy applies"
+    },
+    "risk_tier": {
+      "type": "string",
+      "description": "Overall risk tier for this policy",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "rules": {
+      "type": "array",
+      "description": "List of individual policy rules",
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "description", "effect"],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "description": "Unique identifier for the rule"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of the rule"
+          },
+          "effect": {
+            "type": "string",
+            "description": "Policy decision effect",
+            "enum": ["permit", "deny", "obligation"]
+          },
+          "conditions": {
+            "type": "array",
+            "description": "List of condition expressions evaluated by the policy engine",
+            "items": { "type": "string" }
+          },
+          "obligations": {
+            "type": "array",
+            "description": "Obligations or side-effects to apply when this rule matches",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional free-form notes"
+    }
+  },
+  "additionalProperties": false
+}
