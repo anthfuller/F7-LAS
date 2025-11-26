@@ -1,0 +1,51 @@
+{
+  "policy_id": "constraints-default-v1",
+  "version": "v1.0",
+  "description": "Default operational constraints for F7-LAS agents. Limits scope, time, and environment.",
+  "layer": "L5",
+  "applicable_agents": ["coordinator", "investigator", "remediator"],
+  "risk_tier": "medium",
+  "rules": [
+    {
+      "rule_id": "CON-001",
+      "description": "Restrict execution to approved environments and tenants.",
+      "effect": "deny",
+      "conditions": [
+        "environment.name not in ['dev', 'test', 'lab']",
+        "or tenant.id not in allowed_tenants"
+      ],
+      "obligations": [
+        "log.reason = 'Execution outside approved environment or tenant'",
+        "notify.owner_team = true"
+      ]
+    },
+    {
+      "rule_id": "CON-002",
+      "description": "Limit the maximum number of actions per task to reduce blast radius.",
+      "effect": "obligation",
+      "conditions": [
+        "task.action_count > 20"
+      ],
+      "obligations": [
+        "require.human_review = true",
+        "escalate.to = 'human'",
+        "escalate.reason = 'Too many actions in single workflow'",
+        "log.flag = 'high_action_volume'"
+      ]
+    },
+    {
+      "rule_id": "CON-003",
+      "description": "Enforce read-only behavior for investigator agents by default.",
+      "effect": "deny",
+      "conditions": [
+        "agent.role == 'investigator'",
+        "and action.category in ['write', 'delete', 'modify']"
+      ],
+      "obligations": [
+        "log.reason = 'Investigator is restricted to read-only operations'",
+        "suggest.alternative = 'Use remediator agent with human approval'"
+      ]
+    }
+  ],
+  "notes": "Intended as a conservative default; organizations can override with more permissive profiles after testing."
+}
