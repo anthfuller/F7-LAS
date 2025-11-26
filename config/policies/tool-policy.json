@@ -1,0 +1,65 @@
+{
+  "policy_id": "tool-policy-default-v1",
+  "policy_type": "tool",
+  "description": "Baseline tool access policy for F7-LAS agents.",
+  "version": "v1.0",
+  "target_layer": "L4-Tools-and-Integrations",
+  "owner_team": "AI Platform / Security",
+  "last_reviewed": "2025-01-01",
+  "default_decision": "deny",
+  "notes": "Start with a strict deny-by-default posture. Explicitly allow read-only and simulation tools.",
+  "rules": [
+    {
+      "id": "TOOL-001",
+      "description": "Allow read-only observability and SIEM query tools.",
+      "effect": "allow",
+      "conditions": {
+        "applies_to_tools": [
+          "sentinel_query",
+          "defender_incident_lookup",
+          "log_analytics_query"
+        ],
+        "max_risk_tier": "medium"
+      }
+    },
+    {
+      "id": "TOOL-002",
+      "description": "Allow ticket creation and comment-only updates.",
+      "effect": "allow",
+      "conditions": {
+        "applies_to_tools": [
+          "ticket_create",
+          "ticket_comment",
+          "case_management_note"
+        ],
+        "max_risk_tier": "medium"
+      }
+    },
+    {
+      "id": "TOOL-003",
+      "description": "Deny direct credential, key vault, or identity policy modification.",
+      "effect": "deny",
+      "conditions": {
+        "applies_to_tools": [
+          "identity_policy_update",
+          "prod_kv_write",
+          "secret_rotation_direct"
+        ]
+      }
+    },
+    {
+      "id": "TOOL-004",
+      "description": "Require HITL for network isolation or blocking actions.",
+      "effect": "allow",
+      "conditions": {
+        "applies_to_tools": [
+          "firewall_block",
+          "network_isolate_host",
+          "disable_account"
+        ],
+        "requires_hitl": true,
+        "max_risk_tier": "high"
+      }
+    }
+  ]
+}
