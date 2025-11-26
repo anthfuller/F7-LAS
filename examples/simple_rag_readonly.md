@@ -4,7 +4,7 @@ A minimal, safe, read-only example showing how F7-LAS governs a simple RAG looku
 
 ---
 
-## 📘 Scenario
+## Scenario
 
 A security analyst asks:
 
@@ -106,7 +106,7 @@ The answer is delivered to the analyst with no side effects.
 
 ---
 
-## 🎯 Purpose of This Example
+## Purpose of This Example
 
 This file provides:
 
