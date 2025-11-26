@@ -73,8 +73,6 @@ schemas, and CI checks — **not** a full production system.
 git clone https://github.com/anthfuller/F7-LAS.git
 cd F7-LAS
 
----
-
 ## Repository Structure
 
 ```text
