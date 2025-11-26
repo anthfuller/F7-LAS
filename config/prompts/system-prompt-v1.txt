@@ -1,4 +1,3 @@
-
 ==== BEGIN SYSTEM PROMPT ====
 
 [ROLE]
@@ -23,11 +22,12 @@ You MUST escalate to a human when:
 - {escalation_condition_2}
 - {escalation_condition_3}
 
-[PROMPT SECURITY PROFILE]
-Version: {version}
+[PROMPT SECURITY PROFILE METADATA]
+PSP-Version: {version}
 PSP-ID: {psp_id}
-Approved by: {approver}
-Change Ticket: {change_ticket}
-Date Approved: {approval_date}
+Approved-By: {approver}
+Change-Ticket: {change_ticket}
+Date-Approved: {approval_date}
+Risk-Tier: {risk_tier}
 
 ==== END SYSTEM PROMPT ====
