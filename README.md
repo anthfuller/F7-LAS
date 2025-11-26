@@ -1,68 +1,44 @@
-# F7-LAS Documentation
-
-![F7-LAS CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg?branch=main)
-
-A multi-layer agentic security framework for governing, evaluating, and enforcing controls across AI agents, models, and orchestration pipelines.
-
 # F7-LAS — Fuller 7-Layer Agentic AI Security Framework
 
-![Version](https://img.shields.io/badge/version-v3.1-blue)
-![License](https://img.shields.io/badge/license-Proprietary-lightgrey)
-![CI](https://img.shields.io/github/actions/workflow/status/anthfuller/F7-LAS/f7las-ci.yml)
-
----
-
-### TL;DR
-
-**F7-LAS** (Fuller 7-Layer Agentic AI Security Framework) is a vendor-neutral, control-centric model for securing advanced agentic and multi-agent AI systems. It supports SOC, AI security architects, and governance teams working across real-world deployments.
-
-📄 [Download the White Paper (v2.4)](docs/Security_Agentic_AI_The_7-Layer_Model_v2.4.pdf)
-
----
+A control-centric security architecture for agentic and multi-agent AI systems.
 
 ## 🌐 Overview
-
-F7-LAS defines a layered control model for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
+F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
 
 It provides:
-- A 7-layer control stack (L1–L7)
-- A supplemental supply-chain layer (Layer S)
-- A full implementation guide, patterns, controls, and engineering checklists
-- A vendor-neutral reference architecture for multi-agent systems
-- A DevSecOps pipeline enforcing prompt, tool, policy, and scenario integrity
+- A **7-layer control stack** (L1–L7)
+- A **supplemental supply-chain layer (Layer S)**
+- A **full implementation guide**, patterns, controls, and engineering checklists
+- A **vendor-neutral reference architecture**
+- A **CI-driven DevSecOps pipeline**
 
-**Status**: v3.1 — Conceptual model stable, with expanding implementation patterns, controls, and CI pipeline integration.
+> **Status:** v3.1 — Conceptual model stable, active engineering expansion.
 
 ---
 
 ## What F7-LAS Covers
-
-F7-LAS models agentic system security across seven layers:
+F7-LAS secures agentic systems through seven layers:
 
 1. **System Prompt (Soft Policy)**
 2. **RAG / Grounding (Epistemic Guardrail)**
 3. **Agent Planner / Controller**
 4. **Tools & Integrations (Action Surface)**
-5. **Policy Engine Outside the LLM (PDP/PEP Hard Guardrails)**
-6. **Sandboxed Execution Environment (Blast Radius Control)**
-7. **Monitoring, Evaluation & Assurance**
+5. **External Policy Engine (Hard Guardrails)**
+6. **Sandboxed Execution / Blast Radius Control**
+7. **Monitoring, Evaluation & Drift Detection**
 
-Additional components:
-- **Layer S — Supply Chain Security (SBOM, SCA, attestation)**
+Plus:
+- **Layer S — Supply Chain Security**
 - **Model Security Annex**
-- Risk scoring, metrics, and SLOs
-- Operational playbooks
-- RACI model
-- Implementation profiles
-
-F7-LAS complements (but does not directly map to):
-NIST AI RMF, ISO/IEC 42001, EU AI Act, MITRE ATT&CK, MITRE ATLAS
+- **Metrics/SLO Suite**
+- **RACI Model**
+- **Operational Playbooks**
 
 ---
 
-## 🗂 Repository Structure
+## Repository Structure
 
-```bash
+```text
 F7-LAS/
 ├── README.md
 ├── LICENSE
@@ -74,98 +50,120 @@ F7-LAS/
 │
 ├── scripts/
 │   ├── validate-prompts.py
-│   ├── validate_policies.py
-│   ├── validate_settings.py
-│   └── check_golden_thresholds.py
-│
-├── config/
-│   ├── prompts/
-│   │   ├── coordinator-agent-prompt-v1.txt
-│   │   ├── investigator-agent-prompt-v1.txt
-│   │   └── remediator-agent-prompt-v1.txt
-│   │
-│   ├── policies/
-│   │   ├── model-policy-baseline.yaml
-│   │   ├── agent-policy-baseline.yaml
-│   │   └── data-policy-baseline.yaml
-│   │
-│   ├── settings.yaml
-│   ├── psp-schema.json
+│   ├── validate-policies.py
+│   ├── validate-settings.py
+│   └── check-golden-thresholds.py
 │
 ├── docs/
-│   ├── F7-LAS-Control-Catalog-v0.1.md
-│   ├── Engineering-Review-Checklist.md
-│   ├── Multi-Agent-F7-LAS-Architecture.png
-│   │
-│   ├── f7-las-implementation-guide/
-│   │   ├── 00-introduction.md
-│   │   ├── 01-control-objectives.md
-│   │   ├── 02-layer-by-layer-controls.md
-│   │   ├── 03-supplemental-layer-s.md
-│   │   ├── 04-model-security-annex.md
-│   │   ├── 05-metrics-and-slos.md
-│   │   ├── 06-operational-playbooks.md
-│   │   ├── 07-raci-model.md
-│   │   ├── 08-implementation-profiles.md
+│   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
+│   ├── F7-LAS-Implementation-Guide-v3.1/
+│   │   ├── 00-Introduction.md
+│   │   ├── 01-Control-Objectives.md
+│   │   ├── 02-Layer-by-Layer-Controls.md
+│   │   ├── 03-Suppplemental-Layer-S.md
+│   │   ├── 04-Model-Security-Annex.md
+│   │   ├── 05-Metrics-and-SLOs.md
+│   │   ├── 06-Operational-Playbooks.md
+│   │   ├── 07-RACI-Model.md
+│   │   ├── 08-Implementation-Profiles.md
 │   │   └── appendices/
 │   │       ├── a-schemas.md
 │   │       ├── b-templates.md
-│   │       ├── c-checklist.md
+│   │       ├── c-engineering-review-checklist.md
 │   │       └── d-reference-architectures.md
+│   │
+│   ├── Engineering-Review-Checklist.md
+│   ├── Multi-Agent-F7-LAS_Architecture.png
+│   └── F7-LAS-Control-Catalog_v0.1.md
+│
+├── config/
+│   ├── prompts/
+│   ├── policies/
+│   └── settings.yaml
 │
 ├── src/
 │   ├── core/
 │   ├── agents/
 │   ├── tools/
-│   └── demo_runner/
-│       └── run_golden_dataset.py
+│   └── demo-runner/
 │
 ├── tests/
-│   ├── golden_dataset/
-│   │   ├── rubric.json
-│   │   └── scenarios.json
-│   │
-│   └── test_agents_basic.py
+│   ├── golden-dataset/
+│   └── test-agents-basic.py
 │
 └── examples/
-
 ```
+
 ---
 
-## Quick Start
+## Tooling & CI Pipeline
+
+**GitHub Actions Workflow:** `.github/workflows/f7las-ci.yml`
+
+Enforces:
+- Prompt validation (Layer 1 PSP compliance)
+- Policy validation (Layer 5)
+- Settings validation (Layer 3 safety)
+- Golden dataset scoring (Layer 7)
+- Unit tests
+- Optional linting & SBOM/SCA
+
+---
+
+## Quickstart
 
 ```bash
-git clone https://github.com/anthfuller/F7-LAS.git
+git clone https://github.com/<your-org>/F7-LAS.git
 cd F7-LAS
-python scripts/validate-prompts.py
+
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-See `demo-runner/` for sample agent orchestration.
+Run tests:
+
+```bash
+pytest -q tests/test_agents_basic.py
+```
+
+Run the golden evaluator:
+
+```bash
+python scripts/check_golden_thresholds.py golden_eval_results.json
+```
 
 ---
 
-## Usage Scenarios
+## Included Artifacts
 
-- Embed F7-LAS into SOC workflows
-- Secure AI-driven remediation agents
-- Evaluate tool-call safety & sandboxing in production
-- Align agent design to NIST AI RMF, ISO/IEC 42001, and EU AI Act
+**Engineering**
+- Full modular implementation guide  
+- Layer-by-layer controls  
+- Metrics & SLOs  
+- RACI model  
+- Operational playbooks  
 
----
+**Security**
+- Prompt Security Profile schema  
+- Policy validation  
+- Sandbox rules  
+- Drift detection & evaluation logic  
 
-## How to Cite
-
-If referencing this work in research or policy:
-
-> Fuller, A. (2025). *Security for Agentic AI: The F7-LAS Framework for Multi-Layer Controls.* [https://github.com/anthfuller/F7-LAS](https://github.com/anthfuller/F7-LAS)
+**Development**
+- Example demo runner  
+- Placeholder tests  
+- CI workflow and validators  
 
 ---
 
 ## Contributing
 
-Contributions welcomed — scenarios, policies, controls, tooling, and improvements.
-
-Please open an issue before major changes.
+Contributions welcome — scenarios, policies, prompts, controls, tools.  
+Follow:
+- Engineering Review Checklist  
+- CI pipeline requirements  
+- PSP formatting rules  
 
 ---
 
@@ -173,4 +171,5 @@ Please open an issue before major changes.
 
 © 2025 Anthony L. Fuller. All rights reserved.
 
-#### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. Opinions and materials represent the author’s personal work.
+This project is created independently by the author and is **not affiliated with Microsoft or any employer**.  
+All opinions, design patterns, and documentation reflect the author's personal work.
