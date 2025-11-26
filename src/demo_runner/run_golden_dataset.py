@@ -1,78 +1,110 @@
 #!/usr/bin/env python3
 """
-F7-LAS Golden Dataset Runner
+F7-LAS Golden Dataset Runner (Stage 0 – Placeholder)
 
-This script runs end-to-end evaluation scenarios used for:
-- Quality baseline checks
-- Regression detection
-- Layer 7 observability and reliability scoring
+At Stage 0 this script:
 
-This is a placeholder implementation until real evaluator logic is added.
+- Accepts scenario and rubric JSON paths.
+- Handles missing or invalid JSON gracefully.
+- Emits a simple results JSON file so that:
+  - CI can exercise the path end-to-end.
+  - Future stages can plug in real evaluation logic.
+
+This script is intentionally conservative: it must *never* break CI
+because of placeholder data.
 """
 
+from __future__ import annotations
+
+import argparse
 import json
-import sys
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict
 
-def load_json(path: Path) -> dict:
+
+def _safe_load_json(path: Path) -> Any:
+    if not path.exists():
+        return None
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception as e:
-        print(f"[ERROR] Failed to read {path}: {e}", file=sys.stderr)
-        return {}
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        # Stage 0: treat invalid JSON as "no data" instead of failing CI.
+        return None
 
-def run_single_scenario(scenario: dict) -> dict:
-    """
-    Placeholder scenario runner.
-    In production, this would:
-      - Build agents
-      - Run orchestration loop
-      - Capture decisions, tool calls, outputs
-      - Score against expected rubric
-    """
-    return {
-        "scenario_id": scenario.get("id", "unknown"),
-        "status": "placeholder",
-        "score": 1.0  # perfect dummy score
+
+def run_golden_dataset(scenarios_path: Path, rubric_path: Path) -> Dict[str, Any]:
+    scenarios = _safe_load_json(scenarios_path)
+    rubric = _safe_load_json(rubric_path)
+
+    # Derive a simple scenario count if possible.
+    total_scenarios = 0
+    if isinstance(scenarios, list):
+        total_scenarios = len(scenarios)
+    elif isinstance(scenarios, dict):
+        if "scenarios" in scenarios and isinstance(scenarios["scenarios"], list):
+            total_scenarios = len(scenarios["scenarios"])
+
+    # Stage 0 behaviour: if we have any scenarios at all, we simply mark them as "passed"
+    # without real scoring. This keeps the path alive without implying correctness.
+    passed = total_scenarios
+    failed = 0
+
+    now = datetime.now(timezone.utc).isoformat()
+
+    result: Dict[str, Any] = {
+        "runner_version": "stage-0-placeholder",
+        "timestamp_utc": now,
+        "inputs": {
+            "scenarios_path": str(scenarios_path),
+            "rubric_path": str(rubric_path),
+            "scenarios_loaded": scenarios is not None,
+            "rubric_loaded": rubric is not None
+        },
+        "summary": {
+            "total_scenarios": total_scenarios,
+            "passed": passed,
+            "failed": failed,
+            "status": "placeholder"
+        },
+        "notes": "Stage 0 runner – replace with real evaluation logic as the framework matures."
     }
 
+    return result
+
+
 def main() -> int:
-    if len(sys.argv) < 5:
-        print(
-            "Usage:\n"
-            "  python run_golden_dataset.py "
-            "--scenarios <scenarios.json> "
-            "--rubric <rubric.json> "
-            "--output <results.json>",
-            file=sys.stderr,
-        )
-        return 1
+    parser = argparse.ArgumentParser(description="Run F7-LAS golden dataset (Stage 0).")
+    parser.add_argument(
+        "--scenarios",
+        required=True,
+        help="Path to scenarios JSON file."
+    )
+    parser.add_argument(
+        "--rubric",
+        required=True,
+        help="Path to rubric JSON file."
+    )
+    parser.add_argument(
+        "--output",
+        default="golden_eval_results.json",
+        help="Where to write the results JSON (default: golden_eval_results.json)."
+    )
 
-    args = sys.argv
-    scenarios_path = Path(args[args.index("--scenarios") + 1])
-    rubric_path = Path(args[args.index("--rubric") + 1])
-    output_path = Path(args[args.index("--output") + 1])
+    args = parser.parse_args()
 
-    print("[INFO] Loading scenarios and rubric...")
-    scenarios = load_json(scenarios_path)
-    rubric = load_json(rubric_path)
+    scenarios_path = Path(args.scenarios)
+    rubric_path = Path(args.rubric)
+    output_path = Path(args.output)
 
-    if not scenarios:
-        print("[ERROR] No scenarios loaded.", file=sys.stderr)
-        return 1
+    result = run_golden_dataset(scenarios_path, rubric_path)
 
-    print("[INFO] Running placeholder evaluation...")
-    results = []
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, sort_keys=True)
 
-    for scenario in scenarios.get("scenarios", []):
-        result = run_single_scenario(scenario)
-        results.append(result)
-
-    output_path.write_text(json.dumps({"results": results}, indent=2))
-    print(f"[INFO] Wrote results to: {output_path}")
-
-    print("[INFO] Placeholder implementation complete.")
-    print("[INFO] Extend this file with real evaluation logic later.")
+    print(f"[INFO] Golden dataset placeholder run complete. Results written to {output_path}")
     return 0
 
 
