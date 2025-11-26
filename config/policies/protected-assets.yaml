@@ -1,0 +1,43 @@
+version: "0.1"
+description: >
+  F7-LAS Layer 5 policy: defines protected assets that require
+  stronger guardrails, HITL, or are excluded from automated actions.
+
+assets:
+  - id: "prod-identity-platform"
+    type: "idp"
+    environment: "production"
+    criticality: "critical"
+    tags: ["auth", "sso", "mfa"]
+    allowed_actions:
+      - "read_config"
+      - "list_sessions"
+    blocked_actions:
+      - "disable_mfa"
+      - "delete_tenant"
+      - "reset_all_passwords"
+
+  - id: "crown-jewel-siem"
+    type: "siem"
+    environment: "production"
+    criticality: "critical"
+    tags: ["logging", "forensics"]
+    allowed_actions:
+      - "read_events"
+      - "create_case"
+    blocked_actions:
+      - "purge_logs"
+      - "change_retention"
+      - "delete_tenant"
+
+  - id: "hr-payroll-db"
+    type: "database"
+    environment: "production"
+    criticality: "high"
+    tags: ["hr", "pii", "payroll"]
+    allowed_actions:
+      - "read_metadata"
+    blocked_actions:
+      - "run_dml"
+      - "export_data"
+      - "change_schema"
