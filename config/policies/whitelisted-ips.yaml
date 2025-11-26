@@ -1,0 +1,25 @@
+version: "0.1"
+description: >
+  F7-LAS Layer 5 policy: IP ranges that are considered lower risk
+  for certain actions, subject to additional policy checks.
+
+ip_ranges:
+  - cidr: "10.0.0.0/8"
+    label: "internal_corporate"
+    allowed_actions:
+      - "allow_temp_access"
+      - "create_low_priority_case"
+
+  - cidr: "192.168.0.0/16"
+    label: "branch_offices"
+    allowed_actions:
+      - "allow_temp_access"
+
+  - cidr: "203.0.113.0/24"
+    label: "trusted_partner"
+    allowed_actions:
+      - "allow_temp_access"
+
+notes: >
+  This list is NOT a blanket trust list. It is an input into the policy
+  engine and must be combined with identity, asset, and risk context.
