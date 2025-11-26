@@ -56,7 +56,6 @@ Plus:
 
 ---
 
----
 
 ## 7️⃣ “Getting Started” section for `README.md`
 
