@@ -1,10 +1,16 @@
 {
   "policy_id": "safety-default-v1",
   "version": "v1.0",
+
+  "policy_type": "safety",
+  "target_layer": "L5",
+  "default_decision": "deny",
+
   "description": "Baseline safety policy for F7-LAS agents. Applies to all coordinator, investigator, and remediator agents unless overridden.",
   "layer": "L5",
   "applicable_agents": ["coordinator", "investigator", "remediator"],
   "risk_tier": "medium",
+
   "rules": [
     {
       "rule_id": "SAF-001",
@@ -46,5 +52,6 @@
       ]
     }
   ],
+
   "notes": "This is a baseline policy and is intentionally conservative for Stage 0 (Experimental)."
 }
