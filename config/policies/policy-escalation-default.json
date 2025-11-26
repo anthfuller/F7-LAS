@@ -1,10 +1,15 @@
 {
   "policy_id": "escalation-default-v1",
   "version": "v1.0",
+  "policy_type": "escalation",
+  "target_layer": "L5",
+  "default_decision": "escalate",
+
   "description": "Default escalation and human-in-the-loop behavior for F7-LAS agents.",
   "layer": "L5",
   "applicable_agents": ["coordinator", "investigator", "remediator"],
   "risk_tier": "high",
+
   "rules": [
     {
       "rule_id": "ESC-001",
@@ -49,5 +54,6 @@
       ]
     }
   ],
+
   "notes": "This policy centralizes when and how to bring humans into the loop for agent decisions."
 }
