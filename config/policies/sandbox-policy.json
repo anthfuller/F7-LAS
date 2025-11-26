@@ -1,0 +1,39 @@
+{
+  "policy_id": "sandbox-policy-default-v1",
+  "policy_type": "sandbox",
+  "description": "Sandbox and environment guardrails for agent execution.",
+  "version": "v1.0",
+  "target_layer": "L6-Sandboxed-Execution",
+  "owner_team": "Platform Engineering",
+  "last_reviewed": "2025-01-01",
+  "default_decision": "deny",
+  "notes": "Controls which tenants, environments, and execution modes agents may operate in.",
+  "rules": [
+    {
+      "id": "SBX-001",
+      "description": "Allow execution only in non-production tenants by default.",
+      "effect": "allow",
+      "conditions": {
+        "allowed_collections": ["lab", "dev", "test"],
+        "denied_collections": ["prod"]
+      }
+    },
+    {
+      "id": "SBX-002",
+      "description": "Require what-if / dry-run mode for high-risk operations.",
+      "effect": "allow",
+      "conditions": {
+        "max_risk_tier": "high",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "SBX-003",
+      "description": "Deny execution where sandbox health checks fail.",
+      "effect": "deny",
+      "conditions": {
+        "allowed_collections": ["sandbox_healthy"]
+      }
+    }
+  ]
+}
