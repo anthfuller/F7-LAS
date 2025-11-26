@@ -42,12 +42,12 @@ jobs:
             --scenarios tests/golden_dataset/scenarios.json \
             --rubric tests/golden_dataset/rubric.json \
             --output golden_eval_results.json
-            -- output tests/golden_dataset/golden_eval_results.json
+            --output tests/golden_dataset/golden_eval_results.json
 
       # 6 — Enforce golden dataset threshold
       - name: Check golden thresholds
         run: |
-          python tests/golden_dataset/golden_eval_results.json
+          python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_results.json
 
       # 7 — Validate prompts
       - name: Validate prompts
