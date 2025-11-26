@@ -54,26 +54,6 @@ Plus:
 - **RACI Model**
 - **Operational Playbooks**
 
----
-
-
-## 7️⃣ “Getting Started” section for `README.md`
-
-You can drop this after the Overview / “What F7-LAS Covers” section.
-
-```markdown
-## 🚀 Getting Started
-
-F7-LAS is currently at **Maturity: Stage 0 — Experimental**.  
-The goal at this stage is to provide a clear, testable scaffold: prompts, policies,
-schemas, and CI checks — **not** a full production system.
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/anthfuller/F7-LAS.git
-cd F7-LAS
-
 
 ---
 
