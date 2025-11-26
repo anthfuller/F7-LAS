@@ -1,0 +1,51 @@
+{
+  "policy_id": "agent-policy-default-v1",
+  "policy_type": "agent",
+  "description": "Baseline policy for F7-LAS coordinator, investigator, and remediator agents.",
+  "version": "v1.0",
+  "target_layer": "L3-Agent-Planner",
+  "owner_team": "AI Security / F7-LAS",
+  "last_reviewed": "2025-01-01",
+  "default_decision": "deny",
+  "notes": "Stage 0: conservative agent policy with explicit allow list and HITL for high-risk activity.",
+  "rules": [
+    {
+      "id": "AGENT-001",
+      "description": "Allow low/medium risk investigative reasoning tasks.",
+      "effect": "allow",
+      "conditions": {
+        "applies_to_agents": ["coordinator", "investigator"],
+        "max_risk_tier": "medium",
+        "requires_hitl": false
+      }
+    },
+    {
+      "id": "AGENT-002",
+      "description": "Require HITL for any remediation or configuration change.",
+      "effect": "allow",
+      "conditions": {
+        "applies_to_agents": ["remediator"],
+        "max_risk_tier": "high",
+        "requires_hitl": true
+      }
+    },
+    {
+      "id": "AGENT-003",
+      "description": "Deny access to HR and sensitive finance domains for all agents.",
+      "effect": "deny",
+      "conditions": {
+        "applies_to_agents": ["coordinator", "investigator", "remediator"],
+        "denied_collections": ["hr_records", "executive_comp", "payroll"]
+      }
+    },
+    {
+      "id": "AGENT-004",
+      "description": "Log-only rule for experimental capabilities at Stage 0.",
+      "effect": "log-only",
+      "conditions": {
+        "applies_to_agents": ["coordinator", "investigator", "remediator"],
+        "max_risk_tier": "medium"
+      }
+    }
+  ]
+}
