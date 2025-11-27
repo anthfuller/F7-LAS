@@ -5,12 +5,12 @@
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
 ![status](https://img.shields.io/badge/status-passing-brightgreen)
 ![version](https://img.shields.io/badge/version-v3.1-blue)
-![license](https://img.shields.io/badge/license-Proprietary-lightgrey)
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
+![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Conceptual-yellow)
 
-> **Maturity roadmap:**  
-> F7-LAS is currently at **Stage 0 – Experimental**. The core runtime code (agents, tools, orchestration) is not yet implemented in this repo. Current focus is on design, controls, prompts, policies, and CI scaffolding.
-> Future stages will add hardened CI, golden datasets, reference implementations, and production-ready playbooks.
+> **Maturity roadmap:**
+> F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
+> The current focus is on the conceptual model, control layers, prompts, policies, schemas, and CI scaffolding. Future stages will introduce example agents, hardened CI, golden datasets, reference implementations, and operational playbooks.
 
 
 ### F7-LAS Maturity Stages
