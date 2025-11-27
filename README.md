@@ -1,138 +1,51 @@
+
 # F7-LAS™ — Fuller 7-Layer Agentic AI Security Framework
 
 *A layered, control-centric security architecture for agentic and multi-agent AI systems.*
 
-![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
-![status](https://img.shields.io/badge/status-passing-brightgreen)
-![version](https://img.shields.io/badge/version-v3.1-blue)
-![license](https://img.shields.io/badge/license-Proprietary-lightgrey)
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
+[![F7-LAS CI](https://img.shields.io/badge/F7--LAS_CI-passing-brightgreen)](#)
+[![Status](https://img.shields.io/badge/status-passing-brightgreen)](#)
+[![Version](https://img.shields.io/badge/version-v3.1-blue)](#)
+[![License](https://img.shields.io/badge/license-Proprietary-lightgrey)](#license--disclaimer)
+[![Maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)](#maturity-roadmap)
 
-> **Maturity roadmap:**  
-> F7-LAS is currently at **Stage 0 – Experimental**. The core model, controls, and repo structure are being defined, documented, and wired into CI. Future stages will add hardened CI, golden datasets, reference implementations, and production-ready playbooks.
-
-### F7-LAS Maturity Stages
-
-| Stage | Label                     | Description                                     | Use Readiness            |
-|-------|---------------------------|-------------------------------------------------|--------------------------|
-| 0     | Experimental              | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
-| 1     | Alpha                     | Core logic working end-to-end with gaps.        | Internal sandbox only     |
-| 2     | Beta                      | CI + tests in place, coverage improving.        | Controlled pilot / lab    |
-| 3     | Stable                    | Versioned, test-covered, documented patterns.   | Production-ready          |
-
-F7-LAS is intentionally **opinionated** and will move through these stages as the implementation guide, control catalog, golden datasets, and CI hardening mature.
+---
 
 ## 🌐 Overview
-F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
+
+**F7-LAS™** (Fuller 7-Layer Agentic AI Security Framework) defines a layered control model for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
 
 It provides:
-- A **7-layer control stack** (L1–L7)
-- A **supplemental supply-chain layer (Layer S)**
-- A **full implementation guide**, patterns, controls, and engineering checklists
-- A **vendor-neutral reference architecture**
-- A **CI-driven DevSecOps pipeline**
 
-> **Status:** v3.1 — Conceptual model stable, active engineering expansion.
-
----
-
-## What F7-LAS Covers
-F7-LAS secures agentic systems through seven layers:
-
-1. **System Prompt (Soft Policy)**
-2. **RAG / Grounding (Epistemic Guardrail)**
-3. **Agent Planner / Controller**
-4. **Tools & Integrations (Action Surface)**
-5. **External Policy Engine (Hard Guardrails)**
-6. **Sandboxed Execution / Blast Radius Control**
-7. **Monitoring, Evaluation & Drift Detection**
-
-Plus:
-- **Layer S — Supply Chain Security**
-- **Model Security Annex**
-- **Metrics/SLO Suite**
-- **RACI Model**
-- **Operational Playbooks**
-
+- ✅ A 7-layer control stack (L1–L7)
+- 🔐 Prompt, tool, policy, and execution-level safeguards
+- 📊 CI pipeline and golden dataset evaluation
+- 🧩 Modular implementation guide, engineering checklists, and playbooks
+- 🏗️ Vendor-neutral design
 
 ---
 
+## What F7-LAS™ Solves
 
-## Repository Structure
+Modern AI agents are powerful — but risky. They can access tools, plan autonomously, and act in ways that pose enterprise threats.
 
-```text
-F7-LAS/
-├── README.md
-├── LICENSE
-├── requirements.txt
-│
-├── .github/
-│   └── workflows/
-│       └── f7las-ci.yml
-│
-├── scripts/
-│   ├── validate-prompts.py
-│   ├── validate-policies.py
-│   ├── validate-settings.py
-│   └── check-golden-thresholds.py
-│
-├── docs/
-│   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
-│   ├── F7-LAS-Implementation-Guide-v3.1/
-│   │   ├── 00-Introduction.md
-│   │   ├── 01-Control-Objectives.md
-│   │   ├── 02-Layer-by-Layer-Controls.md
-│   │   ├── 03-Suppplemental-Layer-S.md
-│   │   ├── 04-Model-Security-Annex.md
-│   │   ├── 05-Metrics-and-SLOs.md
-│   │   ├── 06-Operational-Playbooks.md
-│   │   ├── 07-RACI-Model.md
-│   │   ├── 08-Implementation-Profiles.md
-│   │   └── appendices/
-│   │       ├── a-schemas.md
-│   │       ├── b-templates.md
-│   │       ├── c-engineering-review-checklist.md
-│   │       └── d-reference-architectures.md
-│   │
-│   ├── Engineering-Review-Checklist.md
-│   ├── Multi-Agent-F7-LAS_Architecture.png
-│   └── F7-LAS-Control-Catalog_v0.1.md
-│
-├── config/
-│   ├── prompts/
-│   ├── policies/
-│   └── settings.yaml
-│
-├── src/
-│   ├── core/
-│   ├── agents/
-│   ├── tools/
-│   └── demo-runner/
-│
-├── tests/
-│   ├── golden-dataset/
-│   └── test-agents-basic.py
-│
-└── examples/
-```
+**F7-LAS™** addresses:
+- Tool misuse and overreach
+- Unchecked reasoning loops
+- Prompt injection and data leakage
+- Missing auditability, drift, or policy compliance
+
+This repo proves that securing agentic systems is possible *by design*.
 
 ---
 
-## Tooling & CI Pipeline
+## 📐 Architecture
 
-**GitHub Actions Workflow:** `.github/workflows/f7las-ci.yml`
-
-Enforces:
-- Prompt validation (Layer 1 PSP compliance)
-- Policy validation (Layer 5)
-- Settings validation (Layer 3 safety)
-- Golden dataset scoring (Layer 7)
-- Unit tests
-- Optional linting & SBOM/SCA
+![Multi-Agent F7-LAS Architecture](docs/Multi-Agent-F7-LAS_Architecture.png)
 
 ---
 
-## Quickstart
+## 🚀 Quickstart
 
 ```bash
 git clone https://github.com/<your-org>/F7-LAS.git
@@ -152,104 +65,83 @@ pytest -q tests/test_agents_basic.py
 Run the golden evaluator:
 
 ```bash
-python scripts/check_golden_thresholds.py golden_eval_results.json
+python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_results.json
 ```
 
 ---
 
-## Included Artifacts
+## 🧪 Maturity Roadmap
 
-**Engineering**
-- Full modular implementation guide  
-- Layer-by-layer controls  
-- Metrics & SLOs  
-- RACI model  
-- Operational playbooks  
+| Stage | Label         | Description                                      | Use Readiness             |
+|-------|---------------|--------------------------------------------------|----------------------------|
+| 0     | Experimental  | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC  |
+| 1     | Alpha         | Core logic working end-to-end with gaps.        | Internal sandbox only      |
+| 2     | Beta          | CI + tests in place, coverage improving.        | Controlled pilot / lab     |
+| 3     | Stable        | Versioned, test-covered, documented patterns.   | Production-ready           |
 
-**Security**
-- Prompt Security Profile schema  
-- Policy validation  
-- Sandbox rules  
-- Drift detection & evaluation logic  
-
-**Development**
-- Example demo runner  
-- Placeholder tests  
-- CI workflow and validators  
-
----
-## Roadmap
-
-F7-LAS is evolving through clearly defined maturity stages to ensure transparency, stability, and long-term governance.
-
-### Current Maturity Stage
-
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
-
-F7-LAS is currently **Stage 0 — Experimental**.  
-The framework structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
-
-### Maturity Model
-
-| Stage | Label         | Description                                              | Intended Use                |
-|-------|--------------|----------------------------------------------------------|-----------------------------|
-| 0     | Experimental | Design, scaffolding, control definitions, CI bootstrapping | Evaluation & research        |
-| 1     | Alpha        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
-| 2     | Beta         | CI-tested, partial coverage, validated controls           | Controlled pilot deployments |
-| 3     | Stable       | Versioned, test-covered, production-ready patterns        | Enterprise / production use  |
-
-### Planned Future Enhancements
-
-#### CI & Security
-- Full golden dataset testing
-- Secret scanning
-- SBOM & dependency scanning
-- Policy schema validation
-- Prompt security linting
-
-#### Documentation & Controls
-- Additional reference architectures
-- Expanded control catalog
-- Tooling examples and agent demos
-- Public Owner’s Guide
-
-#### Agent & Framework Enhancements
-- Example multi-agent orchestration
-- Tooling adapters (OpenAI MCP / LangChain / Azure / AWS)
-- Real-world security playbooks
-
-### Badge Palette for Future Stages
-
-- Stage 1 — Alpha  
-  `![maturity](https://img.shields.io/badge/maturity-Stage%201%20%E2%80%94%20Alpha-yellowgreen)`
-
-- Stage 2 — Beta  
-  `![maturity](https://img.shields.io/badge/maturity-Stage%202%20%E2%80%94%20Beta-orange)`
-
-- Stage 3 — Stable  
-  `![maturity](https://img.shields.io/badge/maturity-Stage%203%20%E2%80%94%20Stable-brightgreen)`
+Current Stage: **Stage 0 — Experimental**
 
 ---
 
-### Visual Roadmap Diagram (Coming Soon)
+## 🧪 Try It / Demo
 
-A visual maturity diagram for F7-LAS will be published in the documentation.
+Basic placeholder CI is in place. Try the system prompt evaluator:
 
-## Contributing
+```bash
+python scripts/validate-prompts.py
+```
 
-Contributions welcome — scenarios, policies, prompts, controls, tools.  
-Follow:
-- Engineering Review Checklist  
-- CI pipeline requirements  
-- PSP formatting rules  
+More scenarios and golden dataset examples will be added in future stages.
 
 ---
 
-## License & Disclaimer
+## 📂 Repository Structure
+
+```
+F7-LAS/
+├── .github/workflows/f7las-ci.yml
+├── config/
+│   ├── prompts/
+│   ├── policies/
+│   └── settings.yaml
+├── docs/
+│   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
+│   └── F7-LAS-Implementation-Guide-v3.1/
+├── scripts/
+├── src/
+│   └── demo-runner/
+├── tests/
+└── README.md
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! This is an evolving framework.
+
+To contribute:
+- Follow the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md)
+- Align with prompt security structure
+- Respect repo CI and formatting
+
+---
+
+## 📄 License & Disclaimer
 
 © 2025 Anthony L. Fuller. All rights reserved.  
-F7-LAS™ is a trademark of Anthony L. Fuller. Trademark application pending.
+**F7-LAS™** is a trademark of Anthony L. Fuller. *Trademark application pending.*
 
-This project was created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. All opinions, design patterns, and documentation reflect the author's personal work.
+> This project was created independently by the author and is **not affiliated with, endorsed by, or associated with Microsoft or any other employer**. All opinions, design patterns, and documentation reflect the author's personal work.
 
+---
 
+## 🔖 GitHub Tags (suggested)
+
+`#agentic-ai` `#ai-security` `#prompt-security` `#governance` `#open-security`
+
+---
+
+## ⭐ Support the Project
+
+If this work helps you explore safer AI architectures — **star the repo** to show your support.
