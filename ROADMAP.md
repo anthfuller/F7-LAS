@@ -4,7 +4,7 @@ This roadmap outlines the evolution of F7-LAS from **Stage 0 (Foundational Draft
 
 ---
 
-## Stage 0 — Current
+##📘 Stage 0 — Current
 - Whitepaper published  
 - Core model defined (Layers 1–7 + Supplemental Layer S)  
 - Repo structure created  
