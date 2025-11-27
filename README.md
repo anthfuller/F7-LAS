@@ -238,7 +238,7 @@ A visual maturity diagram for F7-LAS will be published in the documentation.
 ## Contributing
 
 Contributions welcome — scenarios, policies, prompts, controls, tools.  
-Follow:
+Follow:the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md)
 - Engineering Review Checklist  
 - CI pipeline requirements  
 - PSP formatting rules  
