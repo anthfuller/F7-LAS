@@ -9,7 +9,9 @@
 ![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
 
 > **Maturity roadmap:**  
-> F7-LAS is currently at **Stage 0 – Experimental**. The core model, controls, and repo structure are being defined, documented, and wired into CI. Future stages will add hardened CI, golden datasets, reference implementations, and production-ready playbooks.
+> F7-LAS is currently at **Stage 0 – Experimental**. The core runtime code (agents, tools, orchestration) is not yet implemented in this repo. Current focus is on design, controls, prompts, policies, and CI scaffolding.
+> Future stages will add hardened CI, golden datasets, reference implementations, and production-ready playbooks.
+
 
 ### F7-LAS Maturity Stages
 
