@@ -38,7 +38,7 @@ All PRs must use the provided pull request template and include:
 - AI-generated content without human review  
 - Unvalidated schemas or pseudo-code without context
 
-- ## Reuse and Attribution Guidelines
+## Reuse and Attribution Guidelines
 This project uses the **CC BY 4.0** license.  
 You may contribute, reuse, or adapt the materials in this repository.
 
