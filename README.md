@@ -97,7 +97,7 @@ F7-LAS/
 │   │
 │   ├── Engineering-Review-Checklist.md
 │   ├── F7-LAS-Control-Catalog-v0.1.md
-│   ├── F7-LAS-Control-Catalog-v0.1.md 
+│   ├── Multi-Agent-F7-LAS_Architecture-v1.png 
 |   └── README.md
 │
 ├── config/
