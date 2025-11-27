@@ -113,7 +113,10 @@ F7-LAS/
 │   └── tools/
 │
 ├── tests/
-│   ├── golden-dataset/
+│   ├── golden_dataset/
+│   │       ├── golden_eval_results.json
+│   │       ├── rubric.json
+│   │       └── scenariojson
 │   └── test_agents_basic.py
 │
 └── examples/
