@@ -38,6 +38,17 @@ All PRs must use the provided pull request template and include:
 - AI-generated content without human review  
 - Unvalidated schemas or pseudo-code without context
 
+- ## Reuse and Attribution Guidelines
+This project uses the **CC BY 4.0** license.  
+You may contribute, reuse, or adapt the materials in this repository.
+
+When reusing or referencing the model, please include:
+
+"Based on F7-LAS — The Fuller 7-Layer Agentic AI Security Model (Anthony Fuller, CC BY 4.0)"
+
+This ensures clear attribution while allowing broad community and industry adoption.
+
+
 ## Code of Conduct
 By contributing, you agree to follow the project’s Code of Conduct.
 
