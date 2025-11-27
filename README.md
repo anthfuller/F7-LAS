@@ -107,10 +107,10 @@ F7-LAS/
 │   └── settings.yaml
 │
 ├── src/
-│   ├── core/
 │   ├── agents/
-│   ├── tools/
-│   └── demo-runner/
+│   ├── core/
+│   ├── demo_runner/
+│   └── tools/
 │
 ├── tests/
 │   ├── golden-dataset/
