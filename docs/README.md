@@ -4,10 +4,10 @@ This folder contains all supporting documents, templates, and controls that comp
 
 ## Included Documents
 
-- `f7-las-whitepaper.md` — The original whitepaper introducing the F7-LAS model.
-- `appendix-a-schemas.md` — Telemetry schemas for each F7 layer.
-- `appendix-b-templates.md` — Ready-to-use governance and implementation templates.
-- `f7-las-control-catalog-v0.md` — Security control catalog mapped to F7-LAS layers.
+- `Engineering-Review-Checklist.md` — Assess if agents conforms to the F7‑LAS (Fuller 7‑Layer Agentic AI Security) model.
+- `F7-LAS-Control-Catalog-v0.1.md` — Defines a set of concrete, testable security controls for agentic AI systems, by the F7 layer model.
+- `Multi-Agent-F7-LAS_Architecture-v1.png` — F7-LAS multi-agent archiecture image.
+- `README.md` — Describes conent in the Docs folder.
 
 ## Usage
 
@@ -16,6 +16,9 @@ Use these documents to:
 - Support governance, risk, and compliance initiatives.
 - Drive CI/CD, policy enforcement, and security reviews.
 
-## Licensing & Attribution
+## License & Disclaimer
 
-© 2025 Anthony L. Fuller. This work is independent of Microsoft and does not represent the views of any employer.
+© 2025 Anthony L. Fuller. All rights reserved.  
+F7-LAS™ is a trademark of Anthony L. Fuller. Trademark application pending.
+
+This project was created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. All opinions, design patterns, and documentation reflect the author's personal work.
