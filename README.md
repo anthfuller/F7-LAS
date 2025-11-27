@@ -130,7 +130,7 @@ F7-LAS/
 │   ├── simple_rag_readonly.md
 │   ├── walkthrough_false_positive.md
 │   ├── walkthrough_false_positive.md
-    └── walkthrough_ransomware_case.md
+│   └── walkthrough_ransomware_case.md
 ```
 
 ---
