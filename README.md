@@ -71,32 +71,34 @@ F7-LAS/
 │       └── f7las-ci.yml
 │
 ├── scripts/
-│   ├── validate-prompts.py
+│   ├── check_golden_thresholds.py
 │   ├── validate-policies.py
-│   ├── validate-settings.py
-│   └── check-golden-thresholds.py
+│   ├── validate-prompts.py
+│   └── validate-settings.py
 │
 ├── docs/
 │   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
-│   ├── F7-LAS-Implementation-Guide-v3.1/
-│   │   ├── 00-Introduction.md
-│   │   ├── 01-Control-Objectives.md
-│   │   ├── 02-Layer-by-Layer-Controls.md
-│   │   ├── 03-Suppplemental-Layer-S.md
-│   │   ├── 04-Model-Security-Annex.md
-│   │   ├── 05-Metrics-and-SLOs.md
-│   │   ├── 06-Operational-Playbooks.md
-│   │   ├── 07-RACI-Model.md
-│   │   ├── 08-Implementation-Profiles.md
+│   ├── F7-LAS-Implementation-Guide/
+│   │   ├── 00-introduction.md
+│   │   ├── 01-control-objectives.md
+│   │   ├── 02-layer-by-layer-controls.md
+│   │   ├── 03-suppplemental-layer-s.md
+│   │   ├── 04-model-security-annex.md
+│   │   ├── 05-metrics-and-slos.md
+│   │   ├── 06-operational-playbooks.md
+│   │   ├── 07-raci-model.md
+│   │   ├── 08-implementation-profiles.md
 │   │   └── appendices/
 │   │       ├── a-schemas.md
 │   │       ├── b-templates.md
-│   │       ├── c-engineering-review-checklist.md
+|   |       ├── c-checklist.md
 │   │       └── d-reference-architectures.md
+│   │      
 │   │
 │   ├── Engineering-Review-Checklist.md
-│   ├── Multi-Agent-F7-LAS_Architecture.png
-│   └── F7-LAS-Control-Catalog_v0.1.md
+│   ├── F7-LAS-Control-Catalog-v0.1.md
+│   ├── F7-LAS-Control-Catalog-v0.1.md 
+|   └── README.md
 │
 ├── config/
 │   ├── prompts/
@@ -111,7 +113,7 @@ F7-LAS/
 │
 ├── tests/
 │   ├── golden-dataset/
-│   └── test-agents-basic.py
+│   └── test_agents_basic.py
 │
 └── examples/
 ```
