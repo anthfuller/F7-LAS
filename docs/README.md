@@ -8,7 +8,7 @@ This folder contains all supporting documents, templates, and controls that comp
 - `F7-LAS-Control-Catalog-v0.1.md` — Defines a set of concrete, testable security controls for agentic AI systems, by the F7 layer model.
 - `F7-LAS-Model-whitepaper.pdf` — The original whitepaper introducing the F7-LAS model.
 - `Multi-Agent-F7-LAS_Architecture-v1.png` — F7-LAS multi-agent archiecture image.
-- `README.md` — Describes conent in the Docs folder and licensing and disclaimer.
+- `README.md` — Describes content in the Docs folder and licensing and disclaimer.
 
 ## Usage
 
