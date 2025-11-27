@@ -129,7 +129,7 @@ F7-LAS/
 │   ├── 06-operational-playbooks.md
 │   ├── 07-raci-model.md
 │   ├── 08-implementation-profiles.md
-│   └── appendices/
+    └── appendices/
 ```
 
 ---
