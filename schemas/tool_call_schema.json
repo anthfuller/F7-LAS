@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "F7-LAS Tool Call Schema",
+  "description": "Defines the required structure for tool calls compliant with F7-LAS Layer 4 & 5.",
+  "type": "object",
+  "properties": {
+    "tool_name": {
+      "type": "string",
+      "description": "The name of the tool being invoked."
+    },
+    "arguments": {
+      "type": "object",
+      "description": "Arguments passed to the tool.",
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "planner_id": {
+      "type": "string",
+      "description": "Identifier of the planner or controller making the decision."
+    },
+    "policy_result": {
+      "type": "object",
+      "description": "Policy decision for this tool call.",
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "reason": { "type": "string" }
+      },
+      "required": ["allowed"]
+    }
+  },
+  "required": ["tool_name", "arguments"]
+}
