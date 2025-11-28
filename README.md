@@ -107,14 +107,18 @@ F7-LAS/
 │   │       ├── b-templates.md
 |   |       ├── c-checklist.md
 │   │       └── d-reference-architectures.md
-│   │      
-│   │
+|   
 │   ├── Engineering-Review-Checklist.md
-│   ├── F7-LAS-Model-v1.png
 │   ├── F7-LAS-Control-Catalog-v0.1.md
+|   ├── F7-LAS-Model-v1.png
 |   ├── F7-LAS-model-whitepaper.pdf
 |   └── README.md
-│
+|   |
+|   ├── images/
+│   |    ├── F7-LAS-Model-v1.png
+│   |    ├── F7-LAS_Execution_Contrl_Loop.png
+│   |    └── afuller_f7-las-model.png
+|      
 ├── config/
 │   ├── prompts/
 │   ├── policies/
@@ -125,15 +129,15 @@ F7-LAS/
 │   ├── core/
 │   ├── demo_runner/
 │   └── tools/
-│
+│   
 ├── tests/
 │   ├── golden_dataset/
 │   │   ├── golden_eval_results.json
 │   │   ├── rubric.json
 │   │   └── scenariojson
 │   └── test_agents_basic.py
-│
-└── examples/
+│   
+|── examples/
 │   ├── README.md
 │   ├── basic_agent_flow.md
 │   ├── demo_system_prompt.txt
