@@ -4,8 +4,8 @@
   "description": "Vetted tool allowlist for F7-LAS. Defines trusted tools, owners, risk tiers, permissions, and review metadata.",
   "tools": [
     {
-      "id": "sentinel_query",
-      "display_name": "Microsoft Sentinel Query",
+      "id": "siem_query",
+      "display_name": "SIEM Query",
       "owner": "Security Operations",
       "risk_tier": "medium",
       "permissions": ["read"],
@@ -15,19 +15,19 @@
       "last_reviewed": "2025-01-01"
     },
     {
-      "id": "defender_incident_lookup",
-      "display_name": "Defender Incident Lookup",
+      "id": "XDR_incident_lookup",
+      "display_name": "XDR Incident Lookup",
       "owner": "Security Operations",
       "risk_tier": "medium",
       "permissions": ["read"],
       "allowed_versions": ["1.x"],
-      "description": "Lookup details on Defender incidents.",
+      "description": "Lookup details on XDR incidents.",
       "status": "active",
       "last_reviewed": "2025-01-01"
     },
     {
-      "id": "log_analytics_query",
-      "display_name": "Log Analytics Query",
+      "id": "log_query",
+      "display_name": "Log Query",
       "owner": "Security Operations",
       "risk_tier": "medium",
       "permissions": ["read"],
@@ -84,7 +84,7 @@
     },
     {
       "id": "prod_kv_write",
-      "display_name": "Production Key Vault Write",
+      "display_name": "Production HSA Vault Write",
       "owner": "Platform Security",
       "risk_tier": "high",
       "permissions": ["write-privileged"],
