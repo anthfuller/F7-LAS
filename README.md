@@ -107,7 +107,7 @@ F7-LAS/
 │   │       ├── b-templates.md
 |   |       ├── c-checklist.md
 │   │       └── d-reference-architectures.md
-|   
+|   |
 │   ├── Engineering-Review-Checklist.md
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 |   ├── F7-LAS-Model-v1.png
@@ -115,9 +115,9 @@ F7-LAS/
 |   └── README.md
 |   |
 |   ├── images/
-│   |    ├── F7-LAS-Model-v1.png
-│   |    ├── F7-LAS_Execution_Contrl_Loop.png
-│   |    └── afuller_f7-las-model.png
+│       ├── F7-LAS-Model-v1.png
+│       ├── F7-LAS_Execution_Contrl_Loop.png
+│       └── afuller_f7-las-model.png
 |      
 ├── config/
 │   ├── prompts/
