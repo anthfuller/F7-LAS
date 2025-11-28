@@ -122,6 +122,7 @@ F7-LAS/
 ├── config/
 │   ├── prompts/
 │   ├── policies/
+|   ├── psp-schema.json
 │   └── settings.yaml
 │
 ├── src/
