@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2025-11-28T00:00:00Z",
+  "description": "Vetted tool allowlist for F7-LAS. Defines trusted tools, owners, risk tiers, permissions, and review metadata.",
+  "tools": [
+    {
+      "id": "sentinel_query",
+      "display_name": "Microsoft Sentinel Query",
+      "owner": "Security Operations",
+      "risk_tier": "medium",
+      "permissions": ["read"],
+      "allowed_versions": ["1.x"],
+      "description": "Read-only log and incident queries.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "defender_incident_lookup",
+      "display_name": "Defender Incident Lookup",
+      "owner": "Security Operations",
+      "risk_tier": "medium",
+      "permissions": ["read"],
+      "allowed_versions": ["1.x"],
+      "description": "Lookup details on Defender incidents.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "log_analytics_query",
+      "display_name": "Log Analytics Query",
+      "owner": "Security Operations",
+      "risk_tier": "medium",
+      "permissions": ["read"],
+      "allowed_versions": ["1.x"],
+      "description": "Query internal telemetry and operational logs.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+
+    {
+      "id": "ticket_create",
+      "display_name": "Ticket Create",
+      "owner": "SOC Workflow",
+      "risk_tier": "medium",
+      "permissions": ["create"],
+      "allowed_versions": ["1.x"],
+      "description": "Create new SOC or service tickets.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "ticket_comment",
+      "display_name": "Ticket Comment",
+      "owner": "SOC Workflow",
+      "risk_tier": "medium",
+      "permissions": ["write-limited"],
+      "allowed_versions": ["1.x"],
+      "description": "Comment-only update to existing tickets.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "case_management_note",
+      "display_name": "Case Management Note",
+      "owner": "SOC Workflow",
+      "risk_tier": "medium",
+      "permissions": ["write-limited"],
+      "allowed_versions": ["1.x"],
+      "description": "Add investigative notes to case records.",
+      "status": "active",
+      "last_reviewed": "2025-01-01"
+    },
+
+    {
+      "id": "identity_policy_update",
+      "display_name": "Identity Policy Update",
+      "owner": "Identity Governance",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Modify identity policies or conditional access rules.",
+      "status": "restricted",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "prod_kv_write",
+      "display_name": "Production Key Vault Write",
+      "owner": "Platform Security",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Write secrets to production key vaults.",
+      "status": "restricted",
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "secret_rotation_direct",
+      "display_name": "Direct Secret Rotation",
+      "owner": "Platform Security",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Rotate secrets directly without workflow controls.",
+      "status": "restricted",
+      "last_reviewed": "2025-01-01"
+    },
+
+    {
+      "id": "firewall_block",
+      "display_name": "Firewall Block",
+      "owner": "Network Security",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Block traffic or set firewall rules.",
+      "status": "active",
+      "requires_hitl": true,
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "network_isolate_host",
+      "display_name": "Network Isolation",
+      "owner": "Network Security",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Isolate an endpoint at network level.",
+      "status": "active",
+      "requires_hitl": true,
+      "last_reviewed": "2025-01-01"
+    },
+    {
+      "id": "disable_account",
+      "display_name": "Disable Identity Account",
+      "owner": "Identity Security",
+      "risk_tier": "high",
+      "permissions": ["write-privileged"],
+      "allowed_versions": ["1.x"],
+      "description": "Disable or suspend a user or service account.",
+      "status": "active",
+      "requires_hitl": true,
+      "last_reviewed": "2025-01-01"
+    }
+  ]
+}
