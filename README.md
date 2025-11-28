@@ -18,7 +18,7 @@ This repository provides:
 - Early-stage **examples and patterns** for applying seven-layer security to agentic workflows
 
 F7-LAS is **not a runtime implementation** at this stage.  
-It is a **conceptual and architectural framework** with active engineering expansion.
+It is a **conceptual and architectural model** with active engineering expansion.
 
 > **Maturity roadmap:**
 > F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
@@ -216,7 +216,7 @@ F7-LAS is evolving through clearly defined maturity stages to ensure transparenc
 ![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
 
 F7-LAS is currently **Stage 0 — Experimental**.  
-The framework structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
+The model structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
 
 ### Maturity Model
 
