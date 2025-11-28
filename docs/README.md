@@ -5,9 +5,9 @@ This folder contains all supporting documents, templates, and controls that comp
 ## Included Documents
 
 - `Engineering-Review-Checklist.md` — Assess if agentic AI systems conform to the F7‑LAS (Fuller 7‑Layer Agentic AI Security) model.
+- `Multi-Agent-F7-LAS_Architecture-v1.png` — F7-LAS multi-agent architecture image.
 - `F7-LAS-Control-Catalog-v0.1.md` — Defines a set of concrete, testable security controls for agentic AI systems, by the F7 layer model.
 - `F7-LAS-Model-whitepaper.pdf` — The original whitepaper introducing the F7-LAS model.
-- `Multi-Agent-F7-LAS_Architecture-v1.png` — F7-LAS multi-agent architecture image.
 - `README.md` — Describes content in the Docs folder and licensing and disclaimer.
 
 ## Usage
