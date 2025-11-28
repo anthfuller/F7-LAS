@@ -6,7 +6,7 @@
 ![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
 ![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-yellow)
 
-**F7-LAS™ (Fuller 7-Layer Agentic Security) model** is an open security architecture for designing, validating, and governing agentic AI systems.  
+**F7-LAS™ (Fuller 7-Layer Agentic Security)** is an open security model for designing, validating, and governing agentic AI systems.  
 It defines seven interdependent layers—spanning prompts, grounding, planning logic, tool security, policy enforcement, sandboxing, and monitoring—to reduce risk in emerging LLM-driven autonomous agents.
 
 This repository provides:
@@ -18,7 +18,7 @@ This repository provides:
 - Early-stage **examples and patterns** for applying seven-layer security to agentic workflows
 
 F7-LAS is **not a runtime implementation** at this stage.  
-It is a **conceptual and architectural model** with active engineering expansion.
+It is a **conceptual model** with active engineering expansion.
 
 > **Maturity roadmap:**
 > F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
@@ -37,13 +37,13 @@ It is a **conceptual and architectural model** with active engineering expansion
 F7-LAS is intentionally **opinionated** and will move through these stages as the implementation guide, control catalog, golden datasets, and CI hardening mature.
 
 ## 🌐 Overview
-F7-LAS (Fuller 7-Layer Agentic AI Security Framework) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
+F7-LAS (Fuller 7-Layer Agentic AI Security Model) defines a **layered control model** for securing AI agents that can plan, reason, call tools, modify systems, and interact with enterprise environments.
 
 It provides:
 - A **7-layer control stack** (L1–L7)
 - A **supplemental supply-chain layer (Layer S)**
 - A **full implementation guide**, patterns, controls, and engineering checklists
-- A **vendor-neutral reference architecture**
+- A **vendor-neutral reference model**
 - A **CI-driven DevSecOps pipeline**
 
 > **Status:** v3.1 — Conceptual model stable, active engineering expansion.
@@ -110,7 +110,7 @@ F7-LAS/
 │   │      
 │   │
 │   ├── Engineering-Review-Checklist.md
-│   ├── F7-LAS-Architecture-v1.png
+│   ├── F7-LAS-Model-v1.png
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 |   ├── F7-LAS-model-whitepaper.pdf
 |   └── README.md
@@ -237,12 +237,12 @@ The model structure, control catalog, prompt standards, and initial CI validatio
 - Prompt security linting
 
 #### Documentation & Controls
-- Additional reference architectures
+- Example implementation patterns
 - Expanded control catalog
 - Tooling examples and agent demos
 - Public Owner’s Guide
 
-#### Agent & Framework Enhancements
+#### Agent & Model Enhancements
 - Example multi-agent orchestration
 - Tooling adapters (OpenAI MCP / LangChain / Azure / AWS)
 - Real-world security playbooks
