@@ -24,6 +24,13 @@ It provides practical, engineering-focused guidance for applying F7-LAS in real 
 - `Appendices/C_Checklist.md` – Engineering review checklist.
 - `Appendices/D_Reference_Patterns.md` – Example secure patterns.
 
+### Layer S - Software Supply-Chain Security
+
+- `checklist  
+- `sbom-guidance
+- `vetting-workflow 
+- `allowlist-schema  
+
 ## Feedback
 
 - Open a GitHub Issue  
