@@ -1,5 +1,5 @@
 # F7-LAS Implementation Guide v3.1 — Introduction
-The F7-LAS (Fuller 7-Layer Agentic AI Security) framework provides a layered, control-centric architecture for securing agentic AI systems. This Implementation Guide translates the conceptual model from the whitepaper into concrete, deployable engineering controls aligned with modern enterprise patterns.
+The F7-LAS (Fuller 7-Layer Agentic AI Security) model provides a layered, control-centric architecture for securing agentic AI systems. This Implementation Guide translates the conceptual model from the whitepaper into concrete, deployable engineering controls aligned with modern enterprise patterns.
 
 ### This guide is intended for:
 
