@@ -1,6 +1,6 @@
 # Appendix B — Templates
 
-This appendix provides ready-to-use templates that support the deployment, governance, and review of systems built using the F7-LAS framework.
+This appendix provides ready-to-use templates that support the deployment, governance, and review of systems built using the F7-LAS model.
 
 Organizations should clone these templates into their internal repositories and customize them based on their risk appetite, tooling, and regulatory environment.
 
