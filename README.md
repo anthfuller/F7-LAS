@@ -227,7 +227,7 @@ The model structure, control catalog, prompt standards, and initial CI validatio
 
 | Stage | Label         | Description                                              | Intended Use                |
 |-------|--------------|----------------------------------------------------------|-----------------------------|
-| 0     | Conceptuual  | Design, scaffolding, control definitions, CI bootstrap   | Evaluation & research        |
+| 0     | Conceptuual  | Design, scaffolding, control definitions, CI bootstrapping   | Evaluation & research        |
 | 1     | Alpha        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
 | 2     | Beta         | CI-tested, partial coverage, validated controls           | Controlled pilot deployments |
 | 3     | Stable       | Versioned, test-covered, production-ready patterns        | Enterprise / production use  |
