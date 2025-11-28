@@ -29,7 +29,7 @@ It is a **conceptual model** with active engineering expansion.
 
 | Stage | Label                     | Description                                     | Use Readiness            |
 |-------|---------------------------|-------------------------------------------------|--------------------------|
-| 0     | Experimental              | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
+| 0     | Conceptual              | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
 | 1     | Alpha                     | Core logic working end-to-end with gaps.        | Internal sandbox only     |
 | 2     | Beta                      | CI + tests in place, coverage improving.        | Controlled pilot / lab    |
 | 3     | Stable                    | Versioned, test-covered, documented patterns.   | Production-ready          |
