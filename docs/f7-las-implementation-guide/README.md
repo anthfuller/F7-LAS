@@ -22,11 +22,11 @@ It provides practical, engineering-focused guidance for applying F7-LAS in real 
 - `Appendices/A_Schemas.md` – Event and telemetry schemas.
 - `Appendices/B_Templates.md` – Profiles, prompts, CAB and policy templates.
 - `Appendices/C_Checklist.md` – Engineering review checklist.
-- `Appendices/D_Reference_Architectures.md` – Example secure architectures.
+- `Appendices/D_Reference_Patterns.md` – Example secure patterns.
 
 ## Feedback
 
 - Open a GitHub Issue  
 - Submit a Pull Request  
-- Framework Author: **Anthony Fuller**  
+- Model Author: **Anthony Fuller**  
 - GitHub: <https://github.com/anthfuller>
