@@ -26,10 +26,10 @@ It provides practical, engineering-focused guidance for applying F7-LAS in real 
 
 ### Layer S - Software Supply-Chain Security
 
-- checklist  
-- sbom-guidance
-- vetting-workflow 
-- allowlist-schema  
+- Checklist  
+- SBOM-guidance
+- Vetting-workflow 
+- Allowlist-schema  
 
 ## Feedback
 
