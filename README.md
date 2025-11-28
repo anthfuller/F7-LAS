@@ -112,7 +112,7 @@ F7-LAS/
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 |   ├── F7-LAS-Model-v1.png
 |   ├── F7-LAS-model-whitepaper.pdf
-|   └── README.md
+|   |── README.md
 |   |
 |   ├── images/
 │       ├── F7-LAS-Model-v1.png
