@@ -1,7 +1,7 @@
 # F7-LAS Implementation Guide v3.1
 
 This directory contains the Implementation Guide for the  
-**Fuller 7-Layer Agentic AI Security (F7-LAS) Framework**.
+**Fuller 7-Layer Agentic AI Security (F7-LAS) model**.
 
 It provides practical, engineering-focused guidance for applying F7-LAS in real systems.
 
