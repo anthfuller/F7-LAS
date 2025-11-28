@@ -12,7 +12,7 @@ Briefly describe the feature or improvement you are proposing.
 
 ## Motivation
 
-Why is this useful for the F7-LAS framework or its users?  
+Why is this useful for the F7-LAS model or its users?  
 Examples:
 
 - Clarifies a specific layer or control
