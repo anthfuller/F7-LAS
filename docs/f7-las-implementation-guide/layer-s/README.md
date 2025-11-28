@@ -63,3 +63,8 @@ The schema is referenced by the `allowlist-validator.py` script located in `/scr
 
 The **actual** allowlist used by agents lives here:
 
+`/config/tools/allowlist.json`
+
+This folder (`layer-s/`) only contains documentation, schemas, and guidance — **not** the operational allowlist used at runtime.
+
+
