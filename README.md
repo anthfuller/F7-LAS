@@ -112,11 +112,11 @@ F7-LAS/
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 |   ├── F7-LAS-Model-v1.png
 |   ├── F7-LAS-model-whitepaper.pdf
-|   |── README.md
+|   ├── README.md
 |   |
 |   ├── images/
-│       ├── F7-LAS-Model-v1.png
-│       ├── F7-LAS_Execution_Contrl_Loop.png
+│   |   ├── F7-LAS-Model-v1.png
+│   |   ├── F7-LAS_Execution_Contrl_Loop.png
 │       └── afuller_f7-las-model.png
 |      
 ├── config/
