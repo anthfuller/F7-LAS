@@ -3,7 +3,6 @@
 *A layered, control-centric security architecture for agentic and multi-agent AI systems.*
 
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
-![status](https://img.shields.io/badge/status-passing-brightgreen)
 ![version](https://img.shields.io/badge/version-v3.1-blue)
 ![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
 ![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Conceptual-yellow)
