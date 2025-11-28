@@ -1,1 +1,30 @@
-Placeholder
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "F7-LAS Tool Allowlist Schema",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "description": { "type": "string" },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "owner", "risk_tier", "permissions", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "display_name": { "type": "string" },
+          "owner": { "type": "string" },
+          "risk_tier": { "type": "string", "enum": ["low", "medium", "high"] },
+          "permissions": { "type": "array", "items": { "type": "string" } },
+          "allowed_versions": { "type": "array", "items": { "type": "string" } },
+          "description": { "type": "string" },
+          "status": { "type": "string", "enum": ["active", "restricted", "deprecated"] },
+          "requires_hitl": { "type": "boolean" },
+          "last_reviewed": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  },
+  "required": ["tools"]
+}
