@@ -1,4 +1,4 @@
-# 📚 F7-LAS Documentation
+# F7-LAS Documentation
 
 This folder contains all supporting documents, templates, and controls that complement the F7-LAS (Fuller 7-Layer Agentic Security) model.
 
