@@ -1,6 +1,6 @@
 # Appendix D — Reference Architectures
 
-This appendix provides vendor-neutral, security-centric architectural patterns that implement the F7-LAS framework in real systems.
+This appendix provides vendor-neutral, security-centric architectural patterns that implement the F7-LAS model in real systems.
 Each pattern is aligned with the seven layers, the supplemental supply-chain layer, and the multi-agent governance model.
 
 These are reference designs, not prescriptive requirements.
