@@ -39,7 +39,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Each agent’s system prompt **SHALL** explicitly define the agent’s role (e.g., Coordinator, Investigator, Remediator) and operational scope.
 - **Implementation Notes:**  
-  - Use structured metadata at the top of each prompt (role, scope, risk level). :contentReference[oaicite:0]{index=0}  
+  - Use structured metadata at the top of each prompt (role, scope, risk level).  
 - **Evidence:**  
   - Prompt file content with clear role/scope sections.  
 
@@ -83,7 +83,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   System prompts **SHALL** undergo periodic **prompt-injection and jailbreak testing**, with findings tracked and mitigations implemented.
 - **Implementation Notes:**  
-  - Integrate basic tests into CI and periodic manual or automated red-teaming. :contentReference[oaicite:1]{index=1}  
+  - Integrate basic tests into CI and periodic manual or automated red-teaming.  
 - **Evidence:**  
   - Test results/red-team reports.  
   - Issues or tickets tracking mitigations.
@@ -110,7 +110,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Retrieval for agent prompts **SHALL** be performed via a controlled **RAG gateway**, not direct access to raw storage or vector DBs.
 - **Implementation Notes:**  
-  - Gateway applies auth, rate limiting, source allowlists, and logging. :contentReference[oaicite:2]{index=2}  
+  - Gateway applies auth, rate limiting, source allowlists, and logging.  
 - **Evidence:**  
   - Architecture docs showing the gateway.  
   - Logs of retrieval calls.
@@ -134,7 +134,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Controls **SHALL** exist to detect and prevent **RAG poisoning**, including restricted authorship and validation for high-impact content.
 - **Implementation Notes:**  
-  - Source trust scoring, ingestion validation pipelines, or manual review for critical sources. :contentReference[oaicite:3]{index=3}  
+  - Source trust scoring, ingestion validation pipelines, or manual review for critical sources.  
 - **Evidence:**  
   - Ingestion policies, validation scripts, access lists.
 
@@ -180,7 +180,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 ### F7-L3-02 – Planning Contracts
 
 - **Control:**  
-  Each agent **SHALL** have a **planning contract** specifying `max_steps`, `max_tool_calls`, `max_duration_seconds`, and allowed tool set. :contentReference[oaicite:4]{index=4}  
+  Each agent **SHALL** have a **planning contract** specifying `max_steps`, `max_tool_calls`, `max_duration_seconds`, and allowed tool set.  
 - **Implementation Notes:**  
   - Store contracts as config, enforce at runtime in the orchestrator.  
 - **Evidence:**  
@@ -216,7 +216,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   In multi-agent setups, **delegation rules** (who may call whom, and for what) **SHALL** be documented and enforced.
 - **Implementation Notes:**  
-  - Coordinator → Investigator → Remediator pattern with allowed transitions. :contentReference[oaicite:5]{index=5}  
+  - Coordinator → Investigator → Remediator pattern with allowed transitions.  
 - **Evidence:**  
   - Governance doc and code enforcing allowed delegation.
 
@@ -227,7 +227,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Planner outputs and decisions **SHALL** be logged for later analysis, including selected tools, paths, and reasons where available.
 - **Implementation Notes:**  
-  - Emit `plan_event` telemetry as described in the implementation guide. :contentReference[oaicite:6]{index=6}  
+  - Emit `plan_event` telemetry as described in the implementation guide.  
 - **Evidence:**  
   - Telemetry samples, SIEM dashboards.
 
@@ -238,7 +238,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Planner behavior **SHALL** be tested for **goal/role drift**, including adversarial tasks that attempt to push the agent out of scope.
 - **Implementation Notes:**  
-  - Include drift scenarios in golden dataset tests. :contentReference[oaicite:7]{index=7}  
+  - Include drift scenarios in golden dataset tests.  
 - **Evidence:**  
   - Test scenarios, results, tracked remediations.
 
@@ -253,7 +253,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   All tools/APIs/connectors callable by agents **SHALL** be listed in a **tool catalog** with owners, risk tiers, and descriptions.
 - **Implementation Notes:**  
-  - Maintain as YAML/JSON or DB; expose via Tool Gateway. :contentReference[oaicite:8]{index=8}  
+  - Maintain as YAML/JSON or DB; expose via Tool Gateway.  
 - **Evidence:**  
   - Tool catalog artifact.
 
@@ -264,7 +264,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Each tool **SHALL** be assigned a **risk tier** (e.g., Tier 1: read-only; Tier 2: limited writes; Tier 3: high-impact writes).
 - **Implementation Notes:**  
-  - Persist risk tier in the tool definition schema. :contentReference[oaicite:9]{index=9}  
+  - Persist risk tier in the tool definition schema.  
 - **Evidence:**  
   - Catalog entries with risk_tier field.
 
@@ -308,7 +308,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Tool inputs **SHALL** be validated against schemas before execution to prevent misuse, injection, or malformed operations.
 - **Implementation Notes:**  
-  - Use Pydantic/JSON schema for validation as in the implementation guide. :contentReference[oaicite:10]{index=10}  
+  - Use Pydantic/JSON schema for validation as in the implementation guide.  
 - **Evidence:**  
   - Validation code, failing tests for bad input.
 
@@ -319,7 +319,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   All tool calls **SHALL** be logged, including agent identity, tool ID, high-level parameters (sanitized/redacted where needed), and result.
 - **Implementation Notes:**  
-  - Emit `tool_call` telemetry events per call. :contentReference[oaicite:11]{index=11}  
+  - Emit `tool_call` telemetry events per call.  
 - **Evidence:**  
   - Telemetry samples, SIEM dashboards.
 
@@ -330,7 +330,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Tier-3 (high-impact) tools **SHALL** require human-in-the-loop approval before execution.
 - **Implementation Notes:**  
-  - Use workflow systems, approval tokens, or explicit PDP obligations. :contentReference[oaicite:12]{index=12}  
+  - Use workflow systems, approval tokens, or explicit PDP obligations.  
 - **Evidence:**  
   - Workflow logs, PDP decision logs with HITL.
 
@@ -345,7 +345,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   High-impact actions **SHALL** be mediated by an **external PDP/PEP**, not solely by the LLM or prompt instructions.
 - **Implementation Notes:**  
-  - Use an OPA/REGO service or custom PDP with PEP wrappers on tool gateways. :contentReference[oaicite:13]{index=13}  
+  - Use an OPA/REGO service or custom PDP with PEP wrappers on tool gateways.  
 - **Evidence:**  
   - Architecture diagrams, PDP service code.
 
@@ -389,7 +389,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Changes to policies **SHALL** undergo review, testing, and approval before deployment to production.
 - **Implementation Notes:**  
-  - Enforce PR review, CI policy tests, and CAB sign-off for critical changes. :contentReference[oaicite:14]{index=14}  
+  - Enforce PR review, CI policy tests, and CAB sign-off for critical changes.  
 - **Evidence:**  
   - PRs/approvals, CAB records.
 
@@ -400,7 +400,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   All PDP decisions and PEP enforcement outcomes **SHALL** be logged for audit and incident response.
 - **Implementation Notes:**  
-  - Emit `policy_decision` events with decision, subject, action, resource, context. :contentReference[oaicite:15]{index=15}  
+  - Emit `policy_decision` events with decision, subject, action, resource, context.  
 - **Evidence:**  
   - Telemetry samples, query examples.
 
@@ -415,7 +415,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Agent runtimes **SHALL** execute in a segmented environment (e.g., separate tenant/subscription/account) with clear boundaries from critical production systems.
 - **Implementation Notes:**  
-  - Use dedicated accounts/subscriptions/VPCs. :contentReference[oaicite:16]{index=16}  
+  - Use dedicated accounts/subscriptions/VPCs.  
 - **Evidence:**  
   - Cloud resource layout, network diagrams.
 
@@ -437,7 +437,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Where security actions are involved, **read-only investigation** and **write-capable remediation** environments **SHALL** be separated.
 - **Implementation Notes:**  
-  - Different sandboxes or identity profiles for investigative vs. remediation tasks. :contentReference[oaicite:17]{index=17}  
+  - Different sandboxes or identity profiles for investigative vs. remediation tasks.  
 - **Evidence:**  
   - Separate environment/config descriptions.
 
@@ -459,7 +459,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Sandbox profiles **SHALL** be defined (e.g., CPU/memory limits, timeouts, filesystem access, network allowlists) and applied consistently.
 - **Implementation Notes:**  
-  - Use structured `sandbox_profile` schema as in the implementation guide. :contentReference[oaicite:18]{index=18}  
+  - Use structured `sandbox_profile` schema as in the implementation guide.  
 - **Evidence:**  
   - Sandbox config files, runtime enforcement logs.
 
@@ -529,7 +529,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   The system **SHALL** be evaluated against a **golden dataset** of scenarios and rubrics, with thresholds enforced in CI/CD.
 - **Implementation Notes:**  
-  - Use `run_golden_dataset` + `check_golden_thresholds` as in the DevSecOps pipeline. :contentReference[oaicite:20]{index=20}  
+  - Use `run_golden_dataset` + `check_golden_thresholds` as in the DevSecOps pipeline.  
 - **Evidence:**  
   - CI logs, evaluation reports.
 
@@ -540,7 +540,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Periodic red-team exercises **SHALL** be run against the agent, including prompt injection, RAG poisoning, tool misuse, and sandbox escape attempts.
 - **Implementation Notes:**  
-  - Track findings and tie them back to updates in prompts, policies, sandboxing. :contentReference[oaicite:21]{index=21}  
+  - Track findings and tie them back to updates in prompts, policies, sandboxing.  
 - **Evidence:**  
   - Red-team reports, change logs.
 
@@ -551,7 +551,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Explicit **SLOs** (service level objectives) **SHALL** be defined for safety metrics (e.g., drift detection MTTD, rate of blocked high-risk actions).
 - **Implementation Notes:**  
-  - Use per-layer SLOs as in the implementation guide. :contentReference[oaicite:22]{index=22}  
+  - Use per-layer SLOs as in the implementation guide.  
 - **Evidence:**  
   - SLO docs, metric dashboards, periodic review notes.
 
@@ -566,7 +566,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   An SBOM (Software Bill of Materials) **SHALL** be generated for agent runtime dependencies and kept up to date.
 - **Implementation Notes:**  
-  - Integrate SBOM generation into CI (e.g., in `f7las-ci.yml`). :contentReference[oaicite:23]{index=23}  
+  - Integrate SBOM generation into CI (e.g., in `f7las-ci.yml`).  
 - **Evidence:**  
   - SBOM artifacts.
 
@@ -577,7 +577,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Dependencies **SHALL** be scanned for known vulnerabilities; builds **SHALL** be blocked for critical issues affecting agent runtime or tools.
 - **Implementation Notes:**  
-  - SCA tooling in CI; thresholds for failing the build. :contentReference[oaicite:24]{index=24}  
+  - SCA tooling in CI; thresholds for failing the build.  
 - **Evidence:**  
   - SCA reports, CI logs showing failed builds on critical findings.
 
@@ -610,7 +610,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 - **Control:**  
   Telemetry **SHALL** capture framework/runtime version identifiers, and where feasible, build attestation IDs (e.g., sbom_id).
 - **Implementation Notes:**  
-  - Include `framework_version` and `sbom_id` fields in telemetry events. :contentReference[oaicite:25]{index=25}  
+  - Include `framework_version` and `sbom_id` fields in telemetry events.  
 - **Evidence:**  
   - Telemetry samples, attestation records.
 
@@ -624,7 +624,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
   - Decide if it is **Implemented**, **Planned**, or **Accepted Risk**.
   - Capture **evidence** and **owners**.
 - Combine this catalog with:
-  - The **F7-LAS Whitepaper** (model)  
+  - The **F7-LAS Whitepaper**  
   - The **Implementation Guide v3.0**  
   - The **Engineering Review Checklist**  
   - The **DevSecOps Pipeline** (CI enforcement)
@@ -636,6 +636,3 @@ Together, they define a full lifecycle for designing, implementing, and assuring
 This work is created independently by the author and is not affiliated with,
 endorsed by, or associated with Microsoft or any other employer. All opinions,
 models, and materials represent the author's personal work.
-
-
-
