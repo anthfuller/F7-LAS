@@ -218,7 +218,7 @@ F7-LAS is evolving through clearly defined maturity stages to ensure transparenc
 
 ### Current Maturity Stage
 
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Experimental-yellow)
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-yellow)
 
 F7-LAS is currently **Stage 0 — Conceptual**.  
 The model structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
