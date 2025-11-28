@@ -106,7 +106,7 @@ F7-LAS/
 │   │       ├── a-schemas.md
 │   │       ├── b-templates.md
 |   |       ├── c-checklist.md
-│   │       └── d-reference-architectures.md
+│   │       └── d-reference-patterns.md
 |   |
 │   ├── Engineering-Review-Checklist.md
 │   ├── F7-LAS-Control-Catalog-v0.1.md
