@@ -1,13 +1,13 @@
-# Appendix D — Reference Architectures
+# Appendix D — Reference Patterns
 
-This appendix provides vendor-neutral, security-centric architectural patterns that implement the F7-LAS model in real systems.
+This appendix provides vendor-neutral, security-centric reference patterns that implement the F7-LAS model in real systems.
 Each pattern is aligned with the seven layers, the supplemental supply-chain layer, and the multi-agent governance model.
 
 These are reference designs, not prescriptive requirements.
 
-## D.1 Reference Architecture: Coordinator–Investigator–Remediator (CIR Model)
+## D.1 Reference Patterns: Coordinator–Investigator–Remediator (CIR Model)
 
-This is the most common multi-agent architecture for cybersecurity and operational automation.
+This is the most common multi-agent model for cybersecurity and operational automation.
 
 ### D.1.1 Overview
 
@@ -41,7 +41,7 @@ Auditability through unified trace IDs
 
 Prevents over-privileged single agents
 
-D.2 Reference Architecture: Secure MCP Tool Gateway
+D.2 Reference Pattern: Secure MCP Tool Gateway
 
 A pattern for exposing enterprise tools through a mediated, risk-aware gateway instead of directly to the LLM.
 
@@ -77,11 +77,11 @@ Deterministic schema validation
 
 Prevents tool-injection attacks
 
-Supports multi-tenant architectures
+Supports multi-tenant model
 
 Integrates cleanly with F7-LAS layers
 
-## D.3 Reference Architecture: Azure Container Apps Isolated Sandbox
+## D.3 Reference Pattern: Azure Container Apps Isolated Sandbox
 
 A cloud-native pattern consistent with your real use case.
 
@@ -123,7 +123,7 @@ Cloud-provider-native least-privilege
 
 Secure supply-chain via container scanning
 
-## D.4 Reference Architecture: Secure RAG Pipeline with Trust Scoring
+## D.4 Reference Pattern: Secure RAG Pipeline with Trust Scoring
 
 This pattern ensures grounding is trustworthy, observable, and resistant to poisoning.
 
@@ -165,9 +165,9 @@ Enforces domain-restricted RAG
 
 Strengthens Layer 2 observability
 
-## D.5 Reference Architecture: SIEM-Integrated Agentic SOC Assistant
+## D.5 Reference Pattern: SIEM-Integrated Agentic SOC Assistant
 
-A practical architecture for enterprise SOC automation.
+A practical pattern for enterprise SOC automation.
 
 ### D.5.1 Components
 
