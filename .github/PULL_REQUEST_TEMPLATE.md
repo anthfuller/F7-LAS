@@ -4,7 +4,7 @@
 Describe the purpose of this PR in 2–3 sentences.
 
 ## Alignment With F7-LAS
-Which part(s) of the framework does this relate to?
+Which part(s) of the model does this relate to?
 
 - [ ] Layer 1 — System Prompt  
 - [ ] Layer 2 — RAG / Grounding  
@@ -18,7 +18,7 @@ Which part(s) of the framework does this relate to?
 - [ ] Appendix / Supporting Materials  
 
 ## Justification
-Explain how this PR contributes to the framework and why it should be included.
+Explain how this PR contributes to the model and why it should be included.
 
 ## Testing / Validation
 Include any validation steps, schema checks, or examples used.
