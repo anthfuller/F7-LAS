@@ -6,7 +6,7 @@ Use this checklist during implementation, PR review, and release preparation.
 
 ---
 
-## ✔ S-01 — SBOM Generation
+## S-01 — SBOM Generation
 - [ ] SBOM generated for agent runtime and tool adapters  
 - [ ] Includes transitive dependencies  
 - [ ] Saved to CI artifacts  
@@ -17,7 +17,7 @@ Tools: Syft, Trivy, Azure DevOps SBOM task
 
 ---
 
-## ✔ S-02 — Dependency Vulnerability Screening (SCA)
+## S-02 — Dependency Vulnerability Screening (SCA)
 - [ ] All dependencies scanned for CVEs  
 - [ ] CI fails on high/critical issues  
 - [ ] Exceptions documented and approved  
@@ -27,7 +27,7 @@ Tools: Trivy, GitHub Advanced Security, OWASP Dependency-Check
 
 ---
 
-## ✔ S-03 — Tool / Plugin Vetting
+## S-03 — Tool / Plugin Vetting
 - [ ] All tools included in `config/tools/allowlist.json`  
 - [ ] Owner & risk tier assigned  
 - [ ] Least-privilege review complete  
@@ -37,7 +37,7 @@ Tools: Trivy, GitHub Advanced Security, OWASP Dependency-Check
 
 ---
 
-## ✔ S-04 — Runtime Attestation
+## S-04 — Runtime Attestation
 - [ ] Runtime emits:  
   - `framework_version`  
   - `sbom_id`  
@@ -51,7 +51,7 @@ Tools: Trivy, GitHub Advanced Security, OWASP Dependency-Check
 
 ---
 
-## ✔ S-05 — Supply Chain Enforcement in CI/CD
+## S-05 — Supply Chain Enforcement in CI/CD
 - [ ] Dependency pinning (lockfiles)  
 - [ ] Hash integrity verification  
 - [ ] PR review for dependency changes  
@@ -60,7 +60,7 @@ Tools: Trivy, GitHub Advanced Security, OWASP Dependency-Check
 
 ---
 
-## ✔ Evidence Required
+## Evidence Required
 - [ ] SBOM artifacts  
 - [ ] SCA reports  
 - [ ] CI logs showing failed/blocked builds  
@@ -70,7 +70,7 @@ Tools: Trivy, GitHub Advanced Security, OWASP Dependency-Check
 
 ---
 
-## ✔ Relationship to F7-LAS Layers
+## Relationship to F7-LAS Layers
 Layer S reinforces:
 
 - L1–L3: Agents run on trusted runtime code  
