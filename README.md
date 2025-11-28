@@ -1,12 +1,24 @@
-# F7-LAS™ — Fuller 7-Layer Agentic AI Security Framework
-
-*A layered, control-centric security architecture for agentic and multi-agent AI systems.*
+# F7-LAS™ — The Fuller 7-Layer Agentic Security Model
 
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
 ![ci_status](https://img.shields.io/badge/CI-passing-brightgreen)
 ![version](https://img.shields.io/badge/version-v3.1.1-blue)
 ![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20%E2%80%94%20Conceptual-yellow)
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-yellow)
+
+**F7-LAS™ (Fuller 7-Layer Agentic Security)** is an open security architecture for designing, validating, and governing agentic AI systems.  
+It defines seven interdependent layers—spanning prompts, grounding, planning logic, tool security, policy enforcement, sandboxing, and monitoring—to reduce risk in emerging LLM-driven autonomous agents.
+
+This repository provides:
+
+- The **F7-LAS whitepaper**
+- **Schemas, prompts, and policy examples**
+- **Continuous Integration (CI) scaffolding**
+- **Implementation guidelines**
+- Early-stage **examples and patterns** for applying seven-layer security to agentic workflows
+
+F7-LAS is **not a runtime implementation** at this stage.  
+It is a **conceptual and architectural framework** with active engineering expansion.
 
 > **Maturity roadmap:**
 > F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
