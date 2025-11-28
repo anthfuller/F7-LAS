@@ -2,18 +2,11 @@
 
 *A layered, control-centric security architecture for agentic and multi-agent AI systems.*
 
-<!-- CI + Quality -->
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
-![version](https://img.shields.io/badge/version-v3.1.1-0078D4) 
-![status](https://img.shields.io/badge/status-passing-107C10)
-
-<!-- Licensing -->
-![license](https://img.shields.io/badge/license-CC%20BY%204.0-0078D4)
-
-<!-- Maturity -->
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-F2C744)
-
-
+![status](https://img.shields.io/badge/status-passing-brightgreen)
+![version](https://img.shields.io/badge/version-v3.1.1-blue)
+![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
+![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-gold)
 
 > **Maturity roadmap:**
 > F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
