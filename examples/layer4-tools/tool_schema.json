@@ -1,0 +1,13 @@
+{
+  "name": "aws_ec2_client",
+  "actions": [
+    "terminate_instance",
+    "describe_instance",
+    "list_instances"
+  ],
+  "arguments": {
+    "terminate_instance": ["instance_id"],
+    "describe_instance": ["instance_id"],
+    "list_instances": []
+  }
+}
