@@ -93,11 +93,15 @@ F7-LAS/
 │
 ├── docs/
 │   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
+│   ├── F7-LAS-model-whitepaper.pdf
+│   ├── Engineering-Review-Checklist.md
+│   ├── F7-LAS-Control-Catalog-v0.1.md
+│   │
 │   ├── F7-LAS-Implementation-Guide/
 │   │   ├── 00-introduction.md
 │   │   ├── 01-control-objectives.md
 │   │   ├── 02-layer-by-layer-controls.md
-│   │   ├── 03-suppplemental-layer-s.md
+│   │   ├── 03-supplemental-layer-s.md
 │   │   ├── 04-model-security-annex.md
 │   │   ├── 05-metrics-and-slos.md
 │   │   ├── 06-operational-playbooks.md
@@ -106,51 +110,121 @@ F7-LAS/
 │   │   └── appendices/
 │   │       ├── a-schemas.md
 │   │       ├── b-templates.md
-|   |       ├── c-checklist.md
+│   │       ├── c-checklist.md
 │   │       └── d-reference-patterns.md
-|   |
-│   ├── Engineering-Review-Checklist.md
-│   ├── F7-LAS-Control-Catalog-v0.1.md
-|   ├── F7-LAS-Model-v1.png
-|   ├── F7-LAS-model-whitepaper.pdf
-|   ├── README.md
-|   |
-|   ├── images/
+│   │
+│   └── images/
 │       ├── F7-LAS-Model-v1.png
-|       ├── F7-LAS-Model-v1A.png
-│       ├── F7-LAS_Execution_Contrl_Loop.png
+│       ├── F7-LAS-Model-v1A.png
+│       ├── F7-LAS_Execution_Control_Loop.png
 │       └── afuller_f7-las-model.png
-|      
+│
 ├── config/
 │   ├── prompts/
+│   │   ├── investigator_prompt.txt
+│   │   ├── coordinator_prompt.txt
+│   │   ├── remediator_prompt.txt
+│   │
 │   ├── policies/
-|   ├── psp-schema.json
+│   │   ├── agent-policy.json
+│   │   ├── policy-schema.json
+│   │   ├── policy-safety-default.json
+│   │   ├── policy-escalation-default.json
+│   │   ├── policy-constraints-default.json
+│   │   ├── protected-assets.yaml
+│   │   ├── whitelisted-ips.yaml
+│   │   ├── tool-policy.yaml
+│   │   ├── rag-policy.yaml
+│   │   ├── sandbox-profile.yaml
+│   │   │
+│   │   └── l5/
+│   │       └── opa/
+│   │           └── agent_security_enforcement.rego   ← **L5 PDP policy**
+│   │
+│   ├── psp-schema.json
 │   └── settings.yaml
 │
 ├── src/
 │   ├── agents/
+│   │   └── (future Stage-2 agent runners)
+│   │
 │   ├── core/
+│   │   └── (core framework pieces)
+│   │
 │   ├── demo_runner/
-│   └── tools/
-│   
-├── tests/
-│   ├── golden_dataset/
-│   │   ├── golden_eval_results.json
-│   │   ├── rubric.json
-│   │   └── scenariojson
-│   └── test_agents_basic.py
-│   
-|── examples/
+│   │   ├── demo_l5_flow.py        ← **Optional test harness**
+│   │   └── demo_agent_loop.py     ← **Stage-1 agent loop**
+│   │
+│   ├── tools/
+│   │   └── aws_ec2_client_stub.py  ← **Layer 4 stub**
+│   │
+│   └── policy/
+│       ├── decision.py             ← **PolicyDecision dataclass**
+│       ├── pep_base.py             ← **Base PEP class**
+│       └── pep_opa.py              ← **OPA PEP**
+│
+├── layer1-system-prompt/
 │   ├── README.md
-│   ├── basic_agent_flow.md
-│   ├── demo_system_prompt.txt
-│   ├── policy_enforced_tool_call.md
-│   ├── simple_rag_query.md
-│   ├── simple_rag_readonly.md
-│   ├── walkthrough_false_positive.md
-│   ├── walkthrough_false_positive.md
-│   └── walkthrough_ransomware_case.md
-```
+│   ├── investigator_prompt.txt
+│   ├── coordinator_prompt.txt
+│   └── remediator_prompt.txt
+│
+├── layer2-grounding/
+│   ├── README.md
+│   ├── allowlist.json
+│   └── grounding_profile.yaml
+│
+├── layer3-planner/
+│   ├── README.md
+│   └── simple_planner.py
+│
+├── layer4-tools/
+│   ├── README.md
+│   ├── tool_schema.json
+│   └── aws_ec2_client_stub.py
+│
+├── layer5-policy-engine/
+│   ├── README.md
+│   ├── pep/
+│   │   ├── pep_base.py
+│   │   ├── pep_opa.py
+│   │   ├── pep_cedar.py
+│   │   ├── pep_sentinel.py
+│   │   ├── pep_spicedb.py
+│   │   └── pep_kyverno.py
+│   │
+│   └── pdp/
+│       └── opa/
+│           ├── agent_security_enforcement.rego
+│           ├── data.json
+│           └── docker-compose.yml
+│
+├── layer6-sandbox/
+│   ├── README.md
+│   └── docker-compose.yml
+│
+├── layer7-monitoring/
+│   ├── README.md
+│   ├── telemetry_logger.py
+│   └── telemetry_schema.json
+│
+└── examples/
+    ├── README.md
+    ├── basic_agent_flow.md
+    ├── policy_enforced_tool_call.md
+    ├── simple_rag_query.md
+    ├── walkthrough_false_positive.md
+    ├── walkthrough_ransomware_case.md
+    └── layer5-policy-engines/
+        ├── aws-cedar/
+        ├── azure-custom/
+        ├── sentinel/
+        ├── spicedb/
+        ├── kyverno/
+        └── opa-rego/
+            ├── docker-compose.yml
+            └── README.md
+            ```
 
 ---
 
