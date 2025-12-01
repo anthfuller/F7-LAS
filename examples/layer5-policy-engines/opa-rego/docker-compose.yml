@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  opa:
+    image: openpolicyagent/opa:latest
+    command:
+      - "run"
+      - "--server"
+      - "--addr=0.0.0.0:8181"
+      - "/policies"
+    ports:
+      - "8181:8181"
+    volumes:
+      # Run `docker-compose` from repo root so this path resolves
+      - "./config/policies/l5/opa:/policies:ro"
