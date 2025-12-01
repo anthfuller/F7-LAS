@@ -1,15 +1,14 @@
 {
   "allowed_sources": [
-    "https://docs.aws.amazon.com/",
-    "https://learn.microsoft.com/",
-    "https://cloud.google.com/docs/"
+    "https://docs.aws.amazon.com/*",
+    "https://learn.microsoft.com/*",
+    "https://cloud.google.com/*"
   ],
- "blocked_sources": [
-  "*.reddit.com",
-  "*medium.com/*",
-  "*substack.com/*",
-  "user-uploaded-files",
-  "unknown-or-unverified-domains"
-   
- ]
+  "blocked_sources": [
+    "*.reddit.com",
+    "*.medium.com",
+    "*.substack.com",
+    "user-uploaded-files",
+    "unknown-or-unverified-domains"
+  ]
 }
