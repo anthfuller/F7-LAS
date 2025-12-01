@@ -224,8 +224,7 @@ F7-LAS/
         └── opa-rego/
             ├── docker-compose.yml
             └── README.md
-            ```
-
+ ```
 ---
 
 ## Tooling & CI Pipeline
