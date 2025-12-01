@@ -8,7 +8,7 @@ package f7las.l5.enforcement
 default allow = false
 
 #
-# --- Rule: Allow safe READ-ONLY actions ---
+# --- Allow safe READ-ONLY actions ---
 #
 allow {
     startswith(input.action, "get_")
@@ -22,12 +22,11 @@ allow {
     startswith(input.action, "describe_")
 }
 
-
 #
-# --- Rule: Allow controlled destructive actions ---
+# --- Allow controlled destructive actions ---
 # Allowed IFF:
 #   - NOT production
-#   - AND time_ok == true (outside change freeze)
+#   - AND current_time_ok_for_change == true (outside change freeze)
 #
 allow {
     input.action == "terminate_instance"
@@ -35,14 +34,13 @@ allow {
     input.current_time_ok_for_change == true
 }
 
-
 #
-# --- Deny reason (single rule, deterministic) ---
+# --- Deterministic deny reason ---
 #
 deny_message = msg {
     not allow
 
-    # Case 1 — production modification denied
+    # Case 1 — production terminate blocked
     input.action == "terminate_instance"
     input.environment == "production"
     msg := "Denied: terminate_instance blocked in production outside approved change window."
