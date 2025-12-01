@@ -1,0 +1,12 @@
+definition user {}
+
+definition environment {
+  relation maintainer: user
+}
+
+definition agent_tool_action {
+  relation actor: user
+  relation target_env: environment
+
+  permission destructive_allowed = actor->target_env->maintainer
+}
