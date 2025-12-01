@@ -1,0 +1,25 @@
+{
+  "policy_id": "F7LAS_L5_001_Prod_Safety_Lock",
+  "name": "Production Change Freeze",
+  "target_action": "terminate_instance",
+  "enforcement_mode": "deny_on_match",
+  "conditions": [
+    {
+      "field": "environment",
+      "operator": "equals",
+      "value": "production"
+    },
+    {
+      "field": "current_time_ok_for_change",
+      "operator": "equals",
+      "value": false
+    }
+  ],
+  "allow_exceptions": [
+    {
+      "field": "user_role",
+      "operator": "equals",
+      "value": "incident_commander"
+    }
+  ]
+}
