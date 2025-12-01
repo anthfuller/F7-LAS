@@ -28,7 +28,7 @@ Load the Layer-5 Rego policy automatically
 Watch policy files for changes
 
 Test the Policy Manually
-# 1. Check the allow rule
+## 1. Check the allow rule
 
 curl -s -X POST \
   http://localhost:8181/v1/data/f7las/l5/enforcement/allow \
@@ -41,7 +41,7 @@ curl -s -X POST \
         }
       }'
 
-# Expected Output:
+## Expected Output:
 {"result": false}
 
 # Because terminating a production instance during a disallowed window is forbidden.
@@ -59,10 +59,10 @@ curl -s -X POST \
         }
       }'
 
-# Example Output:
+## Example Output:
 {"result": "Agent action denied by L5 Policy: Production modification outside of approved maintenance window or environment."}
 
-# Using the PDP from the PEP (Python)
+## Using the PDP from the PEP (Python)
 
 If you are using the OPA-backed PEP module in src/policy/pep_opa.py, you can wire it like this:
 
@@ -90,7 +90,7 @@ else:
     print(f"L5: DENY → {decision.reason}")
 
 
-# Notes
+## Notes
 
 This is a demo PDP, not a production deployment.
 
