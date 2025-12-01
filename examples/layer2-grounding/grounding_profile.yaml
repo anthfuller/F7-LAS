@@ -1,0 +1,9 @@
+data_sources:
+  - name: cloud_docs
+    type: web
+    allowed_domains:
+      - aws.amazon.com
+      - learn.microsoft.com
+      - cloud.google.com
+retrieval_limit: 5
+strict_citations: true
