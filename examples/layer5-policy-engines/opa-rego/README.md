@@ -21,11 +21,11 @@ docker compose -f examples/layer5-policy-engines/opa-rego/docker-compose.yml up
 
 ## This will:
 
-Start OPA on http://localhost:8181
+- `Start OPA on http://localhost:8181
 
-Load the Layer-5 Rego policy automatically
+- `Load the Layer-5 Rego policy automatically
 
-Watch policy files for changes
+- `Watch policy files for changes
 
 Test the Policy Manually
 ## 1. Check the allow rule
