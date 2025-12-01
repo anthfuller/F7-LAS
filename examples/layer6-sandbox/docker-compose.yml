@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  f7las-agent-sandbox:
+    image: python:3.11-slim
+    container_name: f7las_sandbox
+    user: "1000:1000"       # non-root user
+    working_dir: /workspace
+    command: ["python", "sandbox_exec.py"]
+    networks:
+      - isolated
+    mem_limit: 256m
+    cpus: 0.5
+    read_only: true          # filesystem is read-only except tmpfs
+    tmpfs:
+      - /tmp
+    environment:
+      - PYTHONUNBUFFERED=1
+
+networks:
+  isolated:
+    internal: true
