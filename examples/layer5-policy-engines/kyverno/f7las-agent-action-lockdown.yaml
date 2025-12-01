@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: f7las-agent-action-lockdown
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: deny-prod-change-freeze
+      match:
+        any:
+          - resources:
+              kinds:
+                - AgentAction
+              apiGroups:
+                - agent.f7las.io
+      validate:
+        message: "F7-LAS L5: Destructive action on production is forbidden outside approved window."
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.tool_action }}"
+                operator: Equals
+                value: "terminate_instance"
+              - key: "{{ request.object.spec.environment }}"
+                operator: Equals
+                value: "production"
+              - key: "{{ request.object.spec.context.time_ok }}"
+                operator: Equals
+                value: false
