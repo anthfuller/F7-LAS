@@ -1,10 +1,14 @@
 {
   "timestamp": "ISO8601",
+  "layer": "L7",
+  "correlation_id": "string",
   "agent_id": "string",
   "tool_name": "string",
   "action": "string",
-  "policy_decision": "allow|deny",
   "environment": "string",
   "arguments": {},
-  "result": "success|failure"
+  "policy_decision": "allow|deny",
+  "policy_reason": "string",
+  "status": "success|failure",
+  "execution_time_ms": "number"
 }
