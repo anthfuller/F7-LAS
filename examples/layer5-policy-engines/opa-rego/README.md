@@ -48,7 +48,7 @@ curl -s -X POST \
 
 ---
 
-## 7️⃣ (Optional) Quick usage snippet in your demo agent
+## (Optional) Quick usage snippet in your demo agent
 
 Somewhere in `src/demo_runner/` (or examples) you can wire the PEP like this:
 
