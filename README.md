@@ -220,10 +220,18 @@ F7-LAS is evolving through clearly defined maturity stages to ensure transparenc
 
 ### Current Maturity Stage
 
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-yellow)
+![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)
 
-F7-LAS is currently **Stage 0 — Conceptual**.  
-The model structure, control catalog, prompt standards, and initial CI validation are in place, with additional hardening and functional components planned.
+F7-LAS is currently **Stage 1 — Prototype**.  
+Layers 1–7 now include minimal, working examples including:
+- System prompts (L1)  
+- Grounding profile + allowlist (L2)  
+- Simple planner stub (L3)  
+- Stub tools + schemas (L4)  
+- Multi-vendor Layer-5 PDP/PEP examples (OPA, Cedar, Sentinel, Kyverno, SpiceDB)  
+- Minimal sandbox boundary (L6)  
+- Telemetry schema + logger (L7)
+
 
 ### Maturity Model
 
