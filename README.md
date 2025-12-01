@@ -2,9 +2,10 @@
 
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
 ![ci_status](https://img.shields.io/badge/CI-passing-brightgreen)
-![version](https://img.shields.io/badge/version-v3.1.1-blue)
+![version](https://img.shields.io/badge/version-v0.1.0-blue)
 ![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
-![maturity](https://img.shields.io/badge/maturity-Stage%200%20—%20Conceptual-yellow)
+![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellow)
+
 
 **F7-LAS™ (Fuller 7-Layer Agentic Security)** is an open security model for designing, validating, and governing agentic AI systems.  
 It defines seven interdependent layers—spanning prompts, grounding, planning logic, tool security, policy enforcement, sandboxing, and monitoring—to reduce risk in emerging LLM-driven autonomous agents.
