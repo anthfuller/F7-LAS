@@ -10,7 +10,7 @@ If you discover a security issue in the repository (schemas, examples, or docume
    - Suggested mitigation
 
 ## Supported Content
-Because F7-LAS is primarily a conceptual framework, the following items are in scope:
+Because F7-LAS is primarily a conceptual model, the following items are in scope:
 
 - JSON/YAML schemas  
 - Policy examples  
