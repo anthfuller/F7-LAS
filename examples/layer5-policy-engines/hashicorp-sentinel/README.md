@@ -1,22 +1,30 @@
-# HashiCorp Sentinel PDP Demo (Layer 5)
+# HashiCorp Sentinel — F7-LAS Layer-5 Policy Engine Example
 
-This folder provides a Sentinel-based example of the F7-LAS Layer-5
-Policy Decision Point (PDP).
+This folder contains the **Sentinel (HashiCorp)** policy example for F7-LAS Layer 5 (Policy Engine).
 
-Files:
+HashiCorp Sentinel is a *policy-as-code engine* used in Terraform Enterprise, Vault, Consul, and Nomad.  
+This example is included to demonstrate how F7-LAS Layer-5 guardrails can be implemented across multiple vendor PDP systems.
 
-- `f7las_l5.sentinel` — the Sentinel policy that implements the L5 rules
-- `sentinel_adapter.py` — a vendor-neutral PDP adapter called by the PEP
+## Note  
+> This is **not** Microsoft Sentinel.  
+> This folder refers to **HashiCorp Sentinel**, a policy enforcement engine.
 
-## Usage
+---
 
-Sentinel evaluates the policy based on an `input.request` object like:
+## Example Policy: `f7las_l5.sentinel`
 
-```json
-{
-  "request": {
-    "action": "terminate_instance",
-    "environment": "production",
-    "current_time_ok_for_change": false
-  }
+This policy denies dangerous actions, such as terminating a production instance outside an approved change window.
+
+```hcl
+# F7-LAS Layer 5 — deny terminate_instance in production when time_ok == false
+
+main = rule {
+  request := input.request
+
+  action := request.action
+  env := request.environment
+  time_ok := request.current_time_ok_for_change
+
+  # Allow only if the unsafe combination is NOT true
+  not (action == "terminate_instance" && env == "production" && time_ok == false)
 }
