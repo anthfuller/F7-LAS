@@ -78,6 +78,32 @@ Plus:
 - **RACI Model**
 - **Operational Playbooks**
 
+- ## FAQ (Quick Answers)
+
+**Is F7-LAS a framework or a model?**  
+F7-LAS is primarily a **security model** for agentic AI, with example code and patterns. It is not a full production agent framework.
+
+**What is “Stage-1 / Prototype” in this repo?**  
+Stage-1 means the repo includes:
+- The whitepaper and implementation guide,
+- Example prompts and grounding configs,
+- A working Layer-5 Policy Engine pattern (PDP/PEP),
+- Sandbox and telemetry stubs,
+but **no fully wired production agent** yet.
+
+**Can I use this in production?**  
+Not as-is. The examples are meant as reference patterns and starting points. Any real deployment should go through your own engineering, security review, and hardening.
+
+**Does this represent Microsoft’s views?**  
+No. This is an independent project by the author and is **not affiliated with, endorsed by, or associated with Microsoft** or any other employer.
+
+**Where do I start?**  
+Suggested entry points:
+- Read the whitepaper in `docs/`.
+- Skim `examples/` for Layer-by-Layer demos.
+- Look at `examples/layer5-policy-engines/` for the PDP/PEP patterns.
+
+
 
 ---
 
