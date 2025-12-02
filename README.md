@@ -78,7 +78,7 @@ Plus:
 - **RACI Model**
 - **Operational Playbooks**
 
-- ## FAQ (Quick Answers)
+## FAQ (Quick Answers)
 
 **Is F7-LAS a framework or a model?**  
 F7-LAS is primarily a **security model** for agentic AI, with example code and patterns. It is not a full production agent framework.
