@@ -202,9 +202,9 @@ Enforces:
 - Prompt validation (Layer 1 PSP compliance)
 - Policy validation (Layer 5)
 - Settings validation (Layer 3 safety)
-- Golden dataset scoring (Layer 7)
+- Golden dataset scoring (Layer 7, Stage-1 placeholder)
 - Unit tests
-- Optional linting & SBOM/SCA
+- Optional linting & SBOM/SCA (future expansion)
 
 ---
 
@@ -225,10 +225,10 @@ Run tests:
 pytest -q tests/test_agents_basic.py
 ```
 
-Run the golden evaluator:
+Run the golden evaluator (Stage-1 placeholder):
 
 ```bash
-python scripts/check_golden_thresholds.py golden_eval_results.json
+python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_results.json
 ```
 
 ---
@@ -243,9 +243,9 @@ python scripts/check_golden_thresholds.py golden_eval_results.json
 - Operational playbooks  
 
 **Security**
-- Prompt Security Profile schema  
-- Policy validation  
-- Sandbox rules  
+- Prompt Security Profile (PSP) schema  
+- Policy validation (L5) 
+- Sandbox rules (L6 prototype)  
 - Drift detection & evaluation logic  
 
 **Development**
