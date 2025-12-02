@@ -299,7 +299,6 @@ F7-LAS™ is a trademark of Anthony L. Fuller. Trademark application pending.
 
 This project was created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. All opinions, designs, diagrams, and documentation represent the author’s personal work and do not reflect the views of Microsoft.
 
-Licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
-https://creativecommons.org/licenses/by/4.0/
+Licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0). https://creativecommons.org/licenses/by/4.0/
 
 
