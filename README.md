@@ -96,7 +96,8 @@ F7-LAS/
 │   ├── F7-LAS-model-whitepaper.pdf
 │   ├── Engineering-Review-Checklist.md
 │   ├── F7-LAS-Control-Catalog-v0.1.md
-│   │
+│   ├── F7-LAS-Model-v1.png
+|   |
 │   ├── F7-LAS-Implementation-Guide/
 │   │   ├── 00-introduction.md
 │   │   ├── 01-control-objectives.md
