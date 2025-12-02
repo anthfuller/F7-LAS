@@ -1,4 +1,5 @@
-# F7-LAS Layer 5 – deny terminate_instance in production when time_ok == false
+# F7-LAS Layer 5 — Sentinel Policy
+# Deny destructive production changes outside allowed time
 
 main = rule {
   request := input.request
@@ -7,6 +8,11 @@ main = rule {
   env := request.environment
   time_ok := request.current_time_ok_for_change
 
-  # Deny only when all three conditions are met
-  not (action == "terminate_instance" && env == "production" && time_ok == false)
+  # Allow read-only actions
+  (startswith(action, "get_") or
+   startswith(action, "list_") or
+   startswith(action, "describe_")) or
+
+  # Allow destructive actions only in non-prod AND approved windows
+  (action == "terminate_instance" and env != "production" and time_ok == true)
 }
