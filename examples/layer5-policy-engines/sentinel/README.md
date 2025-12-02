@@ -5,7 +5,7 @@ This folder contains the **Sentinel (HashiCorp)** policy example for F7-LAS Laye
 HashiCorp Sentinel is a *policy-as-code engine* used in Terraform Enterprise, Vault, Consul, and Nomad.  
 This example is included to demonstrate how F7-LAS Layer-5 guardrails can be implemented across multiple vendor PDP systems.
 
-> ⚠️ Note  
+# Note  
 > This is **not** Microsoft Sentinel.  
 > This folder refers to **HashiCorp Sentinel**, a policy enforcement engine.
 
