@@ -93,11 +93,6 @@ F7-LAS/
 │
 ├── docs/
 │   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
-│   ├── F7-LAS-model-whitepaper.pdf
-│   ├── Engineering-Review-Checklist.md
-│   ├── F7-LAS-Control-Catalog-v0.1.md
-│   ├── F7-LAS-Model-v1.png
-|   |
 │   ├── F7-LAS-Implementation-Guide/
 │   │   ├── 00-introduction.md
 │   │   ├── 01-control-objectives.md
@@ -108,12 +103,17 @@ F7-LAS/
 │   │   ├── 06-operational-playbooks.md
 │   │   ├── 07-raci-model.md
 │   │   ├── 08-implementation-profiles.md
-│   │   └── appendices/
-│   │       ├── a-schemas.md
-│   │       ├── b-templates.md
-│   │       ├── c-checklist.md
-│   │       └── d-reference-patterns.md
+│   │   └── layer-s/
+│   │       ├── README.md
+│   │       ├── checklist.md
+│   │       ├── sbom-guidance.md
+│   │       ├── vetting-workflow.md
+│   │       └── allowlist-schema.json
 │   │
+│   ├── Engineering-Review-Checklist.md
+│   ├── F7-LAS-Control-Catalog-v0.1.md
+│   ├── F7-LAS-Model-v1.png
+│   ├── F7-LAS-model-whitepaper.pdf
 │   └── images/
 │       ├── F7-LAS-Model-v1.png
 │       ├── F7-LAS-Model-v1A.png
@@ -122,109 +122,32 @@ F7-LAS/
 │
 ├── config/
 │   ├── prompts/
-│   │   ├── investigator_prompt.txt
-│   │   ├── coordinator_prompt.txt
-│   │   ├── remediator_prompt.txt
-│   │
 │   ├── policies/
-│   │   ├── agent-policy.json
-│   │   ├── policy-schema.json
-│   │   ├── policy-safety-default.json
-│   │   ├── policy-escalation-default.json
-│   │   ├── policy-constraints-default.json
-│   │   ├── protected-assets.yaml
-│   │   ├── whitelisted-ips.yaml
-│   │   ├── tool-policy.yaml
-│   │   ├── rag-policy.yaml
-│   │   ├── sandbox-profile.yaml
-│   │   │
-│   │   └── l5/
-│   │       └── opa/
-│   │           └── agent_security_enforcement.rego   ← **L5 PDP policy**
-│   │
 │   ├── psp-schema.json
 │   └── settings.yaml
 │
 ├── src/
 │   ├── agents/
-│   │   └── (future Stage-2 agent runners)
-│   │
 │   ├── core/
-│   │   └── (core framework pieces)
-│   │
 │   ├── demo_runner/
-│   │   ├── demo_l5_flow.py        ← **Optional test harness**
-│   │   └── demo_agent_loop.py     ← **Stage-1 agent loop**
-│   │
-│   ├── tools/
-│   │   └── aws_ec2_client_stub.py  ← **Layer 4 stub**
-│   │
-│   └── policy/
-│       ├── decision.py             ← **PolicyDecision dataclass**
-│       ├── pep_base.py             ← **Base PEP class**
-│       └── pep_opa.py              ← **OPA PEP**
+│   └── tools/
 │
-├── layer1-system-prompt/
-│   ├── README.md
-│   ├── investigator_prompt.txt
-│   ├── coordinator_prompt.txt
-│   └── remediator_prompt.txt
-│
-├── layer2-grounding/
-│   ├── README.md
-│   ├── allowlist.json
-│   └── grounding_profile.yaml
-│
-├── layer3-planner/
-│   ├── README.md
-│   └── simple_planner.py
-│
-├── layer4-tools/
-│   ├── README.md
-│   ├── tool_schema.json
-│   └── aws_ec2_client_stub.py
-│
-├── layer5-policy-engine/
-│   ├── README.md
-│   ├── pep/
-│   │   ├── pep_base.py
-│   │   ├── pep_opa.py
-│   │   ├── pep_cedar.py
-│   │   ├── pep_sentinel.py
-│   │   ├── pep_spicedb.py
-│   │   └── pep_kyverno.py
-│   │
-│   └── pdp/
-│       └── opa/
-│           ├── agent_security_enforcement.rego
-│           ├── data.json
-│           └── docker-compose.yml
-│
-├── layer6-sandbox/
-│   ├── README.md
-│   └── docker-compose.yml
-│
-├── layer7-monitoring/
-│   ├── README.md
-│   ├── telemetry_logger.py
-│   └── telemetry_schema.json
+├── tests/
+│   ├── golden_dataset/
+│   │   ├── golden_eval_results.json
+│   │   ├── rubric.json
+│   │   └── scenario.json
+│   └── test_agents_basic.py
 │
 └── examples/
     ├── README.md
     ├── basic_agent_flow.md
+    ├── demo_system_prompt.txt
     ├── policy_enforced_tool_call.md
     ├── simple_rag_query.md
+    ├── simple_rag_readonly.md
     ├── walkthrough_false_positive.md
-    ├── walkthrough_ransomware_case.md
-    └── layer5-policy-engines/
-        ├── aws-cedar/
-        ├── azure-custom/
-        ├── sentinel/
-        ├── spicedb/
-        ├── kyverno/
-        └── opa-rego/
-            ├── docker-compose.yml
-            └── README.md
+    └── walkthrough_ransomware_case.md
  ```
 ---
 
