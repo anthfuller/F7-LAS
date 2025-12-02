@@ -7,23 +7,29 @@
 ![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)
 
 
-**F7-LAS™ (Fuller 7-Layer Agentic Security)** is an open security model for designing, validating, and governing agentic AI systems.  
+F7-LAS™ (Fuller 7-Layer Agentic Security) is an open security model for designing, validating, and governing agentic AI systems.
 It defines seven interdependent layers—spanning prompts, grounding, planning logic, tool security, policy enforcement, sandboxing, and monitoring—to reduce risk in emerging LLM-driven autonomous agents.
 
-This repository provides:
+This repository currently provides:
 
-- The **F7-LAS whitepaper**
-- **Schemas, prompts, and policy examples**
-- **Continuous Integration (CI) scaffolding**
-- **Implementation guidelines**
-- Early-stage **examples and patterns** for applying seven-layer security to agentic workflows
+- The F7-LAS whitepaper and implementation guide
+- Schemas, prompts, and policy examples
+- A Stage-1 prototype of key runtime pieces:
+  - Layer 1: example system prompts for Investigator / Coordinator / Remediator agents
+  - Layer 2: grounding / allowlist profiles
+  - Layer 3: a simple planner stub
+  - Layer 4: example tool schemas and stub implementations
+  - Layer 5: policy engine examples (PDP/PEP) including an OPA/Rego demo and vendor-neutral PEP patterns
+  - Layer 6: a minimal sandbox container stub
+  - Layer 7: a lightweight telemetry schema and logger
+- CI scaffolding and validation scripts for policies, prompts, and settings
+- Early examples and patterns for applying seven-layer security to agentic workflows
 
-F7-LAS is **not a runtime implementation** at this stage.  
-It is a **conceptual model** with active engineering expansion.
+**Maturity roadmap.**  
+F7-LAS is currently at **Stage 1 – Prototype**.  
+The repository includes conceptual material plus minimal, demonstrative runtime components.
+Future stages will introduce richer agents, stronger sandboxing, deeper telemetry integration, golden datasets, and hardened reference implementations suitable for lab and pilot use.
 
-> **Maturity roadmap:**
-> F7-LAS is currently at Stage 0 – Conceptual. The core runtime components (agents, tools, orchestration, and controller logic) are not yet implemented in this repository.
-> The current focus is on the conceptual model, control layers, prompts, policies, schemas, and CI scaffolding. Future stages will introduce example agents, hardened CI, golden datasets, reference implementations, and operational playbooks.
 
 
 ### F7-LAS Maturity Stages
