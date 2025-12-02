@@ -125,8 +125,8 @@ F7-LAS/
 │   ├── F7-LAS-model-whitepaper.pdf
 │   └── images/
 │       ├── F7-LAS-Model-v1A.png
+|       ├── F7-LAS-Model-v1B.png 
 │       ├── F7-LAS_Execution_Control_Loop.png
-│       ├── Multi-Agent-F7-LAS_Model-v1.png
 │       └── afuller_f7-las-model.png
 │
 ├── config/
