@@ -183,7 +183,14 @@ F7-LAS/
     ├── simple_rag_query.md
     ├── simple_rag_readonly.md
     ├── walkthrough_false_positive.md
-    └── walkthrough_ransomware_case.md
+    ├── walkthrough_ransomware_case.md
+    ├── layer1-system-prompt/
+    ├── layer2-grounding
+    ├── layer3-planner
+    ├── layer4-tools
+    ├── layer-5-policy-engines
+    ├── layer6-sandbox
+    └── layer7-monitoring
  ```
 ---
 
