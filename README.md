@@ -185,12 +185,12 @@ F7-LAS/
     ├── walkthrough_false_positive.md
     ├── walkthrough_ransomware_case.md
     ├── layer1-system-prompt/
-    ├── layer2-grounding
-    ├── layer3-planner
-    ├── layer4-tools
-    ├── layer-5-policy-engines
-    ├── layer6-sandbox
-    └── layer7-monitoring
+    ├── layer2-grounding/
+    ├── layer3-planner/
+    ├── layer4-tools/
+    ├── layer5-policy-engines/
+    ├── layer6-sandbox/
+    └── layer7-monitoring/
  ```
 ---
 
