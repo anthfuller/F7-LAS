@@ -124,4 +124,4 @@ Contributions are welcome across:
 - Threat scenarios mapped to specific layers.
 - Documentation and diagrams.
 
-See `CONTRIBUTING.md` (when available) or open a GitHub issue to discuss ideas.
+See `CONTRIBUTING.md` or open a GitHub issue to discuss ideas.
