@@ -277,8 +277,8 @@ Layers 1–7 now include minimal, working examples including:
 
 | Stage | Label         | Description                                              | Intended Use                |
 |-------|--------------|----------------------------------------------------------|-----------------------------|
-| 0     | Conceptuual  | Design, scaffolding, control definitions, CI bootstrapping   | Evaluation & research        |
-| 1     | Alpha        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
+| 0     | Conceptual  | Design, scaffolding, control definitions, CI bootstrapping   | Evaluation & research        |
+| 1     | Prototype        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
 | 2     | Beta         | CI-tested, partial coverage, validated controls           | Controlled pilot deployments |
 | 3     | Stable       | Versioned, test-covered, production-ready patterns        | Enterprise / production use  |
 
@@ -305,7 +305,7 @@ Layers 1–7 now include minimal, working examples including:
 ### Badge Palette for Future Stages
 
 - Stage 1 — Alpha  
-  `![maturity](https://img.shields.io/badge/maturity-Stage%201%20%E2%80%94%20Alpha-yellowgreen)`
+  `![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)`
 
 - Stage 2 — Beta  
   `![maturity](https://img.shields.io/badge/maturity-Stage%202%20%E2%80%94%20Beta-orange)`
