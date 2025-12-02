@@ -127,7 +127,6 @@ F7-LAS/
 │   └── validate-settings.py
 │
 ├── docs/
-│   ├── Security-Agentic-AI-The-7-Layer-Model-v2.4.pdf
 │   ├── F7-LAS-Implementation-Guide/
 │   │   ├── 00-introduction.md
 │   │   ├── 01-control-objectives.md
@@ -148,8 +147,9 @@ F7-LAS/
 │   ├── Engineering-Review-Checklist.md
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 │   ├── F7-LAS-Model-v1.png
-│   ├── F7-LAS-model-whitepaper.pdf
-|   ├── F7-LAS-QA.md
+│   ├── F7-LAS-QA.md
+|   ├── F7-LAS-model-whitepaper_v2.4.pdf
+|   ├── README.md
 │   └── images/
 │       ├── F7-LAS-Model-v1A.png
 |       ├── F7-LAS-Model-v1B.png 
