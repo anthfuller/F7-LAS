@@ -299,7 +299,7 @@ Layers 1–7 now include minimal, working examples including:
 
 #### Agent & Model Enhancements
 - Example multi-agent orchestration
-- Tooling adapters (OpenAI MCP / LangChain / Azure / AWS)
+- Tooling adapters (OpenAI MCP / LangChain / Azure / AWS / GCP)
 - Real-world security playbooks
 
 ### Badge Palette for Future Stages
