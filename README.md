@@ -355,9 +355,8 @@ Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.�
   url          = {https://doi.org/10.5281/zenodo.17795922}
 }
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17795922.svg)](https://doi.org/10.5281/zenodo.17795922)
-
 ---
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17795922.svg)](https://doi.org/10.5281/zenodo.17795922)
 
 ## License & Disclaimer
 
