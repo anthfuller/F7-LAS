@@ -39,12 +39,12 @@ Future stages will introduce richer agents, stronger sandboxing, deeper telemetr
 
 ### F7-LAS Maturity Stages
 
-| Stage | Label                     | Description                                     | Use Readiness            |
-|-------|---------------------------|-------------------------------------------------|--------------------------|
-| 0     | Conceptual              | Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
-| 1     | Prototype                    | Core logic working end-to-end with gaps.        | Internal sandbox only     |
-| 2     | Beta                      | CI + tests in place, coverage improving.        | Controlled pilot / lab    |
-| 3     | Stable                    | Versioned, test-covered, documented patterns.   | Production-ready          |
+| Stage | Label      | Description                                     | Use Readiness             |
+|-------|-----------|-------------------------------------------------|---------------------------|
+| 0     | Conceptual| Design, scaffolding, early controls and docs.   | Evaluation, learning, PoC |
+| 1     | Prototype | Core logic working end-to-end with gaps.        | Internal sandbox only     |
+| 2     | Beta      | CI + tests in place, coverage improving.        | Controlled pilot / lab    |
+| 3     | Stable    | Versioned, test-covered, documented patterns.   | Production-ready          |
 
 F7-LAS is intentionally **opinionated** and will move through these stages as the implementation guide, control catalog, golden datasets, and CI hardening mature.
 
@@ -90,7 +90,7 @@ Stage-1 means the repo includes:
 - The whitepaper and implementation guide,
 - Example prompts and grounding configs,
 - A working Layer-5 Policy Engine pattern (PDP/PEP),
-- Sandbox and telemetry stubs,
+- Sandbox and telemetry stubs,  
 but **no fully wired production agent** yet.
 
 **Can I use this in production?**  
@@ -108,7 +108,6 @@ Suggested entry points:
 
 
 ---
-
 
 ## Repository Structure
 
@@ -150,11 +149,11 @@ F7-LAS/
 │   ├── F7-LAS-Control-Catalog-v0.1.md
 │   ├── F7-LAS-Model-v1.png
 │   ├── F7-LAS-QA.md
-|   ├── F7-LAS-model-whitepaper_v2.4.pdf
-|   ├── README.md
+│   ├── F7-LAS-model-whitepaper_v2.4.pdf
+│   ├── README.md
 │   └── images/
 │       ├── F7-LAS-Model-v1A.png
-|       ├── F7-LAS-Model-v1B.png 
+│       ├── F7-LAS-Model-v1B.png 
 │       ├── F7-LAS_Execution_Control_Loop.png
 │       └── afuller_f7-las-model.png
 │
@@ -193,7 +192,8 @@ F7-LAS/
     ├── layer5-policy-engines/
     ├── layer6-sandbox/
     └── layer7-monitoring/
- ```
+```
+
 ---
 
 ## Tooling & CI Pipeline
@@ -213,7 +213,7 @@ Enforces:
 ## Quickstart
 
 ```bash
-git clone https://github.com/<your-org>/F7-LAS.git
+git clone https://github.com/anthfuller/F7-LAS.git
 cd F7-LAS
 
 python -m venv .venv
@@ -256,6 +256,7 @@ python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_resul
 - CI workflow and validators  
 
 ---
+
 ## Roadmap
 
 F7-LAS is evolving through clearly defined maturity stages to ensure transparency, stability, and long-term governance.
@@ -277,12 +278,12 @@ Layers 1–7 now include minimal, working examples including:
 
 ### Maturity Model
 
-| Stage | Label         | Description                                              | Intended Use                |
-|-------|--------------|----------------------------------------------------------|-----------------------------|
-| 0     | Conceptual  | Design, scaffolding, control definitions, CI bootstrapping   | Evaluation & research        |
-| 1     | Prototype        | Core logic implemented end-to-end with gaps               | Internal sandbox testing     |
-| 2     | Beta         | CI-tested, partial coverage, validated controls           | Controlled pilot deployments |
-| 3     | Stable       | Versioned, test-covered, production-ready patterns        | Enterprise / production use  |
+| Stage | Label      | Description                                              | Intended Use                |
+|-------|-----------|----------------------------------------------------------|-----------------------------|
+| 0     | Conceptual| Design, scaffolding, control definitions, CI bootstrapping | Evaluation & research       |
+| 1     | Prototype | Core logic implemented end-to-end with gaps               | Internal sandbox testing    |
+| 2     | Beta      | CI-tested, partial coverage, validated controls           | Controlled pilot deployments|
+| 3     | Stable    | Versioned, test-covered, production-ready patterns        | Enterprise / production use |
 
 ### Planned Future Enhancements
 
@@ -306,7 +307,7 @@ Layers 1–7 now include minimal, working examples including:
 
 ### Badge Palette for Future Stages
 
-- Stage 1 — Alpha  
+- Stage 1 — Prototype  
   `![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)`
 
 - Stage 2 — Beta  
@@ -324,10 +325,37 @@ A visual maturity diagram for F7-LAS will be published in the documentation.
 ## Contributing
 
 Contributions welcome — scenarios, policies, prompts, controls, tools.  
-Follow:the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md)
-- Engineering Review Checklist  
+Follow the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md) for:
+- Engineering review steps  
 - CI pipeline requirements  
 - PSP formatting rules  
+
+---
+
+## How to Cite F7-LAS
+
+If you reference or build upon this work in research, engineering documentation, or academic publications, please cite the Zenodo-archived version below.
+
+### **APA**
+Fuller, A. (2025). *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. Zenodo. https://doi.org/10.5281/zenodo.17795922
+
+### **MLA**
+Fuller, Anthony. *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. 2025, Zenodo, https://doi.org/10.5281/zenodo.17795922.
+
+### **Chicago**
+Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.” Zenodo, 2025. https://doi.org/10.5281/zenodo.17795922.
+
+### **BibTeX**
+```bibtex
+@misc{fuller_f7las_2025,
+  title        = {Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model},
+  author       = {Fuller, Anthony},
+  year         = {2025},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17795922},
+  url          = {https://doi.org/10.5281/zenodo.17795922}
+}
+```
 
 ---
 
@@ -343,7 +371,3 @@ All opinions, designs, diagrams, and documentation represent the author’s pers
 
 - All documentation, diagrams, models, and written content are licensed under **CC BY 4.0**.  
 - All source code in the `/src/`, `/examples/`, `/scripts/`, and `/config/` directories is licensed under the **MIT License**.
-- All documentation, diagrams, models, and written content are licensed under **CC BY 4.0**.  
-- All source code in the `/src/`, `/examples/`, `/scripts/`, and `/config/` directories is licensed under the **MIT License**.
-
-
