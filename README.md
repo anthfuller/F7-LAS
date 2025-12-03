@@ -2,9 +2,11 @@
 
 ![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)
 ![ci_status](https://img.shields.io/badge/CI-passing-brightgreen)
-![version](https://img.shields.io/badge/version-v0.1.0-blue)
-![license](https://img.shields.io/badge/license-CC%20BY%204.0-blue)
+![version](https://img.shields.io/badge/version-v3.1.1-blue)
+![license](https://img.shields.io/badge/license-CC%20BY%204.0%20%2B%20MIT-blue)
 ![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17795922.svg)](https://doi.org/10.5281/zenodo.17795922)
+
 
 > **Disclaimer:** This is an independent personal project and is not affiliated with or endorsed by Microsoft. All work reflects the author's personal views only.
 
