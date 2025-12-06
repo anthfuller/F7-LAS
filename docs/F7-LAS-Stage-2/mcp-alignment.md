@@ -2,7 +2,7 @@
 
 Purpose:
 Document alignment of F7-LAS runtime controls with external industry practices —
-including the MCP security paper — while preserving F7-LAS independence.
+including the MCP security paper: "Securing the Model Context Protocol (MCP): Risk, Controls, and Governance" — while preserving F7-LAS independence.
 
 F7-LAS is a vendor-neutral model.
 External papers provide influence, not direction.
