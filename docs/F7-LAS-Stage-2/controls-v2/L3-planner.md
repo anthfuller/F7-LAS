@@ -1,19 +1,32 @@
-# Layer 3 — Planner v2 Guardrails Specification
+# Layer 3 — Planner / Controller v2 Spec
 
-**Status:** Draft (Stage-2)
+**Status:** Draft (Stage-2)**  
+**Scope:** Schema + behavior spec only (no runtime wiring yet)
 
-The Planner enforces intent-aware sequencing of actions before tools execute.
+The Planner converts intent → structured actions that can be checked by:
+L4 (tool risk), L5 (policy), L6 (sandbox), and L7 (telemetry).
 
-## Controls (Stage-2 Initial Set)
+---
 
-| Control | Description | Enforcement Point |
-|--------|-------------|------------------|
-| Plan-Diff Check | Compare proposed plan vs executed actions | Planner / Telemetry |
-| Escalation Block | Prevent unsanctioned privilege escalation | Planner + Policy |
-| Safe-Step Rules | Prohibit unsafe multi-step sequences | Planner |
-| Max Plan Depth | Cap number of chained actions | Planner config |
-| Risk Scoring | Evaluate plan before execution | Planner → Policy |
+## Planner Output Schema (v2)
 
-## Outputs
-- `plan_trace_v2.json`
-- `risk_vector` per action
+```jsonc
+{
+  "plan_id": "string",
+  "agent_id": "string",
+  "target_environment": "production|staging|dev",
+  "impact_level": "low|medium|high",
+  "steps": [
+    {
+      "step_id": "string",
+      "description": "string",
+      "reasoning": "string",
+      "tool_name": "string",
+      "action": "string",
+      "arguments": {},
+      "step_dependency": "string|null",
+      "requires_approval": false,
+      "risk_flags": []
+    }
+  ]
+}
