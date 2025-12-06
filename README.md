@@ -342,7 +342,7 @@ Fuller, A. (2025). *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*.
 ### **MLA**
 Fuller, Anthony. *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. 2025, Zenodo, https://doi.org/10.5281/zenodo.17795922.
 
-### **Chicago**
+### **Atlanta**
 Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.” Zenodo, 2025. https://doi.org/10.5281/zenodo.17795922.
 
 ### **BibTeX**
