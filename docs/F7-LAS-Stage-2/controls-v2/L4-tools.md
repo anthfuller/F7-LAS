@@ -1,28 +1,17 @@
-# Layer 4 — Tool Security Profile v2
-
-**Status:** Draft (Stage-2)
-
-Defines capability classes and sanitization rules for tools.
-
-## Capability Classes
-
-| Class | Example Actions | Risk Level |
-|------|-----------------|-----------|
-| Safe | list, describe | Low |
-| Medium-Risk | modify, write | Medium |
-| High-Impact | delete, terminate, isolate | High |
-
-## Required Metadata (MCP-inspired, vendor-neutral)
-
-- `name`
-- `capability_class`
-- `allowed_arguments`
-- `schema_version`
-- `simulation_mode_supported: true/false`
-
-## Sanitization Rules
-
-| Stage | Rule |
-|------|-----|
-| Input | Validate argument schema + ranges |
-| Output | Strip PII and system-internal IDs |
+tool:
+  name: string
+  description: string
+  capability_class: enum("safe", "medium_risk", "high_impact")
+  allowed_actions: list(string)      # Explicit verbs only
+  required_policy: boolean           # Must pass PEP/PDP
+  sandbox_profile: enum("S1","S2","S3")
+  inputs:
+    - name: string
+      type: string                   # strict types only
+      required: boolean
+      sanitize: enum("text","path","url","id")
+  outputs:
+    - name: string
+      type: string
+      sanitize: enum("text","path","url","id")
+  supports_dry_run: boolean
