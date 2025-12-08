@@ -145,7 +145,7 @@ F7-LAS/
 │   │   ├── 05-metrics-and-slos.md
 │   │   ├── 06-operational-playbooks.md
 │   │   ├── 07-raci-model.md
-│   │   ├── implementation-profiles/
+│   │   ├── 08-implementation-profiles/
 |   |   |   └── Optional-MCP-Security-Profile.md
 |   |   |
 │   │   └── layer-s/
