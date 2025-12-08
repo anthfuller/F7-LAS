@@ -128,13 +128,6 @@ F7-LAS/
 │   └── validate-settings.py
 │
 ├── docs/
-|   ├── F7-LAS-LAS-Stage-2/
-|   ├── mcp-alignment.md 
-|   ├── roadmap.md
-|   └── Control-v2/
-|   |   ├── L3-planner.md   
-|   |   ├── L4-tools.md 
-|   |   └── L5-policy.md
 |   |
 │   ├── F7-LAS-Implementation-Guide/
 │   │   ├── 00-introduction.md
