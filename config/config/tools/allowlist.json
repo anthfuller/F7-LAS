@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0",
-  "generated_at": "2025-11-28T00:00:00Z",
-  "description": "Vetted tool allowlist for F7-LAS. Defines trusted tools, owners, risk tiers, permissions, and review metadata.",
+  "schema_version": "2.0",
+  "generated_at": "2025-12-07T00:00:00Z",
+  "description": "Extended allowlist for F7-LAS with governance, context control, and policy enforcement metadata.",
   "tools": [
     {
       "id": "siem_query",
@@ -9,78 +9,55 @@
       "owner": "Security Operations",
       "risk_tier": "medium",
       "permissions": ["read"],
-      "allowed_versions": ["1.x"],
+      "allowed_versions": ["1.*"],
       "description": "Read-only log and incident queries.",
       "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "XDR_incident_lookup",
-      "display_name": "XDR Incident Lookup",
-      "owner": "Security Operations",
-      "risk_tier": "medium",
-      "permissions": ["read"],
-      "allowed_versions": ["1.x"],
-      "description": "Lookup details on XDR incidents.",
-      "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "log_query",
-      "display_name": "Log Query",
-      "owner": "Security Operations",
-      "risk_tier": "medium",
-      "permissions": ["read"],
-      "allowed_versions": ["1.x"],
-      "description": "Query internal telemetry and operational logs.",
-      "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
+      "last_reviewed": "2025-01-01",
 
+      "approved_roles": ["soc_analyst", "audit_viewer"],
+      "execution_context": "sandboxed",
+      "compliance_flags": ["logs_pii"],
+      "tool_category": "logging",
+      "review_metadata": {
+        "reviewed_by": "sec_team@example.com",
+        "review_notes": "Reviewed for log access patterns and PII handling."
+      },
+      "discovery_behavior": {
+        "dynamic": false,
+        "requires_approval_on_discovery": false
+      },
+      "enforcement_policy": {
+        "fail_behavior": "deny",
+        "requires_hitl": false
+      }
+    },
     {
       "id": "ticket_create",
       "display_name": "Ticket Create",
       "owner": "SOC Workflow",
       "risk_tier": "medium",
       "permissions": ["create"],
-      "allowed_versions": ["1.x"],
+      "allowed_versions": ["1.*"],
       "description": "Create new SOC or service tickets.",
       "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "ticket_comment",
-      "display_name": "Ticket Comment",
-      "owner": "SOC Workflow",
-      "risk_tier": "medium",
-      "permissions": ["write-limited"],
-      "allowed_versions": ["1.x"],
-      "description": "Comment-only update to existing tickets.",
-      "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "case_management_note",
-      "display_name": "Case Management Note",
-      "owner": "SOC Workflow",
-      "risk_tier": "medium",
-      "permissions": ["write-limited"],
-      "allowed_versions": ["1.x"],
-      "description": "Add investigative notes to case records.",
-      "status": "active",
-      "last_reviewed": "2025-01-01"
-    },
+      "last_reviewed": "2025-01-01",
 
-    {
-      "id": "identity_policy_update",
-      "display_name": "Identity Policy Update",
-      "owner": "Identity Governance",
-      "risk_tier": "high",
-      "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
-      "description": "Modify identity policies or conditional access rules.",
-      "status": "restricted",
-      "last_reviewed": "2025-01-01"
+      "approved_roles": ["soc_analyst", "incident_responder"],
+      "execution_context": "sandboxed",
+      "compliance_flags": [],
+      "tool_category": "workflow",
+      "review_metadata": {
+        "reviewed_by": "alice@example.com",
+        "review_notes": "No sensitive data; verified scoped usage."
+      },
+      "discovery_behavior": {
+        "dynamic": true,
+        "requires_approval_on_discovery": true
+      },
+      "enforcement_policy": {
+        "fail_behavior": "deny",
+        "requires_hitl": false
+      }
     },
     {
       "id": "prod_kv_write",
@@ -88,58 +65,27 @@
       "owner": "Platform Security",
       "risk_tier": "high",
       "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
+      "allowed_versions": ["1.*"],
       "description": "Write secrets to production key vaults.",
       "status": "restricted",
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "secret_rotation_direct",
-      "display_name": "Direct Secret Rotation",
-      "owner": "Platform Security",
-      "risk_tier": "high",
-      "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
-      "description": "Rotate secrets directly without workflow controls.",
-      "status": "restricted",
-      "last_reviewed": "2025-01-01"
-    },
+      "last_reviewed": "2025-01-01",
 
-    {
-      "id": "firewall_block",
-      "display_name": "Firewall Block",
-      "owner": "Network Security",
-      "risk_tier": "high",
-      "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
-      "description": "Block traffic or set firewall rules.",
-      "status": "active",
-      "requires_hitl": true,
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "network_isolate_host",
-      "display_name": "Network Isolation",
-      "owner": "Network Security",
-      "risk_tier": "high",
-      "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
-      "description": "Isolate an endpoint at network level.",
-      "status": "active",
-      "requires_hitl": true,
-      "last_reviewed": "2025-01-01"
-    },
-    {
-      "id": "disable_account",
-      "display_name": "Disable Identity Account",
-      "owner": "Identity Security",
-      "risk_tier": "high",
-      "permissions": ["write-privileged"],
-      "allowed_versions": ["1.x"],
-      "description": "Disable or suspend a user or service account.",
-      "status": "active",
-      "requires_hitl": true,
-      "last_reviewed": "2025-01-01"
+      "approved_roles": ["platform_engineer"],
+      "execution_context": "remote-control-surface",
+      "compliance_flags": ["accesses_credentials"],
+      "tool_category": "secrets",
+      "review_metadata": {
+        "reviewed_by": "lead_sec_eng@example.com",
+        "review_notes": "Requires strict vault controls; privileged access only."
+      },
+      "discovery_behavior": {
+        "dynamic": false,
+        "requires_approval_on_discovery": false
+      },
+      "enforcement_policy": {
+        "fail_behavior": "deny",
+        "requires_hitl": true
+      }
     }
   ]
 }
