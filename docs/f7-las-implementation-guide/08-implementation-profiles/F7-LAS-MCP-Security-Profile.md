@@ -12,7 +12,7 @@
 
 F7-LAS defines control responsibilities for agentic systems across seven layers.  
 MCP defines how tools and data services are exposed to agents via a standardized protocol.  
-This appendix maps MCP’s documented control practices to the relevant F7-LAS layers.
+This guidance maps MCP’s documented control practices to the relevant F7-LAS layers.
 
 Reference: Securing the MCP: Risks, Controls, and Governance (2024).  
 
