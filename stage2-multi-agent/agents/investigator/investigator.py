@@ -1,38 +1,34 @@
 """
 F7-LAS Stage 2 – Investigator Agent
-Analysis-only agent.
-No remediation, no execution, no PDP calls.
+Read-only evidence analysis.
+Consumes replayed Sentinel evidence (JSON).
+No live API calls. No remediation.
 """
 
-from typing import Dict, List, Any
+import json
+import os
+from typing import Dict, Any, List
 from telemetry.logger import log_event
 
 
 class InvestigatorAgent:
-    def __init__(self, read_only_tools=None):
-        """
-        read_only_tools: optional interface for query-only data access
-        (e.g., Sentinel/Defender stubs in read mode)
-        """
-        self.tools = read_only_tools
+    def __init__(self, evidence_path: str = "evidence"):
+        self.evidence_path = evidence_path
 
-    def investigate(self, investigation_context: str) -> Dict[str, Any]:
-        """
-        Entry point for investigation.
-        """
+    def investigate(self, context: str) -> Dict[str, Any]:
         log_event(
             event_type="investigation_started",
-            payload={"context": investigation_context}
+            payload={"context": context}
         )
 
-        evidence = self._collect_evidence(investigation_context)
-        hypotheses = self._analyze(evidence)
+        evidence = self._load_evidence()
+        findings = self._analyze(evidence)
 
         result = {
             "findings_summary": "Evidence collected and analyzed.",
             "evidence": evidence,
-            "hypotheses": hypotheses,
-            "confidence_level": self._confidence(hypotheses),
+            "hypotheses": findings["hypotheses"],
+            "confidence_level": findings["confidence_level"]
         }
 
         log_event(
@@ -42,44 +38,42 @@ class InvestigatorAgent:
 
         return result
 
-    def _collect_evidence(self, context: str) -> List[Dict[str, str]]:
-        """
-        Collect evidence using read-only sources.
-        """
-        evidence = [
-            {
-                "source": "placeholder",
-                "detail": "Evidence collection stub"
-            }
-        ]
+    def _load_evidence(self) -> List[Dict[str, Any]]:
+        evidence_items = []
+
+        for filename in os.listdir(self.evidence_path):
+            if filename.endswith(".json"):
+                with open(os.path.join(self.evidence_path, filename), "r") as f:
+                    evidence_items.append(json.load(f))
 
         log_event(
             event_type="evidence_collected",
-            payload={"count": len(evidence)}
+            payload={"count": len(evidence_items)}
         )
 
-        return evidence
+        return evidence_items
 
-    def _analyze(self, evidence: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        """
-        Analyze evidence and generate hypotheses.
-        """
-        hypotheses = [
-            {
-                "hypothesis": "Potential suspicious activity detected",
-                "likelihood": "Medium"
-            }
-        ]
+    def _analyze(self, evidence: List[Dict[str, Any]]) -> Dict[str, Any]:
+        hypotheses = []
+
+        for item in evidence:
+            hypotheses.append({
+                "hypothesis": f"Potential risk detected: {item.get('alert_type')}",
+                "severity": item.get("severity", "Unknown")
+            })
+
+        confidence = "Low"
+        if any(h["severity"] == "High" for h in hypotheses):
+            confidence = "High"
+        elif hypotheses:
+            confidence = "Medium"
 
         log_event(
             event_type="hypotheses_generated",
             payload={"count": len(hypotheses)}
         )
 
-        return hypotheses
-
-    def _confidence(self, hypotheses: List[Dict[str, str]]) -> str:
-        """
-        Determine confidence level.
-        """
-        return "Medium"
+        return {
+            "hypotheses": hypotheses,
+            "confidence_level": confidence
+        }
