@@ -7,6 +7,7 @@ Centralized PDP is mandatory before any remediation.
 
 from typing import Dict, List, Any
 from telemetry.logger import log_event
+from llm.azure_openai_client import AzureOpenAIClient
 
 
 class CoordinatorAgent:
@@ -15,6 +16,7 @@ class CoordinatorAgent:
         policy_gateway_client: optional handle to PDP/gateway (read-only for coordinator)
         """
         self.policy_gateway = policy_gateway_client
+        self.llm = AzureOpenAIClient()
 
     def handle_request(self, user_request: str) -> Dict[str, Any]:
         """
@@ -42,21 +44,24 @@ class CoordinatorAgent:
         return response
 
     def _plan(self, user_request: str) -> Dict[str, Any]:
-        """
-        Explicit planning step (Layer 3).
-        No hidden execution.
-        """
-        plan = {
-            "investigation_required": True,
-            "remediation_possible": True,
-            "notes": "Initial triage indicates investigation before remediation."
-        }
+    system_prompt = (
+        "You are the F7-LAS Coordinator. Plan investigation and remediation phases. "
+        "Do NOT execute tools. Do NOT bypass PDP."
+    )
 
-        log_event(
-            event_type="coordinator_plan_created",
-            payload=plan
-        )
-        return plan
+    plan_text = self.llm.complete(system_prompt, user_request)
+
+    plan = {
+        "investigation_required": True,
+        "remediation_possible": True,
+        "llm_plan_summary": plan_text
+    }
+
+    log_event(
+        event_type="coordinator_plan_created",
+        payload=plan
+    )
+    return plan
 
     def _delegate(self, plan: Dict[str, Any]) -> List[Dict[str, str]]:
         """
