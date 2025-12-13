@@ -47,6 +47,8 @@ This design supports:
 This is presented as **one of multiple valid** enforcement strategies for protocol-based tool interactions.  
 F7-LAS does not prescribe MCP or any specific protocol mechanism.
 
+This gateway/PDP pattern reflects established policy-enforcement architectures and is discussed in MCP-specific context by [MCP-01].
+
 ---
 
 ## Threat Context in MCP Use Cases
