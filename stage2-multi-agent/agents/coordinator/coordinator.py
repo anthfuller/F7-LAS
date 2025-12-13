@@ -19,9 +19,6 @@ class CoordinatorAgent:
         self.llm = AzureOpenAIClient()
 
     def handle_request(self, user_request: str) -> Dict[str, Any]:
-        """
-        Entry point for coordination.
-        """
         log_event(
             event_type="coordinator_request_received",
             payload={"user_request": user_request}
@@ -44,29 +41,28 @@ class CoordinatorAgent:
         return response
 
     def _plan(self, user_request: str) -> Dict[str, Any]:
-    system_prompt = (
-        "You are the F7-LAS Coordinator. Plan investigation and remediation phases. "
-        "Do NOT execute tools. Do NOT bypass PDP."
-    )
+        system_prompt = (
+            "You are the F7-LAS Coordinator. "
+            "Plan investigation and remediation phases. "
+            "Do NOT execute tools. Do NOT bypass the centralized PDP."
+        )
 
-    plan_text = self.llm.complete(system_prompt, user_request)
+        plan_text = self.llm.complete(system_prompt, user_request)
 
-    plan = {
-        "investigation_required": True,
-        "remediation_possible": True,
-        "llm_plan_summary": plan_text
-    }
+        plan = {
+            "investigation_required": True,
+            "remediation_possible": True,
+            "llm_plan_summary": plan_text
+        }
 
-    log_event(
-        event_type="coordinator_plan_created",
-        payload=plan
-    )
-    return plan
+        log_event(
+            event_type="coordinator_plan_created",
+            payload=plan
+        )
+
+        return plan
 
     def _delegate(self, plan: Dict[str, Any]) -> List[Dict[str, str]]:
-        """
-        Delegate work to Investigator and/or Remediator agents.
-        """
         tasks = []
 
         if plan.get("investigation_required"):
@@ -85,12 +81,10 @@ class CoordinatorAgent:
             event_type="coordinator_tasks_delegated",
             payload={"tasks": tasks}
         )
+
         return tasks
 
     def _identify_approvals(self, tasks: List[Dict[str, str]]) -> List[str]:
-        """
-        Identify approvals required (PDP and/or human).
-        """
         approvals = []
 
         for task in tasks:
