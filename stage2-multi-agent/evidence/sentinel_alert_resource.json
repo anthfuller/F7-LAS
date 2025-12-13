@@ -1,1 +1,8 @@
-Placeholder
+{
+  "source": "Microsoft Sentinel",
+  "alert_type": "Suspicious Resource deployment involving multiple users",
+  "severity": "High",
+  "timestamp": "2024-06-01T15:10:00Z",
+  "affected_resources": ["rg-test-01"],
+  "users": ["jdoe", "asmith"]
+}
