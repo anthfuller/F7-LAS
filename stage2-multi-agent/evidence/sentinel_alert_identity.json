@@ -1,1 +1,13 @@
-Placeholder
+{
+  "source": "Microsoft Sentinel",
+  "alert_type": "Unfamiliar sign-in properties",
+  "alert_id": "ID-92",
+  "severity": "Medium",
+  "user": "jdoe",
+  "timestamp": "2024-06-01T14:32:00Z",
+  "details": {
+    "ip": "203.0.113.45",
+    "location": "Unknown",
+    "authentication_method": "Password"
+  }
+}
