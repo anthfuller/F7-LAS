@@ -1,3 +1,4 @@
+from telemetry.audit import write_audit
 from pdp.pdp import evaluate
 from mcp.executor import execute
 from hitl.approval import request_approval
