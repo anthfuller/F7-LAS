@@ -11,12 +11,14 @@ class AzureOpenAIClient:
         self.deployment = os.environ["AZURE_OPENAI_DEPLOYMENT"]
 
     def complete(self, system_prompt: str, user_prompt: str) -> str:
-        response = self.client.chat.completions.create(
+        response = self.client.responses.create(
             model=self.deployment,
-            messages=[
+            input=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.2,
         )
-        return response.choices[0].message.content
+
+        return response.output_text
+
