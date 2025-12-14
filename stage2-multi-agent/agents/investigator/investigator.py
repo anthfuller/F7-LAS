@@ -1,3 +1,4 @@
+from telemetry.audit import write_audit
 from typing import Dict, Any, List
 from telemetry.logger import log_event
 import os
