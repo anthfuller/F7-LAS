@@ -1,3 +1,4 @@
+from telemetry.audit import write_audit
 from telemetry.logger import log_event
 
 def evaluate(action: str, context: dict) -> dict:
