@@ -17,7 +17,7 @@ class Orchestrator:
         self.pdp = PolicyEngine()
         self.coordinator = CoordinatorAgent()
         self.investigator = InvestigatorAgent()
-        self.remediator = RemediatorAgent(policy_gateway_client=self.pdp)
+        self.remediator = RemediatorAgent()
 
     def run(self, user_request: str):
         log_event("orchestration_started", {"request": user_request})
