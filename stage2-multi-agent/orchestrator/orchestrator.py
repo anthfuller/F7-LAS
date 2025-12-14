@@ -4,6 +4,7 @@ Coordinates Coordinator, Investigator, and Remediator agents.
 Centralized PDP enforced.
 """
 
+from telemetry.audit import write_audit
 from agents.coordinator.coordinator import CoordinatorAgent
 from agents.investigator.investigator import InvestigatorAgent
 from agents.remediator.remediator import RemediatorAgent
