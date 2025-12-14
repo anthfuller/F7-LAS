@@ -10,8 +10,7 @@ class RemediatorAgent:
     def __init__(self):
         self.llm = AzureOpenAIClient()
 
-    def propose(self, investigation: dict):
-
+    def propose(self, investigation: dict, run_id: str = "run-unknown") -> dict:
         approved_tools = [
             "signin_anomalies_last_180d",
             "azure_activity_last_180d",
@@ -37,8 +36,21 @@ Approved tools:
         # Defensive parsing: allow only registered tools
         tools_to_run = [t for t in approved_tools if t in llm_response]
 
+        # === Decision point: remediation proposal ===
+        remediation_plan = {
+            "tools_selected": tools_to_run,
+            "action_type": "sentinel_read_only_query"
+        }
+
+        # === Audit remediation proposal (Layer 7) ===
+        write_audit(
+            run_id=run_id,
+            stage="remediation_proposed",
+            data=remediation_plan
+        )
+
         action = "sentinel_read_only_query"
-        pdp_result = evaluate(action, investigation)
+        pdp_result = evaluate(action, investigation, run_id=run_id)
 
         execution_results = {}
 
@@ -62,4 +74,3 @@ Approved tools:
         )
 
         return result
-
