@@ -6,7 +6,7 @@ class AzureOpenAIClient:
         self.client = AzureOpenAI(
             api_key=os.environ["AZURE_OPENAI_API_KEY"],
             azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-            api_version="2024-12-01-preview",
+            api_version="2025-03-01-preview",
         )
         self.deployment = os.environ["AZURE_OPENAI_DEPLOYMENT"]
 
