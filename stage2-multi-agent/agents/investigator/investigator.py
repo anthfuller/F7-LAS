@@ -2,6 +2,8 @@ from telemetry.audit import write_audit
 from typing import Dict, Any, List
 from telemetry.logger import log_event
 import os
+from datetime import timedelta
+
 from azure.identity import ClientSecretCredential
 from azure.monitor.query import LogsQueryClient
 from azure.monitor.query import LogsQueryStatus
@@ -74,7 +76,11 @@ SecurityAlert
 
         evidence = []
         for name, q in queries:
-            resp = self.client.query_workspace(self.workspace_id, q)
+            resp = self.client.query_workspace(
+                self.workspace_id,
+                q,
+                timespan=timedelta(days=180)
+            )
 
             if resp.status == LogsQueryStatus.PARTIAL:
                 tables = resp.partial_data
