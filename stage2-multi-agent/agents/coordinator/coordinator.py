@@ -5,6 +5,7 @@ All actions are delegated; no direct tool or MCP execution.
 Centralized PDP is mandatory before any remediation.
 """
 
+from telemetry.audit import write_audit
 from typing import Dict, List, Any
 from telemetry.logger import log_event
 from llm.azure_openai_client import AzureOpenAIClient
