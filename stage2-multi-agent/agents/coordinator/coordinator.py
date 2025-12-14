@@ -19,13 +19,22 @@ class CoordinatorAgent:
         self.policy_gateway = policy_gateway_client
         self.llm = AzureOpenAIClient()
 
-    def handle_request(self, user_request: str) -> Dict[str, Any]:
+    def handle_request(self, user_request: str, run_id: str = "run-unknown") -> Dict[str, Any]:
         log_event(
             event_type="coordinator_request_received",
             payload={"user_request": user_request}
         )
 
+        # === Decision point: planning ===
         plan = self._plan(user_request)
+
+        # === Audit the decision (Layer 7) ===
+        write_audit(
+            run_id=run_id,
+            stage="coordinator_plan",
+            data=plan
+        )
+
         delegated = self._delegate(plan)
 
         response = {
