@@ -1,17 +1,13 @@
 from telemetry.logger import log_event
 from mcp.tools import get_tool
-from azure.identity import ClientSecretCredential
+from azure.identity import DefaultAzureCredential
 from azure.monitor.query import LogsQueryClient
 import os
 
 def execute(tool_name: str):
     query = get_tool(tool_name)
 
-    credential = ClientSecretCredential(
-        tenant_id=os.getenv("AZURE_TENANT_ID"),
-        client_id=os.getenv("AZURE_CLIENT_ID"),
-        client_secret=os.getenv("AZURE_CLIENT_SECRET"),
-    )
+    credential = DefaultAzureCredential()
 
     client = LogsQueryClient(credential)
     workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
