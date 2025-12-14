@@ -6,6 +6,7 @@ from azure.identity import ClientSecretCredential
 from azure.monitor.query import LogsQueryClient
 from azure.monitor.query import LogsQueryStatus
 
+
 class InvestigatorAgent:
     def __init__(self):
         self.workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
@@ -17,10 +18,21 @@ class InvestigatorAgent:
         )
         self.client = LogsQueryClient(cred)
 
-    def investigate(self, context: str) -> Dict[str, Any]:
+    def investigate(self, context: str, run_id: str = "run-unknown") -> Dict[str, Any]:
         log_event("investigation_started", {"context": context})
 
         evidence = self._query_sentinel()
+
+        # === Audit: Investigator decision boundary (Layer 7) ===
+        write_audit(
+            run_id=run_id,
+            stage="investigator_query",
+            data={
+                "workspace_id": self.workspace_id,
+                "queries_executed": [e["query"] for e in evidence],
+                "total_records": sum(e["count"] for e in evidence)
+            }
+        )
 
         result = {
             "findings_summary": "Sentinel evidence collected (read-only).",
@@ -37,21 +49,21 @@ class InvestigatorAgent:
             raise RuntimeError("Missing SENTINEL_WORKSPACE_ID")
 
         queries = [
-            # 1) Sign-ins (if connected)
+            # 1) Sign-ins
             ("signin_logs", """
 SigninLogs
 | where TimeGenerated > ago(180d)
 | project TimeGenerated, UserPrincipalName, IPAddress, LocationDetails, ResultType
 | take 20
 """),
-            # 2) Azure Activity (if connected)
+            # 2) Azure Activity
             ("azure_activity", """
 AzureActivity
 | where TimeGenerated > ago(180d)
 | project TimeGenerated, OperationNameValue, ActivityStatusValue, Caller, ResourceGroup, ResourceId
 | take 20
 """),
-            # 3) SecurityAlert (if connected)
+            # 3) Security Alerts
             ("security_alerts", """
 SecurityAlert
 | where TimeGenerated > ago(180d)
@@ -63,6 +75,7 @@ SecurityAlert
         evidence = []
         for name, q in queries:
             resp = self.client.query_workspace(self.workspace_id, q)
+
             if resp.status == LogsQueryStatus.PARTIAL:
                 tables = resp.partial_data
             else:
@@ -74,9 +87,17 @@ SecurityAlert
                 for r in table.rows:
                     rows.append(dict(zip(cols, r)))
 
-            evidence.append({"source": "sentinel", "query": name, "rows": rows, "count": len(rows)})
+            evidence.append({
+                "source": "sentinel",
+                "query": name,
+                "rows": rows,
+                "count": len(rows)
+            })
 
-            log_event("sentinel_query_completed", {"query": name, "count": len(rows)})
+            log_event(
+                "sentinel_query_completed",
+                {"query": name, "count": len(rows)}
+            )
 
         return evidence
 
@@ -84,7 +105,15 @@ SecurityAlert
         hyps = []
         for item in evidence:
             if item["count"] > 0:
-                hyps.append({"hypothesis": f"Data present for {item['query']}", "likelihood": "Medium"})
+                hyps.append({
+                    "hypothesis": f"Data present for {item['query']}",
+                    "likelihood": "Medium"
+                })
+
         if not hyps:
-            hyps.append({"hypothesis": "No data returned (connectors may not be ingesting yet)", "likelihood": "Low"})
+            hyps.append({
+                "hypothesis": "No data returned (connectors may not be ingesting yet)",
+                "likelihood": "Low"
+            })
+
         return hyps
