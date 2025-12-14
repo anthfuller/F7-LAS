@@ -1,23 +1,11 @@
-"""
-Centralized Policy Decision Point (PDP)
-Stage 2: execution is explicitly denied.
-"""
-
-from telemetry.logger import log_event
-
 def evaluate(action: str, context: dict) -> dict:
-    decision = {
-        "decision": "DENY",
-        "reason": "Execution disabled in Stage 2 (proposal-only)"
-    }
-
-    log_event(
-        event_type="pdp_evaluation",
-        payload={
-            "action": action,
-            "decision": decision["decision"],
-            "reason": decision["reason"]
+    if action.startswith("sentinel_read_only_"):
+        return {
+            "decision": "ALLOW",
+            "reason": "Approved read-only Sentinel query"
         }
-    )
 
-    return decision
+    return {
+        "decision": "DENY",
+        "reason": "Action not permitted"
+    }
