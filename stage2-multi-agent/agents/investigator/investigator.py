@@ -1,3 +1,4 @@
+from typing import List, Dict, Any
 from datetime import timedelta
 
 def _query_sentinel(self) -> List[Dict[str, Any]]:
