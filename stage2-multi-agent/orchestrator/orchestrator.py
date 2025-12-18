@@ -1,16 +1,19 @@
 """
-F7-LAS Stage 2 – Orchestrator (Evidence pipeline)
-Coordinator -> creates plan
-Investigator -> executes plan (PEP/PDP enforced in MCP executor)
-Remediator -> proposes HITL next steps
+F7-LAS Stage 2 – Orchestrator (Layer 3)
+Coordinator -> Investigator -> Remediator.
+All executions go through centralized PEP (mcp.executor) which calls PDP.
 """
 
+from __future__ import annotations
+
+import uuid
+from typing import Any, Dict
+
+from telemetry.audit import write_audit
+from telemetry.logger import log_event
 from agents.coordinator.coordinator import CoordinatorAgent
 from agents.investigator.investigator import InvestigatorAgent
 from agents.remediator.remediator import RemediatorAgent
-from telemetry.logger import log_event
-from telemetry.audit import write_audit
-import uuid
 
 
 class Orchestrator:
@@ -19,16 +22,25 @@ class Orchestrator:
         self.investigator = InvestigatorAgent()
         self.remediator = RemediatorAgent()
 
-    def run(self, user_request: str) -> dict:
+    def run(self, user_request: str) -> Dict[str, Any]:
         run_id = f"run-{uuid.uuid4().hex[:12]}"
-        write_audit(run_id=run_id, stage="run_started", data={"user_request": user_request})
-        log_event(event_type="run_started", payload={"run_id": run_id})
+        log_event("orchestration_started", {"run_id": run_id, "request": user_request})
+        write_audit(run_id=run_id, stage="run_started", data={"request": user_request})
 
-        plan = self.coordinator.handle_request(user_request, run_id=run_id)
-        investigation = self.investigator.investigate(user_request, plan, run_id=run_id)
-        remediation = self.remediator.propose(investigation, run_id=run_id)
+        coordination = self.coordinator.handle_request(user_request, run_id=run_id)
+        plan = coordination.get("plan", [])
 
-        result = {"run_id": run_id, "plan": plan, "investigation": investigation, "remediation": remediation}
-        write_audit(run_id=run_id, stage="run_completed", data={"summary": investigation.get("summary", {})})
-        log_event(event_type="run_completed", payload={"run_id": run_id})
+        investigation = self.investigator.investigate(plan, run_id=run_id)
+
+        remediation_proposal = self.remediator.propose(investigation, run_id=run_id)
+
+        result = {
+            "run_id": run_id,
+            "coordination": coordination,
+            "investigation": investigation,
+            "remediation": remediation_proposal,
+        }
+
+        write_audit(run_id=run_id, stage="run_completed", data={"summary": {"plan_steps": len(plan)}})
+        log_event("orchestration_completed", {"run_id": run_id, "plan_steps": len(plan)})
         return result
