@@ -1,0 +1,9 @@
+policy_id: default-deny
+version: '1.0'
+description: Deny any action not explicitly allowed.
+rules:
+- id: deny_all
+  effect: DENY
+  actions:
+  - '*'
+  reason: Not explicitly allowed
