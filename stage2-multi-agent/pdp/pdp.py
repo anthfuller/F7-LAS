@@ -30,11 +30,13 @@ def _load_yaml_policies() -> List[Dict[str, Any]]:
     policies: List[Dict[str, Any]] = []
     if not POLICY_DIR.exists():
         return policies
+
     for p in sorted(POLICY_DIR.glob("*.y*ml")):
         with p.open("r", encoding="utf-8", errors="ignore") as f:
             doc = yaml.safe_load(f) or {}
             doc["_source_file"] = str(p)
             policies.append(doc)
+
     return policies
 
 
@@ -55,19 +57,21 @@ def evaluate(action: str, context: Dict[str, Any], run_id: str) -> Dict[str, str
     """
     policies = _load_yaml_policies()
 
-    # Default if no policies are present: deny.
-    final = Decision(decision="DENY", reason="No policies loaded")
+    # Default if no policy matches
+    final = Decision(decision="DENY", reason="No matching policy rule")
 
     for pol in policies:
         policy_id = pol.get("policy_id")
+
         for rule in pol.get("rules", []) or []:
             rule_id = rule.get("id")
             effect = (rule.get("effect") or "").upper().strip()
             patterns = rule.get("actions") or []
+
             if not _action_matches(action, patterns):
                 continue
 
-            # Constraints (only enforced when action matches)
+            # Enforce constraints only when action matches
             constraints = rule.get("constraints") or {}
 
             # max_limit constraint
@@ -76,6 +80,7 @@ def evaluate(action: str, context: Dict[str, Any], run_id: str) -> Dict[str, str
                     limit = int(context.get("limit", 0))
                 except Exception:
                     limit = 0
+
                 if limit > int(constraints["max_limit"]):
                     final = Decision(
                         decision="DENY",
@@ -96,19 +101,29 @@ def evaluate(action: str, context: Dict[str, Any], run_id: str) -> Dict[str, str
                     )
                     break
 
-            # Apply effect
+            # Apply rule effect
             if effect in ("ALLOW", "DENY", "HITL"):
                 final = Decision(
                     decision=effect,
-                    reason=rule.get("reason") or rule.get("description") or effect,
+                    reason=rule.get("reason")
+                    or rule.get("description")
+                    or effect,
                     policy_id=policy_id,
                     rule_id=rule_id,
                 )
             else:
-                final = Decision(decision="DENY", reason=f"invalid effect: {effect}", policy_id=policy_id, rule_id=rule_id)
+                final = Decision(
+                    decision="DENY",
+                    reason=f"invalid effect: {effect}",
+                    policy_id=policy_id,
+                    rule_id=rule_id,
+                )
 
-        # Stop early on DENY/HITL; ALLOW can still be overridden by a later DENY policy if you order them that way.
-        if final.decision in ("DENY", "HITL"):
+            # IMPORTANT FIX: stop once a rule decides
+            break
+
+        # Stop after first matching rule across policies
+        if final.decision in ("ALLOW", "DENY", "HITL"):
             break
 
     # L7 telemetry
@@ -123,6 +138,14 @@ def evaluate(action: str, context: Dict[str, Any], run_id: str) -> Dict[str, str
             "rule_id": final.rule_id,
         },
     )
-    log_event("pdp_decision", {"run_id": run_id, "action": action, "decision": final.decision})
+
+    log_event(
+        "pdp_decision",
+        {
+            "run_id": run_id,
+            "action": action,
+            "decision": final.decision,
+        },
+    )
 
     return {"decision": final.decision, "reason": final.reason}
