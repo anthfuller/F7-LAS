@@ -1,37 +1,37 @@
 """
-F7-LAS Stage 2 – Investigator Agent (Evidence-first)
-- Executes only registered read-only tools via the MCP executor (PEP + PDP enforced)
-- Returns raw rows + metadata
-- No LLM reasoning, no fabricated conclusions
+F7-LAS Stage 2 – Investigator Agent (Layer 3)
+Evidence-first execution: runs an explicit plan through the centralized PEP/MCP executor.
+Returns raw evidence only.
 """
 
-from typing import Dict, List, Any
-from telemetry.logger import log_event
+from __future__ import annotations
+
+from typing import Any, Dict, List
+
 from telemetry.audit import write_audit
-from mcp.executor import execute_read_only_tool
+from telemetry.logger import log_event
+from mcp.executor import execute as mcp_execute
 
 
 class InvestigatorAgent:
-    def investigate(self, user_request: str, plan: Dict[str, Any], run_id: str = "run-unknown") -> Dict[str, Any]:
-        tools: List[str] = plan.get("tools", [])
-        context = {"user_request": user_request, "plan_domains": plan.get("domains", [])}
+    def __init__(self):
+        pass
 
-        log_event(event_type="investigation_started", payload={"tools": tools})
-        write_audit(run_id=run_id, stage="investigation_started", data={"tools": tools, "context": context})
+    def investigate(self, plan: List[Dict[str, Any]], *, run_id: str) -> Dict[str, Any]:
+        log_event("investigator_started", {"run_id": run_id, "steps": len(plan)})
 
-        results = []
-        for tool in tools:
-            try:
-                results.append(execute_read_only_tool(tool_name=tool, run_id=run_id, context=context))
-            except Exception as e:
-                results.append({"tool": tool, "approved": False, "error": str(e), "rows": []})
+        evidence: List[Dict[str, Any]] = []
 
-        summary = {
-            "tools_executed": [r.get("tool") for r in results],
-            "total_rowcount": sum(int(r.get("rowcount", 0)) for r in results if r.get("approved")),
-        }
+        for step in plan:
+            tool = step.get("tool")
+            params = step.get("params") or {}
+            if not tool:
+                continue
 
-        write_audit(run_id=run_id, stage="investigation_completed", data={"summary": summary})
-        log_event(event_type="investigation_completed", payload=summary)
+            result = mcp_execute(tool, run_id=run_id, params=params)
+            evidence.append(result)
 
-        return {"plan": plan, "results": results, "summary": summary}
+        write_audit(run_id=run_id, stage="investigation_complete", data={"evidence_items": len(evidence)})
+        log_event("investigator_completed", {"run_id": run_id, "evidence_items": len(evidence)})
+
+        return {"evidence": evidence}
