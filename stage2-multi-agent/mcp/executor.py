@@ -1,11 +1,12 @@
 """
-MCP Executor (Layer 4 + enforced by Layer 5)
-Central execution gateway: PDP -> execute -> L7 audit.
+MCP Executor (Layer 4 enforced by Layer 5)
+Central execution gateway: PDP -> execute -> L7 audit
 """
 
 from __future__ import annotations
 
 import os
+from datetime import timedelta
 from typing import Any, Dict, Optional
 
 from azure.identity import DefaultAzureCredential
@@ -17,24 +18,39 @@ from telemetry.audit import write_audit
 from telemetry.logger import log_event
 
 
-def execute(tool_name: str, *, run_id: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def execute(
+    tool_name: str,
+    *,
+    run_id: str,
+    params: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
     """
-    Executes a registered read-only KQL tool against the configured workspace.
+    Execute a registered, read-only KQL tool against Microsoft Sentinel.
+    """
 
-    Returns a dict with:
-      - query
-      - table
-      - rowcount
-      - rows (truncated)
-      - columns (if available)
-    """
     built = build_query(tool_name, params=params)
     action = built["action"]
 
-    # === Layer 5: PDP decision ===
-    decision = evaluate(action=action, context={"limit": built["limit"], "has_time_filter": built["has_time_filter"]}, run_id=run_id)
+    # === L5: Policy Decision ===
+    decision = evaluate(
+        action=action,
+        context={
+            "limit": built["limit"],
+            "has_time_filter": built["has_time_filter"],
+        },
+        run_id=run_id,
+    )
+
     if decision["decision"] != "ALLOW":
-        write_audit(run_id=run_id, stage="mcp_denied", data={"tool": tool_name, "action": action, "reason": decision["reason"]})
+        write_audit(
+            run_id=run_id,
+            stage="mcp_denied",
+            data={
+                "tool": tool_name,
+                "action": action,
+                "reason": decision["reason"],
+            },
+        )
         return {
             "tool": tool_name,
             "action": action,
@@ -46,31 +62,31 @@ def execute(tool_name: str, *, run_id: str, params: Optional[Dict[str, Any]] = N
             "rows": [],
         }
 
-    # === Execute (read-only) ===
+    # === L4: Real Execution ===
     workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
     if not workspace_id:
-        raise EnvironmentError("Missing env var: SENTINEL_WORKSPACE_ID")
+        raise EnvironmentError("Missing environment variable: SENTINEL_WORKSPACE_ID")
 
     credential = DefaultAzureCredential()
     client = LogsQueryClient(credential)
 
-    response = client.query_workspace(workspace_id, built["query"])
+    response = client.query_workspace(
+        workspace_id=workspace_id,
+        query=built["query"],
+        timespan=timedelta(hours=24),
+    )
 
-    # Extract rows safely
-    rowcount = 0
     rows = []
     columns = []
-    try:
-        if response and getattr(response, "tables", None):
-            t0 = response.tables[0]
-            columns = [c.name for c in t0.columns] if getattr(t0, "columns", None) else []
-            rows = t0.rows or []
-            rowcount = len(rows)
-    except Exception:
-        # Keep rowcount at 0; log the parsing failure
-        pass
+    rowcount = 0
 
-    # L7 audit for executed query
+    if response and getattr(response, "tables", None):
+        table = response.tables[0]
+        columns = [c.name for c in table.columns]
+        rows = table.rows or []
+        rowcount = len(rows)
+
+    # === L7: Audit ===
     write_audit(
         run_id=run_id,
         stage="mcp_executed",
@@ -83,9 +99,16 @@ def execute(tool_name: str, *, run_id: str, params: Optional[Dict[str, Any]] = N
         },
     )
 
-    log_event("mcp_tool_executed", {"run_id": run_id, "tool": tool_name, "table": built["table"], "rowcount": rowcount})
+    log_event(
+        "mcp_tool_executed",
+        {
+            "run_id": run_id,
+            "tool": tool_name,
+            "table": built["table"],
+            "rowcount": rowcount,
+        },
+    )
 
-    # Return raw evidence (truncated only for safety)
     return {
         "tool": tool_name,
         "action": action,
