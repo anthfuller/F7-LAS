@@ -1,106 +1,61 @@
 """
-F7-LAS Stage 2 – Coordinator Agent
-Orchestration-only agent.
-All actions are delegated; no direct tool or MCP execution.
-Centralized PDP is mandatory before any remediation.
+F7-LAS Stage 2 – Coordinator Agent (Deterministic)
+- No tool execution
+- No LLM "planning"
+- Produces an explicit investigation plan: a list of registered read-only tools to run
 """
 
-from telemetry.audit import write_audit
 from typing import Dict, List, Any
 from telemetry.logger import log_event
-from llm.azure_openai_client import AzureOpenAIClient
+from telemetry.audit import write_audit
+
+
+# Keyword -> tool mapping (contract-locked; no hidden tables)
+DOMAIN_TOOLSETS = {
+    "identity": ["signinlogs_recent_24h", "aaduserriskevents_recent_24h", "aadriskyusers_recent_24h"],
+    "endpoint": ["deviceevents_recent_24h"],
+    "azure": ["azureactivity_recent_24h"],
+    "windows_auth": ["securityevent_failed_logons_24h", "securityevent_success_logons_24h"],
+    "incidents": ["securityincident_recent_24h", "sentinelaudit_recent_24h"],
+}
+
+KEYWORDS = {
+    "identity": ["signin", "sign-in", "login", "mfa", "conditional access", "entra", "azure ad", "aad", "risky"],
+    "endpoint": ["device", "endpoint", "mde", "defender for endpoint", "process", "lateral", "edr"],
+    "azure": ["azure", "subscription", "resource", "arm", "nsg", "rbac", "role", "policy", "key vault", "storage"],
+    "windows_auth": ["4624", "4625", "logon", "securityevent", "windows server", "dc", "domain controller"],
+    "incidents": ["incident", "sentinel", "analytics rule", "rule fired", "sentinelaudit"],
+}
+
+def _dedupe(seq: List[str]) -> List[str]:
+    out=[]
+    for x in seq:
+        if x not in out:
+            out.append(x)
+    return out
 
 
 class CoordinatorAgent:
-    def __init__(self, policy_gateway_client=None):
-        """
-        policy_gateway_client: optional handle to PDP/gateway (read-only for coordinator)
-        """
-        self.policy_gateway = policy_gateway_client
-        self.llm = AzureOpenAIClient()
-
     def handle_request(self, user_request: str, run_id: str = "run-unknown") -> Dict[str, Any]:
-        log_event(
-            event_type="coordinator_request_received",
-            payload={"user_request": user_request}
-        )
+        text = (user_request or "").lower()
 
-        # === Decision point: planning ===
-        plan = self._plan(user_request)
+        selected_domains: List[str] = []
+        for domain, kws in KEYWORDS.items():
+            if any(k in text for k in kws):
+                selected_domains.append(domain)
 
-        # === Audit the decision (Layer 7) ===
-        write_audit(
-            run_id=run_id,
-            stage="coordinator_plan",
-            data=plan
-        )
+        # If no keywords hit, run a minimal baseline (safe + broad)
+        if not selected_domains:
+            selected_domains = ["incidents", "identity", "azure", "endpoint", "windows_auth"]
 
-        delegated = self._delegate(plan)
+        tools: List[str] = []
+        for d in selected_domains:
+            tools.extend(DOMAIN_TOOLSETS[d])
+        tools = _dedupe(tools)
 
-        response = {
-            "coordinator_summary": "Request analyzed and tasks delegated.",
-            "delegated_tasks": delegated,
-            "approvals_required": self._identify_approvals(delegated),
-        }
+        plan = {"domains": selected_domains, "tools": tools}
 
-        log_event(
-            event_type="coordinator_response_emitted",
-            payload=response
-        )
-
-        return response
-
-    def _plan(self, user_request: str) -> Dict[str, Any]:
-        system_prompt = (
-            "You are the F7-LAS Coordinator. "
-            "Plan investigation and remediation phases. "
-            "Do NOT execute tools. Do NOT bypass the centralized PDP."
-        )
-
-        plan_text = self.llm.complete(system_prompt, user_request)
-
-        plan = {
-            "investigation_required": True,
-            "remediation_possible": True,
-            "llm_plan_summary": plan_text
-        }
-
-        log_event(
-            event_type="coordinator_plan_created",
-            payload=plan
-        )
+        write_audit(run_id=run_id, stage="coordinator_plan", data=plan)
+        log_event(event_type="coordinator_plan_created", payload=plan)
 
         return plan
-
-    def _delegate(self, plan: Dict[str, Any]) -> List[Dict[str, str]]:
-        tasks = []
-
-        if plan.get("investigation_required"):
-            tasks.append({
-                "agent": "F7LAS-Investigator",
-                "task": "Collect evidence and produce findings."
-            })
-
-        if plan.get("remediation_possible"):
-            tasks.append({
-                "agent": "F7LAS-Remediator",
-                "task": "Propose remediation plan (no execution without PDP approval)."
-            })
-
-        log_event(
-            event_type="coordinator_tasks_delegated",
-            payload={"tasks": tasks}
-        )
-
-        return tasks
-
-    def _identify_approvals(self, tasks: List[Dict[str, str]]) -> List[str]:
-        approvals = []
-
-        for task in tasks:
-            if task["agent"] == "F7LAS-Remediator":
-                approvals.append(
-                    "Centralized PDP authorization and human approval required for any execution."
-                )
-
-        return approvals
