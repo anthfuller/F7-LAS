@@ -1,0 +1,236 @@
+{
+  "securityevent_recent_24h": {
+    "table": "SecurityEvent",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "Computer",
+      "EventID",
+      "Account",
+      "AccountType",
+      "TargetAccount",
+      "SubjectUserName",
+      "SubjectDomainName",
+      "TargetDomainName",
+      "LogonType",
+      "IpAddress",
+      "WorkstationName",
+      "ProcessName",
+      "ParentProcessName",
+      "CommandLine",
+      "FailureReason",
+      "Status",
+      "SubStatus",
+      "PrivilegeList",
+      "ElevatedToken"
+    ],
+    "where": []
+  },
+  "securityincident_recent_24h": {
+    "table": "SecurityIncident",
+    "lookback": "24h",
+    "project": [
+      "CreatedTime",
+      "IncidentNumber",
+      "Title",
+      "Severity",
+      "Status",
+      "Owner",
+      "Classification",
+      "ClassificationReason",
+      "ProviderName",
+      "IncidentUrl",
+      "FirstActivityTime",
+      "LastActivityTime",
+      "RelatedAnalyticRuleIds",
+      "AlertIds"
+    ],
+    "where": []
+  },
+  "sentinelaudit_recent_24h": {
+    "table": "SentinelAudit",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "OperationName",
+      "Status",
+      "Description",
+      "SentinelResourceName",
+      "SentinelResourceId",
+      "CorrelationId",
+      "WorkspaceId",
+      "ExtendedProperties"
+    ],
+    "where": []
+  },
+  "signinlogs_recent_24h": {
+    "table": "SigninLogs",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "UserPrincipalName",
+      "UserId",
+      "AppDisplayName",
+      "AppId",
+      "ResourceDisplayName",
+      "IPAddress",
+      "Location",
+      "LocationDetails",
+      "Status",
+      "ResultType",
+      "ResultDescription",
+      "ConditionalAccessStatus",
+      "AppliedConditionalAccessPolicies",
+      "AuthenticationRequirement",
+      "ClientAppUsed",
+      "DeviceDetail",
+      "CorrelationId"
+    ],
+    "where": []
+  },
+  "deviceevents_recent_24h": {
+    "table": "DeviceEvents",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "DeviceName",
+      "DeviceId",
+      "ActionType",
+      "AccountName",
+      "AccountSid",
+      "InitiatingProcessAccountName",
+      "InitiatingProcessFileName",
+      "InitiatingProcessCommandLine",
+      "FileName",
+      "FolderPath",
+      "RemoteUrl",
+      "RemoteIP",
+      "AdditionalFields",
+      "ReportId"
+    ],
+    "where": []
+  },
+  "azureactivity_recent_24h": {
+    "table": "AzureActivity",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "OperationNameValue",
+      "ActivityStatusValue",
+      "ActivitySubstatusValue",
+      "Level",
+      "Caller",
+      "CallerIpAddress",
+      "SubscriptionId",
+      "ResourceGroup",
+      "ResourceId",
+      "ResourceProviderValue",
+      "CorrelationId",
+      "OperationId",
+      "EventDataId"
+    ],
+    "where": []
+  },
+  "aaduserriskevents_recent_24h": {
+    "table": "AADUserRiskEvents",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "UserPrincipalName",
+      "UserId",
+      "RiskEventType",
+      "RiskLevel",
+      "RiskState",
+      "RiskDetail",
+      "ActivityDateTime",
+      "DetectedDateTime",
+      "LastUpdatedDateTime",
+      "CorrelationId",
+      "RequestId"
+    ],
+    "where": []
+  },
+  "aadriskyusers_recent_24h": {
+    "table": "AADRiskyUsers",
+    "lookback": "24h",
+    "project": [
+      "TimeGenerated",
+      "UserPrincipalName",
+      "RiskLevel",
+      "RiskState",
+      "RiskDetail",
+      "IsDeleted"
+    ],
+    "where": []
+  },
+  "securityevent_failed_logons_24h": {
+    "table": "SecurityEvent",
+    "lookback": "24h",
+    "where": [
+      {
+        "col": "EventID",
+        "op": "in",
+        "value": [
+          4625
+        ]
+      }
+    ],
+    "project": [
+      "TimeGenerated",
+      "Computer",
+      "EventID",
+      "Account",
+      "AccountType",
+      "TargetAccount",
+      "SubjectUserName",
+      "SubjectDomainName",
+      "TargetDomainName",
+      "LogonType",
+      "IpAddress",
+      "WorkstationName",
+      "ProcessName",
+      "ParentProcessName",
+      "CommandLine",
+      "FailureReason",
+      "Status",
+      "SubStatus",
+      "PrivilegeList",
+      "ElevatedToken"
+    ]
+  },
+  "securityevent_success_logons_24h": {
+    "table": "SecurityEvent",
+    "lookback": "24h",
+    "where": [
+      {
+        "col": "EventID",
+        "op": "in",
+        "value": [
+          4624
+        ]
+      }
+    ],
+    "project": [
+      "TimeGenerated",
+      "Computer",
+      "EventID",
+      "Account",
+      "AccountType",
+      "TargetAccount",
+      "SubjectUserName",
+      "SubjectDomainName",
+      "TargetDomainName",
+      "LogonType",
+      "IpAddress",
+      "WorkstationName",
+      "ProcessName",
+      "ParentProcessName",
+      "CommandLine",
+      "FailureReason",
+      "Status",
+      "SubStatus",
+      "PrivilegeList",
+      "ElevatedToken"
+    ]
+  }
+}
