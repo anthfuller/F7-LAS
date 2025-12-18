@@ -82,8 +82,8 @@ def execute(
 
     if response and getattr(response, "tables", None):
         table = response.tables[0]
-        columns = [c.name for c in table.columns]
-        rows = table.rows or []
+        columns = list(table.columns) if table.columns else []
+        rows = list(table.rows) if table.rows else []
         rowcount = len(rows)
 
     # === L7: Audit ===
