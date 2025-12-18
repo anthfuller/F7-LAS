@@ -1,236 +1,389 @@
 {
-  "securityevent_recent_24h": {
-    "table": "SecurityEvent",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "Computer",
-      "EventID",
-      "Account",
-      "AccountType",
-      "TargetAccount",
-      "SubjectUserName",
-      "SubjectDomainName",
-      "TargetDomainName",
-      "LogonType",
-      "IpAddress",
-      "WorkstationName",
-      "ProcessName",
-      "ParentProcessName",
-      "CommandLine",
-      "FailureReason",
-      "Status",
-      "SubStatus",
-      "PrivilegeList",
-      "ElevatedToken"
-    ],
-    "where": []
-  },
-  "securityincident_recent_24h": {
-    "table": "SecurityIncident",
-    "lookback": "24h",
-    "project": [
-      "CreatedTime",
-      "IncidentNumber",
-      "Title",
-      "Severity",
-      "Status",
-      "Owner",
-      "Classification",
-      "ClassificationReason",
-      "ProviderName",
-      "IncidentUrl",
-      "FirstActivityTime",
-      "LastActivityTime",
-      "RelatedAnalyticRuleIds",
-      "AlertIds"
-    ],
-    "where": []
-  },
-  "sentinelaudit_recent_24h": {
-    "table": "SentinelAudit",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "OperationName",
-      "Status",
-      "Description",
-      "SentinelResourceName",
-      "SentinelResourceId",
-      "CorrelationId",
-      "WorkspaceId",
-      "ExtendedProperties"
-    ],
-    "where": []
-  },
-  "signinlogs_recent_24h": {
-    "table": "SigninLogs",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "UserPrincipalName",
-      "UserId",
-      "AppDisplayName",
-      "AppId",
-      "ResourceDisplayName",
-      "IPAddress",
-      "Location",
-      "LocationDetails",
-      "Status",
-      "ResultType",
-      "ResultDescription",
-      "ConditionalAccessStatus",
-      "AppliedConditionalAccessPolicies",
-      "AuthenticationRequirement",
-      "ClientAppUsed",
-      "DeviceDetail",
-      "CorrelationId"
-    ],
-    "where": []
-  },
-  "deviceevents_recent_24h": {
-    "table": "DeviceEvents",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "DeviceName",
-      "DeviceId",
-      "ActionType",
-      "AccountName",
-      "AccountSid",
-      "InitiatingProcessAccountName",
-      "InitiatingProcessFileName",
-      "InitiatingProcessCommandLine",
-      "FileName",
-      "FolderPath",
-      "RemoteUrl",
-      "RemoteIP",
-      "AdditionalFields",
-      "ReportId"
-    ],
-    "where": []
-  },
-  "azureactivity_recent_24h": {
-    "table": "AzureActivity",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "OperationNameValue",
-      "ActivityStatusValue",
-      "ActivitySubstatusValue",
-      "Level",
-      "Caller",
-      "CallerIpAddress",
-      "SubscriptionId",
-      "ResourceGroup",
-      "ResourceId",
-      "ResourceProviderValue",
-      "CorrelationId",
-      "OperationId",
-      "EventDataId"
-    ],
-    "where": []
-  },
-  "aaduserriskevents_recent_24h": {
-    "table": "AADUserRiskEvents",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "UserPrincipalName",
-      "UserId",
-      "RiskEventType",
-      "RiskLevel",
-      "RiskState",
-      "RiskDetail",
-      "ActivityDateTime",
-      "DetectedDateTime",
-      "LastUpdatedDateTime",
-      "CorrelationId",
-      "RequestId"
-    ],
-    "where": []
-  },
-  "aadriskyusers_recent_24h": {
-    "table": "AADRiskyUsers",
-    "lookback": "24h",
-    "project": [
-      "TimeGenerated",
-      "UserPrincipalName",
-      "RiskLevel",
-      "RiskState",
-      "RiskDetail",
-      "IsDeleted"
-    ],
-    "where": []
-  },
-  "securityevent_failed_logons_24h": {
-    "table": "SecurityEvent",
-    "lookback": "24h",
-    "where": [
-      {
-        "col": "EventID",
-        "op": "in",
-        "value": [
-          4625
-        ]
+  "generated_utc": "2025-12-18T00:52:55.500030Z",
+  "tools": [
+    {
+      "name": "securityevent_last_24h",
+      "action": "kql.read.SecurityEvent",
+      "table": "SecurityEvent",
+      "template": "SecurityEvent\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
       }
-    ],
-    "project": [
-      "TimeGenerated",
-      "Computer",
-      "EventID",
-      "Account",
-      "AccountType",
-      "TargetAccount",
-      "SubjectUserName",
-      "SubjectDomainName",
-      "TargetDomainName",
-      "LogonType",
-      "IpAddress",
-      "WorkstationName",
-      "ProcessName",
-      "ParentProcessName",
-      "CommandLine",
-      "FailureReason",
-      "Status",
-      "SubStatus",
-      "PrivilegeList",
-      "ElevatedToken"
-    ]
-  },
-  "securityevent_success_logons_24h": {
-    "table": "SecurityEvent",
-    "lookback": "24h",
-    "where": [
-      {
-        "col": "EventID",
-        "op": "in",
-        "value": [
-          4624
-        ]
+    },
+    {
+      "name": "securityevent_last_7d",
+      "action": "kql.read.SecurityEvent",
+      "table": "SecurityEvent",
+      "template": "SecurityEvent\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
       }
-    ],
-    "project": [
-      "TimeGenerated",
-      "Computer",
-      "EventID",
-      "Account",
-      "AccountType",
-      "TargetAccount",
-      "SubjectUserName",
-      "SubjectDomainName",
-      "TargetDomainName",
-      "LogonType",
-      "IpAddress",
-      "WorkstationName",
-      "ProcessName",
-      "ParentProcessName",
-      "CommandLine",
-      "FailureReason",
-      "Status",
-      "SubStatus",
-      "PrivilegeList",
-      "ElevatedToken"
-    ]
-  }
+    },
+    {
+      "name": "securityevent_last_30d",
+      "action": "kql.read.SecurityEvent",
+      "table": "SecurityEvent",
+      "template": "SecurityEvent\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "securityevent_last_180d",
+      "action": "kql.read.SecurityEvent",
+      "table": "SecurityEvent",
+      "template": "SecurityEvent\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "securityincident_last_24h",
+      "action": "kql.read.SecurityIncident",
+      "table": "SecurityIncident",
+      "template": "SecurityIncident\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "securityincident_last_7d",
+      "action": "kql.read.SecurityIncident",
+      "table": "SecurityIncident",
+      "template": "SecurityIncident\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "securityincident_last_30d",
+      "action": "kql.read.SecurityIncident",
+      "table": "SecurityIncident",
+      "template": "SecurityIncident\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "securityincident_last_180d",
+      "action": "kql.read.SecurityIncident",
+      "table": "SecurityIncident",
+      "template": "SecurityIncident\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "sentinelaudit_last_24h",
+      "action": "kql.read.SentinelAudit",
+      "table": "SentinelAudit",
+      "template": "SentinelAudit\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "sentinelaudit_last_7d",
+      "action": "kql.read.SentinelAudit",
+      "table": "SentinelAudit",
+      "template": "SentinelAudit\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "sentinelaudit_last_30d",
+      "action": "kql.read.SentinelAudit",
+      "table": "SentinelAudit",
+      "template": "SentinelAudit\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "sentinelaudit_last_180d",
+      "action": "kql.read.SentinelAudit",
+      "table": "SentinelAudit",
+      "template": "SentinelAudit\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "azureactivity_last_24h",
+      "action": "kql.read.AzureActivity",
+      "table": "AzureActivity",
+      "template": "AzureActivity\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "azureactivity_last_7d",
+      "action": "kql.read.AzureActivity",
+      "table": "AzureActivity",
+      "template": "AzureActivity\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "azureactivity_last_30d",
+      "action": "kql.read.AzureActivity",
+      "table": "AzureActivity",
+      "template": "AzureActivity\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "azureactivity_last_180d",
+      "action": "kql.read.AzureActivity",
+      "table": "AzureActivity",
+      "template": "AzureActivity\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "signinlogs_last_24h",
+      "action": "kql.read.SigninLogs",
+      "table": "SigninLogs",
+      "template": "SigninLogs\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "signinlogs_last_7d",
+      "action": "kql.read.SigninLogs",
+      "table": "SigninLogs",
+      "template": "SigninLogs\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "signinlogs_last_30d",
+      "action": "kql.read.SigninLogs",
+      "table": "SigninLogs",
+      "template": "SigninLogs\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "signinlogs_last_180d",
+      "action": "kql.read.SigninLogs",
+      "table": "SigninLogs",
+      "template": "SigninLogs\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "deviceevents_last_24h",
+      "action": "kql.read.DeviceEvents",
+      "table": "DeviceEvents",
+      "template": "DeviceEvents\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "deviceevents_last_7d",
+      "action": "kql.read.DeviceEvents",
+      "table": "DeviceEvents",
+      "template": "DeviceEvents\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "deviceevents_last_30d",
+      "action": "kql.read.DeviceEvents",
+      "table": "DeviceEvents",
+      "template": "DeviceEvents\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "deviceevents_last_180d",
+      "action": "kql.read.DeviceEvents",
+      "table": "DeviceEvents",
+      "template": "DeviceEvents\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aaduserriskevents_last_24h",
+      "action": "kql.read.AADUserRiskEvents",
+      "table": "AADUserRiskEvents",
+      "template": "AADUserRiskEvents\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aaduserriskevents_last_7d",
+      "action": "kql.read.AADUserRiskEvents",
+      "table": "AADUserRiskEvents",
+      "template": "AADUserRiskEvents\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aaduserriskevents_last_30d",
+      "action": "kql.read.AADUserRiskEvents",
+      "table": "AADUserRiskEvents",
+      "template": "AADUserRiskEvents\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aaduserriskevents_last_180d",
+      "action": "kql.read.AADUserRiskEvents",
+      "table": "AADUserRiskEvents",
+      "template": "AADUserRiskEvents\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aadriskyusers_last_24h",
+      "action": "kql.read.AADRiskyUsers",
+      "table": "AADRiskyUsers",
+      "template": "AADRiskyUsers\n| where TimeGenerated > ago(24h)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aadriskyusers_last_7d",
+      "action": "kql.read.AADRiskyUsers",
+      "table": "AADRiskyUsers",
+      "template": "AADRiskyUsers\n| where TimeGenerated > ago(7d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aadriskyusers_last_30d",
+      "action": "kql.read.AADRiskyUsers",
+      "table": "AADRiskyUsers",
+      "template": "AADRiskyUsers\n| where TimeGenerated > ago(30d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    },
+    {
+      "name": "aadriskyusers_last_180d",
+      "action": "kql.read.AADRiskyUsers",
+      "table": "AADRiskyUsers",
+      "template": "AADRiskyUsers\n| where TimeGenerated > ago(180d)\n| take {limit}",
+      "default": {
+        "limit": 20
+      },
+      "constraints": {
+        "max_limit": 200
+      }
+    }
+  ]
 }
