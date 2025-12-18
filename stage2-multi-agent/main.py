@@ -9,10 +9,8 @@ from orchestrator.orchestrator import Orchestrator
 def main():
     orchestrator = Orchestrator()
 
-    test_request = (
-        "Suspicious sign-in activity detected for user jdoe. "
-        "Investigate and propose appropriate remediation."
-    )
+    # Neutral trigger — no identities, no assumptions
+    test_request = "Run baseline log investigation."
 
     result = orchestrator.run(test_request)
 
