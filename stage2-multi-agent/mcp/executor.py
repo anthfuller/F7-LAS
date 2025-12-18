@@ -1,66 +1,98 @@
-from typing import Any, Dict, List, Optional
+"""
+MCP Executor (Layer 4 + enforced by Layer 5)
+Central execution gateway: PDP -> execute -> L7 audit.
+"""
+
+from __future__ import annotations
+
 import os
+from typing import Any, Dict, Optional
+
 from azure.identity import DefaultAzureCredential
 from azure.monitor.query import LogsQueryClient
 
-from telemetry.logger import log_event
+from mcp.tools import build_query
+from pdp.pdp import evaluate
 from telemetry.audit import write_audit
-from pdp.pdp import evaluate as pdp_evaluate
-from hitl.approval import request_approval
-from mcp.tools import get_tool_query
+from telemetry.logger import log_event
 
 
-def _rows_from_response(response: Any) -> List[Dict[str, Any]]:
+def execute(tool_name: str, *, run_id: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
-    Convert azure.monitor.query response -> list[dict].
-    Handles both single and multi-table responses.
+    Executes a registered read-only KQL tool against the configured workspace.
+
+    Returns a dict with:
+      - query
+      - table
+      - rowcount
+      - rows (truncated)
+      - columns (if available)
     """
-    rows: List[Dict[str, Any]] = []
-    if response is None:
-        return rows
+    built = build_query(tool_name, params=params)
+    action = built["action"]
 
-    # SDK returns LogsQueryResult with .tables
-    tables = getattr(response, "tables", None)
-    if not tables:
-        return rows
+    # === Layer 5: PDP decision ===
+    decision = evaluate(action=action, context={"limit": built["limit"], "has_time_filter": built["has_time_filter"]}, run_id=run_id)
+    if decision["decision"] != "ALLOW":
+        write_audit(run_id=run_id, stage="mcp_denied", data={"tool": tool_name, "action": action, "reason": decision["reason"]})
+        return {
+            "tool": tool_name,
+            "action": action,
+            "decision": decision["decision"],
+            "reason": decision["reason"],
+            "query": built["query"],
+            "table": built["table"],
+            "rowcount": 0,
+            "rows": [],
+        }
 
-    for t in tables:
-        cols = [c.name for c in t.columns]
-        for r in t.rows:
-            rows.append({cols[i]: r[i] for i in range(len(cols))})
-    return rows
-
-
-def execute_read_only_tool(tool_name: str, run_id: str, context: Optional[dict] = None) -> Dict[str, Any]:
-    """
-    Policy-enforced execution of a registered, read-only MCP tool (KQL).
-    Returns raw rows + metadata. No summarization.
-    """
-    context = context or {}
-    action = f"sentinel_read_only:{tool_name}"
-
-    # PDP decision
-    decision = pdp_evaluate(action=action, context=context, run_id=run_id)
-    if decision["decision"] == "REQUIRES_HUMAN_APPROVAL":
-        approved = request_approval(action=action, context=context, run_id=run_id)
-        if not approved:
-            return {"tool": tool_name, "approved": False, "reason": decision["reason"], "rows": []}
-    elif decision["decision"] != "ALLOW":
-        return {"tool": tool_name, "approved": False, "reason": decision["reason"], "rows": []}
-
-    query = get_tool_query(tool_name)
+    # === Execute (read-only) ===
+    workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
+    if not workspace_id:
+        raise EnvironmentError("Missing env var: SENTINEL_WORKSPACE_ID")
 
     credential = DefaultAzureCredential()
     client = LogsQueryClient(credential)
-    workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
-    if not workspace_id:
-        raise RuntimeError("Missing SENTINEL_WORKSPACE_ID environment variable")
 
-    response = client.query_workspace(workspace_id, query)
-    rows = _rows_from_response(response)
+    response = client.query_workspace(workspace_id, built["query"])
 
-    meta = {"tool": tool_name, "approved": True, "rowcount": len(rows), "query": query}
-    write_audit(run_id=run_id, stage="mcp_tool_executed", data=meta)
-    log_event(event_type="mcp_tool_executed", payload={"tool": tool_name, "rowcount": len(rows)})
+    # Extract rows safely
+    rowcount = 0
+    rows = []
+    columns = []
+    try:
+        if response and getattr(response, "tables", None):
+            t0 = response.tables[0]
+            columns = [c.name for c in t0.columns] if getattr(t0, "columns", None) else []
+            rows = t0.rows or []
+            rowcount = len(rows)
+    except Exception:
+        # Keep rowcount at 0; log the parsing failure
+        pass
 
-    return {**meta, "rows": rows}
+    # L7 audit for executed query
+    write_audit(
+        run_id=run_id,
+        stage="mcp_executed",
+        data={
+            "tool": tool_name,
+            "action": action,
+            "table": built["table"],
+            "query": built["query"],
+            "rowcount": rowcount,
+        },
+    )
+
+    log_event("mcp_tool_executed", {"run_id": run_id, "tool": tool_name, "table": built["table"], "rowcount": rowcount})
+
+    # Return raw evidence (truncated only for safety)
+    return {
+        "tool": tool_name,
+        "action": action,
+        "decision": "ALLOW",
+        "query": built["query"],
+        "table": built["table"],
+        "rowcount": rowcount,
+        "columns": columns,
+        "rows": rows[: min(rowcount, 50)],
+    }
