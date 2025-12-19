@@ -1,0 +1,37 @@
+version: "1.0"
+
+case_rules:
+  - id: benign_identity_activity
+    require_domains: ["identity"]
+    conditions:
+      identity.failed_signins: ">=1"
+      identity.successful_signins: ">=1"
+      identity.risky_signins: "==0"
+    outputs:
+      severity: Informational
+      finding: Identity authentication failures followed by success, no risk signals
+      assessment: Likely expected user behavior; controls appear effective
+      recommended_action: No action required
+      confidence: High
+
+  - id: identity_risk_present
+    require_domains: ["identity"]
+    conditions:
+      identity.risky_signins: ">=1"
+    outputs:
+      severity: High
+      finding: Risk signals detected in identity telemetry
+      assessment: Potential account compromise indicators present
+      recommended_action: Analyst review required
+      confidence: High
+
+  - id: azure_change_activity
+    require_domains: ["azure_control_plane"]
+    conditions:
+      azure_control_plane.write_operations: ">=1"
+    outputs:
+      severity: Medium
+      finding: Azure control plane changes detected
+      assessment: Validate change authorization and actor
+      recommended_action: Analyst review required
+      confidence: Medium
