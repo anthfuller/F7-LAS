@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SOC Case Summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "severity",
+    "finding",
+    "assessment",
+    "recommended_action",
+    "confidence",
+    "matched_rule_id"
+  ],
+  "properties": {
+    "case_id": { "type": "string", "minLength": 1 },
+    "severity": {
+      "type": "string",
+      "enum": ["Informational", "Low", "Medium", "High", "Critical"]
+    },
+    "finding": { "type": "string", "minLength": 1 },
+    "user": { "type": ["string", "null"] },
+    "time_window": { "type": ["string", "null"] },
+    "assessment": { "type": "string" },
+    "recommended_action": { "type": "string" },
+    "confidence": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High"]
+    },
+    "matched_rule_id": { "type": ["string", "null"] }
+  }
+}
