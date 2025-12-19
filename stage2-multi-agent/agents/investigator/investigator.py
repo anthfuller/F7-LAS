@@ -1,11 +1,14 @@
 """
 F7-LAS Stage 2 – Investigator Agent (Layer 3)
-Evidence-first execution: runs an explicit plan through the centralized PEP/MCP executor.
-Returns raw evidence only.
+Evidence-first execution.
+Runs an explicit plan through the centralized MCP executor.
+Persists raw evidence for downstream signal extraction.
 """
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any, Dict, List
 
 from telemetry.audit import write_audit
@@ -22,6 +25,10 @@ class InvestigatorAgent:
 
         evidence: List[Dict[str, Any]] = []
 
+        # --- Evidence persistence directory ---
+        evidence_dir = Path("runs") / run_id / "evidence"
+        evidence_dir.mkdir(parents=True, exist_ok=True)
+
         for step in plan:
             tool = step.get("tool")
             params = step.get("params") or {}
@@ -31,7 +38,32 @@ class InvestigatorAgent:
             result = mcp_execute(tool, run_id=run_id, params=params)
             evidence.append(result)
 
-        write_audit(run_id=run_id, stage="investigation_complete", data={"evidence_items": len(evidence)})
-        log_event("investigator_completed", {"run_id": run_id, "evidence_items": len(evidence)})
+            # --- Persist per-table evidence for signal extraction ---
+            table = result.get("table")
+            if table:
+                evidence_file = evidence_dir / f"{table.lower()}.json"
+                with evidence_file.open("w", encoding="utf-8") as f:
+                    json.dump(
+                        {
+                            "table": table,
+                            "query": result.get("query"),
+                            "columns": result.get("columns", []),
+                            "rows": result.get("rows", []),
+                            "rowcount": result.get("rowcount", 0),
+                        },
+                        f,
+                        indent=2,
+                    )
+
+        write_audit(
+            run_id=run_id,
+            stage="investigation_complete",
+            data={"evidence_items": len(evidence)},
+        )
+
+        log_event(
+            "investigator_completed",
+            {"run_id": run_id, "evidence_items": len(evidence)},
+        )
 
         return {"evidence": evidence}
