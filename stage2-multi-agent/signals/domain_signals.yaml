@@ -1,0 +1,102 @@
+version: "1.0"
+
+domains:
+  identity:
+    tables:
+      - name: SigninLogs
+        time_field: TimeGenerated
+        metrics:
+          - id: failed_signins
+            type: count
+            where:
+              field: ResultType
+              op: "!="
+              value: "0"
+          - id: successful_signins
+            type: count
+            where:
+              field: ResultType
+              op: "=="
+              value: "0"
+          - id: risky_signins
+            type: count
+            where:
+              field: IsRisky
+              op: "=="
+              value: true
+
+      - name: AADUserRiskEvents
+        time_field: TimeGenerated
+        metrics:
+          - id: user_risk_events
+            type: count
+
+      - name: AADRiskyUsers
+        time_field: TimeGenerated
+        metrics:
+          - id: risky_users
+            type: count
+
+  endpoint:
+    tables:
+      - name: DeviceEvents
+        time_field: TimeGenerated
+        metrics:
+          - id: endpoint_events
+            type: count
+          - id: suspicious_actions
+            type: count
+            where:
+              field: ActionType
+              op: in
+              values: ["ProcessCreated","PowerShellCommand","Rundll32","WmiEventFilter"]
+
+      - name: SecurityEvent
+        time_field: TimeGenerated
+        metrics:
+          - id: windows_auth_failures
+            type: count
+            where:
+              field: EventID
+              op: "=="
+              value: 4625
+          - id: windows_auth_success
+            type: count
+            where:
+              field: EventID
+              op: "=="
+              value: 4624
+
+  azure_control_plane:
+    tables:
+      - name: AzureActivity
+        time_field: TimeGenerated
+        metrics:
+          - id: control_plane_events
+            type: count
+          - id: write_operations
+            type: count
+            where:
+              field: ActivityStatus
+              op: "=="
+              value: "Succeeded"
+
+  security_operations:
+    tables:
+      - name: SecurityIncident
+        time_field: TimeGenerated
+        metrics:
+          - id: incidents
+            type: count
+          - id: high_sev_incidents
+            type: count
+            where:
+              field: Severity
+              op: in
+              values: ["High","Critical"]
+
+      - name: SentinelAudit
+        time_field: TimeGenerated
+        metrics:
+          - id: audit_events
+            type: count
