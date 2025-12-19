@@ -1,6 +1,7 @@
 """
-F7-LAS Stage 2 – Remediator Agent (Layer 3)
-Proposal-only. No execution. No LLM. HITL required for any non-read-only action.
+F7-LAS Stage 2 – Remediator Agent (Layer 6)
+Proposal-only. No execution. No LLM.
+Human-in-the-loop required for any action.
 """
 
 from __future__ import annotations
@@ -15,33 +16,58 @@ class RemediatorAgent:
     def __init__(self):
         pass
 
-    def propose(self, investigation: Dict[str, Any], *, run_id: str) -> Dict[str, Any]:
+    def propose(
+        self,
+        *,
+        case_summary: Dict[str, Any],
+        evidence: Dict[str, Any],
+        run_id: str
+    ) -> Dict[str, Any]:
         """
-        Produce a remediation *proposal* based on evidence. No actions are executed here.
+        Produce a remediation proposal based on the SOC case summary
+        and supporting evidence. No actions are executed here.
         """
-        evidence = (investigation or {}).get("evidence", [])
 
         proposal = {
             "executed": False,
             "requires_hitl": True,
-            "recommended_actions": [],
-            "notes": "Read-only deployment. Proposals require human approval and separate execution path."
+            "case_id": run_id,
+            "severity": case_summary.get("severity"),
+            "recommended_action": case_summary.get("recommended_action"),
+            "notes": "Read-only deployment. Human approval required before any response action.",
         }
 
-        # Minimal deterministic signals: if any tool returned rows, recommend analyst review
-        nonzero = [e for e in evidence if isinstance(e, dict) and e.get("rowcount", 0) > 0]
-        if nonzero:
-            proposal["recommended_actions"].append({
-                "type": "HITL_REVIEW",
-                "reason": f"{len(nonzero)} evidence set(s) returned non-zero rows. Review raw results and decide next actions."
-            })
-        else:
-            proposal["recommended_actions"].append({
-                "type": "NO_FINDINGS",
-                "reason": "No evidence returned from the executed plan. Consider widening time window or adding identifiers."
-            })
+        # Optional evidence sanity check (no interpretation)
+        evidence_sets = (evidence or {}).get("evidence", [])
+        nonzero = [
+            e for e in evidence_sets
+            if isinstance(e, dict) and e.get("rowcount", 0) > 0
+        ]
 
-        write_audit(run_id=run_id, stage="remediation_proposal", data=proposal)
-        log_event("remediator_proposal_created", {"run_id": run_id, "nonzero_evidence": len(nonzero)})
+        if nonzero:
+            proposal["evidence_support"] = {
+                "datasets_with_findings": len(nonzero),
+                "guidance": "Review supporting evidence before approving remediation."
+            }
+        else:
+            proposal["evidence_support"] = {
+                "datasets_with_findings": 0,
+                "guidance": "No supporting evidence returned; no remediation recommended."
+            }
+
+        write_audit(
+            run_id=run_id,
+            stage="remediation_proposal",
+            data=proposal
+        )
+
+        log_event(
+            "remediator_proposal_created",
+            {
+                "run_id": run_id,
+                "severity": proposal.get("severity"),
+                "requires_hitl": True,
+            }
+        )
 
         return proposal
