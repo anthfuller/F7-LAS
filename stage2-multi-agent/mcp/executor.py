@@ -1,15 +1,20 @@
-# mcp/executor.py
+"""
+MCP Executor (Layer 4 enforced by Layer 5)
+Central execution gateway: PDP -> execute -> L7 audit
+"""
+
 from __future__ import annotations
 
+import os
 import re
-from dataclasses import asdict
-from datetime import timedelta, datetime
-from typing import Any, Dict, List, Optional
+from datetime import timedelta, datetime, date
+from typing import Any, Dict, Optional, List
 
 from azure.identity import DefaultAzureCredential
-from azure.monitor.query import LogsQueryClient, LogsQueryStatus
+from azure.monitor.query import LogsQueryClient
 
 from mcp.tools import build_query
+from pdp.pdp import evaluate
 from telemetry.audit import write_audit
 from telemetry.logger import log_event
 
@@ -17,163 +22,115 @@ from telemetry.logger import log_event
 _AGO_RE = re.compile(r"ago\(\s*(\d+)\s*([smhd])\s*\)", re.IGNORECASE)
 
 
-def _infer_timespan_from_kql(kql: str, default: timedelta) -> timedelta:
+def _timespan_from_query(query: str) -> Optional[timedelta]:
     """
-    If query contains ago(7d)/ago(24h)/ago(15m), use the largest value found.
-    Otherwise return default.
+    If query contains `ago(7d)` / `ago(24h)` etc, return a matching timedelta.
+    Otherwise None (let API default).
     """
-    if not kql:
-        return default
-
-    best: Optional[timedelta] = None
-    for m in _AGO_RE.finditer(kql):
-        n = int(m.group(1))
-        unit = m.group(2).lower()
-        if unit == "s":
-            ts = timedelta(seconds=n)
-        elif unit == "m":
-            ts = timedelta(minutes=n)
-        elif unit == "h":
-            ts = timedelta(hours=n)
-        else:  # d
-            ts = timedelta(days=n)
-
-        best = ts if best is None else max(best, ts)
-
-    return best or default
+    m = _AGO_RE.search(query)
+    if not m:
+        return None
+    n = int(m.group(1))
+    unit = m.group(2).lower()
+    if unit == "s":
+        return timedelta(seconds=n)
+    if unit == "m":
+        return timedelta(minutes=n)
+    if unit == "h":
+        return timedelta(hours=n)
+    if unit == "d":
+        return timedelta(days=n)
+    return None
 
 
-def _json_safe_value(v: Any) -> Any:
-    """
-    Convert Azure SDK / datetime-ish values to JSON-safe primitives.
-    """
+def _to_json_primitive(v: Any) -> Any:
     if v is None:
         return None
     if isinstance(v, (str, int, float, bool)):
         return v
-    if isinstance(v, datetime):
-        # Prefer ISO8601; keep Z out if tz-naive
+    if isinstance(v, (datetime, date)):
+        # Sentinel often returns timezone-aware; isoformat is fine for JSON + parsing
         return v.isoformat()
-    # Fallback: string
+    # Fallback for SDK objects
     return str(v)
 
 
-def _json_safe_rows(rows: Any) -> List[List[Any]]:
-    """
-    Convert LogsTableRow or other row objects into list-of-lists.
-    """
-    out: List[List[Any]] = []
-    if not rows:
-        return out
+def execute(
+    tool_name: str,
+    *,
+    run_id: str,
+    params: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
+    built = build_query(tool_name, params=params)
+    action = built["action"]
 
-    for row in rows:
-        # Azure returns LogsTableRow which is iterable
-        try:
-            seq = list(row)
-        except Exception:
-            out.append([_json_safe_value(row)])
-            continue
+    # === L5: Policy Decision ===
+    decision = evaluate(
+        action=action,
+        context={"limit": built["limit"], "has_time_filter": built["has_time_filter"]},
+        run_id=run_id,
+    )
 
-        out.append([_json_safe_value(x) for x in seq])
+    if decision["decision"] != "ALLOW":
+        write_audit(run_id=run_id, stage="mcp_denied", data={"tool": tool_name, "action": action, "reason": decision["reason"]})
+        return {
+            "tool": tool_name,
+            "action": action,
+            "decision": decision["decision"],
+            "reason": decision["reason"],
+            "query": built["query"],
+            "table": built["table"],
+            "rowcount": 0,
+            "columns": [],
+            "rows": [],
+        }
 
-    return out
-
-
-def _json_safe_columns(cols: Any) -> List[str]:
-    """
-    Convert Azure Column objects to column-name strings.
-    """
-    out: List[str] = []
-    if not cols:
-        return out
-
-    for c in cols:
-        name = getattr(c, "name", None)
-        out.append(str(name) if name else str(c))
-    return out
-
-
-def execute(tool: str, *, run_id: str, params: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Execute a read-only Log Analytics query via Azure Monitor LogsQueryClient.
-    Returns JSON-safe result with: table, query, columns(list[str]), rows(list[list]), rowcount.
-    """
-    contract = build_query(tool=tool, params=params)
-
-    # Contract fields
-    workspace_id = contract.get("workspace_id")
+    # === L4: Real Execution ===
+    workspace_id = os.getenv("SENTINEL_WORKSPACE_ID")
     if not workspace_id:
-        raise ValueError("workspace_id missing (set in params or config)")
+        raise EnvironmentError("Missing environment variable: SENTINEL_WORKSPACE_ID")
 
-    kql = contract["query"]
-    table_name = contract.get("table", "unknown")
+    credential = DefaultAzureCredential()
+    client = LogsQueryClient(credential)
 
-    # Default to 7 days unless query itself declares a bigger/smaller window via ago()
-    default_ts = timedelta(days=int(contract.get("default_days", 7)))
-    timespan = _infer_timespan_from_kql(kql, default_ts)
+    ts = _timespan_from_query(built["query"])  # IMPORTANT: match query window when present
+    response = client.query_workspace(workspace_id=workspace_id, query=built["query"], timespan=ts)
 
-    log_event("mcp_execute_started", {"run_id": run_id, "tool": tool, "table": table_name})
-    write_audit(run_id=run_id, stage="mcp_execute_started", data={"tool": tool, "table": table_name, "query": kql})
+    columns: List[str] = []
+    rows: List[List[Any]] = []
+    rowcount = 0
 
-    cred = DefaultAzureCredential()
-    client = LogsQueryClient(cred)
+    if response and getattr(response, "tables", None):
+        t0 = response.tables[0]
 
-    try:
-        response = client.query_workspace(workspace_id, kql, timespan=timespan)
-    except Exception as e:
-        err = {
-            "ok": False,
-            "tool": tool,
-            "table": table_name,
-            "query": kql,
-            "error": str(e),
-            "rowcount": 0,
-            "columns": [],
-            "rows": [],
-        }
-        write_audit(run_id=run_id, stage="mcp_execute_error", data=err)
-        log_event("mcp_execute_error", {"run_id": run_id, "tool": tool, "table": table_name})
-        return err
+        # Columns can be objects; always normalize to names
+        raw_cols = getattr(t0, "columns", None) or []
+        for c in raw_cols:
+            columns.append(getattr(c, "name", c if isinstance(c, str) else str(c)))
 
-    # Handle partial success
-    if response.status == LogsQueryStatus.PARTIAL:
-        tables = response.partial_data or []
-        error_info = response.partial_error
-    else:
-        tables = response.tables or []
-        error_info = None
+        raw_rows = getattr(t0, "rows", None) or []
+        for r in raw_rows:
+            # LogsTableRow is iterable; convert to list + primitive values
+            as_list = list(r) if not isinstance(r, list) else r
+            rows.append([_to_json_primitive(v) for v in as_list])
 
-    if not tables:
-        result = {
-            "ok": True,
-            "tool": tool,
-            "table": table_name,
-            "query": kql,
-            "rowcount": 0,
-            "columns": [],
-            "rows": [],
-            "partial_error": asdict(error_info) if error_info else None,
-        }
-        write_audit(run_id=run_id, stage="mcp_execute_complete", data={"tool": tool, "table": table_name, "rowcount": 0})
-        log_event("mcp_execute_complete", {"run_id": run_id, "tool": tool, "table": table_name, "rowcount": 0})
-        return result
+        rowcount = len(rows)
 
-    # Use first table (typical)
-    t0 = tables[0]
-    columns = _json_safe_columns(getattr(t0, "columns", None))
-    rows = _json_safe_rows(getattr(t0, "rows", None))
+    # === L7: Audit ===
+    write_audit(
+        run_id=run_id,
+        stage="mcp_executed",
+        data={"tool": tool_name, "action": action, "table": built["table"], "query": built["query"], "rowcount": rowcount},
+    )
+    log_event("mcp_tool_executed", {"run_id": run_id, "tool": tool_name, "table": built["table"], "rowcount": rowcount})
 
-    result = {
-        "ok": True,
-        "tool": tool,
-        "table": table_name,
-        "query": kql,
+    return {
+        "tool": tool_name,
+        "action": action,
+        "decision": "ALLOW",
+        "query": built["query"],
+        "table": built["table"],
+        "rowcount": rowcount,
         "columns": columns,
-        "rows": rows,
-        "rowcount": len(rows),
-        "partial_error": asdict(error_info) if error_info else None,
+        "rows": rows[:50],
     }
-
-    write_audit(run_id=run_id, stage="mcp_execute_complete", data={"tool": tool, "table": table_name, "rowcount": result["rowcount"]})
-    log_event("mcp_execute_complete", {"run_id": run_id, "tool": tool, "table": table_name, "rowcount": result["rowcount"]})
-    return result
