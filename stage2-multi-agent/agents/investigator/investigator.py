@@ -10,10 +10,18 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any, Dict, List
+from datetime import datetime
 
 from telemetry.audit import write_audit
 from telemetry.logger import log_event
 from mcp.executor import execute as mcp_execute
+
+
+def _json_safe(value: Any) -> Any:
+    """Convert non-JSON-safe objects to safe representations."""
+    if isinstance(value, datetime):
+        return value.isoformat()
+    return value
 
 
 class InvestigatorAgent:
@@ -43,10 +51,9 @@ class InvestigatorAgent:
             if table:
                 evidence_file = evidence_dir / f"{table.lower()}.json"
 
-                # ✅ FIX: Convert LogsTableRow → JSON-safe lists
                 raw_rows = result.get("rows", [])
                 safe_rows = [
-                    list(row) if not isinstance(row, list) else row
+                    [_json_safe(cell) for cell in list(row)]
                     for row in raw_rows
                 ]
 
