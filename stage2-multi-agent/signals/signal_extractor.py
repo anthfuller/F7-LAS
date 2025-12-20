@@ -6,7 +6,27 @@ import json
 import yaml
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Optional
+
+
+def _safe_parse_time(value: Any) -> Optional[datetime]:
+    """
+    Defensive timestamp parser.
+    Accepts stringified datetimes, ignores garbage.
+    """
+    if not value:
+        return None
+
+    if isinstance(value, datetime):
+        return value
+
+    if isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace("Z", ""))
+        except Exception:
+            return None
+
+    return None
 
 
 def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict[str, Any]:
@@ -19,12 +39,12 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
     time_start = None
     time_end = None
 
-    for domain, cfg in domain_config["domains"].items():
+    for domain, cfg in domain_config.get("domains", {}).items():
         domain_metrics = {}
         tables_used = []
         signals_present = False
 
-        for table_cfg in cfg["tables"]:
+        for table_cfg in cfg.get("tables", []):
             table_name = table_cfg["name"]
             evidence_file = run_dir / "evidence" / f"{table_name.lower()}.json"
 
@@ -39,15 +59,19 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
             rows = evidence.get("rows", [])
             columns = evidence.get("columns", [])
 
-            # Track time window
+            # --- Track time window safely ---
             if "TimeGenerated" in columns:
                 idx = columns.index("TimeGenerated")
-                times = [row[idx] for row in rows if row[idx]]
-                parsed = [datetime.fromisoformat(t.replace("Z", "")) for t in times]
-                if parsed:
-                    time_start = min(parsed) if not time_start else min(time_start, min(parsed))
-                    time_end = max(parsed) if not time_end else max(time_end, max(parsed))
+                for row in rows:
+                    if idx >= len(row):
+                        continue
+                    ts = _safe_parse_time(row[idx])
+                    if not ts:
+                        continue
+                    time_start = ts if not time_start else min(time_start, ts)
+                    time_end = ts if not time_end else max(time_end, ts)
 
+            # --- Metrics ---
             for metric in table_cfg.get("metrics", []):
                 metric_id = metric["id"]
                 count = 0
@@ -69,7 +93,7 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
                                 match = False
                             elif op == "!=" and cell == value:
                                 match = False
-                            elif op == "in" and cell not in values:
+                            elif op == "in" and cell not in (values or []):
                                 match = False
 
                     if match:
@@ -79,12 +103,14 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
                 if count > 0:
                     signals_present = True
 
-        domains_out.append({
-            "domain": domain,
-            "signals_present": signals_present,
-            "tables": tables_used,
-            "metrics": domain_metrics,
-        })
+        domains_out.append(
+            {
+                "domain": domain,
+                "signals_present": signals_present,
+                "tables": tables_used,
+                "metrics": domain_metrics,
+            }
+        )
 
     return {
         "domains": domains_out,
