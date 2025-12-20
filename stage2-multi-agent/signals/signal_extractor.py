@@ -1,53 +1,55 @@
 # signals/signal_extractor.py
-
 from __future__ import annotations
 
 import json
 import yaml
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 
 def _safe_parse_time(value: Any) -> Optional[datetime]:
-    """
-    Defensive timestamp parser.
-    Accepts stringified datetimes, ignores garbage.
-    """
     if not value:
         return None
-
     if isinstance(value, datetime):
         return value
-
     if isinstance(value, str):
+        # handle both "2025-12-17T03:02:13.356Z" and "2025-12-17 03:02:13.356"
+        s = value.strip().replace("Z", "")
         try:
-            return datetime.fromisoformat(value.replace("Z", ""))
+            return datetime.fromisoformat(s)
         except Exception:
             return None
-
     return None
 
 
-def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict[str, Any]:
+def _iter_row_lists(rows: Any) -> List[List[Any]]:
     """
-    Convert raw evidence into domain-level metrics.
-    No interpretation. No thresholds. Counts only.
+    Yield only list/tuple rows. Ignore strings/objects (legacy evidence).
     """
+    out: List[List[Any]] = []
+    if not rows:
+        return out
+    for r in rows:
+        if isinstance(r, (list, tuple)):
+            out.append(list(r))
+        # else: ignore (prevents the 'e' / char-indexing failure)
+    return out
 
+
+def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict[str, Any]:
     domains_out = []
-    time_start = None
-    time_end = None
+    time_start: Optional[datetime] = None
+    time_end: Optional[datetime] = None
 
     for domain, cfg in domain_config.get("domains", {}).items():
-        domain_metrics = {}
+        domain_metrics: Dict[str, int] = {}
         tables_used = []
         signals_present = False
 
         for table_cfg in cfg.get("tables", []):
             table_name = table_cfg["name"]
             evidence_file = run_dir / "evidence" / f"{table_name.lower()}.json"
-
             if not evidence_file.exists():
                 continue
 
@@ -56,8 +58,9 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
             with evidence_file.open(encoding="utf-8") as f:
                 evidence = json.load(f)
 
-            rows = evidence.get("rows", [])
-            columns = evidence.get("columns", [])
+            columns = evidence.get("columns", []) or []
+            rows_raw = evidence.get("rows", []) or []
+            rows = _iter_row_lists(rows_raw)
 
             # --- Track time window safely ---
             if "TimeGenerated" in columns:
@@ -78,23 +81,26 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
 
                 for row in rows:
                     match = True
-
                     if "where" in metric:
                         field = metric["where"]["field"]
                         op = metric["where"]["op"]
                         value = metric["where"].get("value")
-                        values = metric["where"].get("values")
+                        values = metric["where"].get("values") or []
 
                         if field not in columns:
                             match = False
                         else:
-                            cell = row[columns.index(field)]
-                            if op == "==" and cell != value:
+                            ci = columns.index(field)
+                            if ci >= len(row):
                                 match = False
-                            elif op == "!=" and cell == value:
-                                match = False
-                            elif op == "in" and cell not in (values or []):
-                                match = False
+                            else:
+                                cell = row[ci]
+                                if op == "==" and cell != value:
+                                    match = False
+                                elif op == "!=" and cell == value:
+                                    match = False
+                                elif op == "in" and cell not in values:
+                                    match = False
 
                     if match:
                         count += 1
@@ -122,18 +128,10 @@ def extract_domain_signals(run_dir: Path, domain_config: Dict[str, Any]) -> Dict
 
 
 def extract_signals(*, investigation: Dict[str, Any], run_id: str) -> Dict[str, Any]:
-    """
-    Orchestrator-facing entry point.
-    Loads domain configuration and extracts domain signals.
-    """
-
     run_dir = Path("runs") / run_id
 
     domain_cfg_path = Path(__file__).parent / "domain_signals.yaml"
     with domain_cfg_path.open(encoding="utf-8") as f:
         domain_config = yaml.safe_load(f)
 
-    return extract_domain_signals(
-        run_dir=run_dir,
-        domain_config=domain_config,
-    )
+    return extract_domain_signals(run_dir=run_dir, domain_config=domain_config)
