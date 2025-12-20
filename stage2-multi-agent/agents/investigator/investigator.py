@@ -42,13 +42,21 @@ class InvestigatorAgent:
             table = result.get("table")
             if table:
                 evidence_file = evidence_dir / f"{table.lower()}.json"
+
+                # ✅ FIX: Convert LogsTableRow → JSON-safe lists
+                raw_rows = result.get("rows", [])
+                safe_rows = [
+                    list(row) if not isinstance(row, list) else row
+                    for row in raw_rows
+                ]
+
                 with evidence_file.open("w", encoding="utf-8") as f:
                     json.dump(
                         {
                             "table": table,
                             "query": result.get("query"),
                             "columns": result.get("columns", []),
-                            "rows": result.get("rows", []),
+                            "rows": safe_rows,
                             "rowcount": result.get("rowcount", 0),
                         },
                         f,
