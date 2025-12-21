@@ -246,9 +246,3 @@ This design shows:
 - Advanced domain signal extraction  
 
 ---
-
-## Final Note
-
-**This is not a demo.**
-
-It is a **reference architecture** for building secure, agentic SOC systems on Microsoft Sentinel, using **F7-LAS** as the control model.
