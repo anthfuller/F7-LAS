@@ -1,9 +1,0 @@
-package f7las.pdp
-
-# Default: deny everything unless explicitly allowed
-default allow = false
-
-# Allow execution ONLY after human approval flag is present
-allow {
-  input.human_approved == true
-}
