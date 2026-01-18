@@ -1,5 +1,7 @@
 # F7-LAS Implementation Guide v3.1
 
+## This guide assumes a security-first deployment model and is intended for teams implementing agentic AI systems that can observe, recommend, or execute actions in production environments.
+
 This directory contains the Implementation Guide for the  
 **Fuller 7-Layer Agentic AI Security (F7-LAS) model**.
 
