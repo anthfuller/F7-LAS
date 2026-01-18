@@ -15,6 +15,11 @@
 F7-LAS™ (Fuller 7-Layer Agentic Security) is an open security model for designing, validating, and governing agentic AI systems.
 It defines seven interdependent layers—spanning prompts, grounding, planning logic, tool security, policy enforcement, sandboxing, and monitoring—to reduce risk in emerging LLM-driven autonomous agents.
 
+### Intended Audience
+
+F7-LAS is intended for security architects, SOC engineers, and platform owners designing or reviewing agentic AI systems with real operational authority. It emphasizes governance, enforcement, containment, and observability rather than agent intelligence or learning algorithms.
+
+
 This repository currently provides:
 
 - The F7-LAS whitepaper and implementation guide
