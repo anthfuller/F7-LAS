@@ -1,7 +1,7 @@
 # F7-LAS Engineering Review Checklist
 
-**Purpose:**  
-# Audience:
+# **Purpose:**  
+## Audience:
 This checklist is intended for security architects, SOC teams, and platform owners reviewing agentic or multi-agent AI systems with real operational impact.
 Use this checklist to assess whether an agentic or multi-agent AI system implementation conforms to the F7‑LAS (Fuller 7‑Layer Agentic AI Security) model.
 
