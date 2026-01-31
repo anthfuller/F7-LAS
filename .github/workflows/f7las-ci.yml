@@ -69,7 +69,8 @@ jobs:
       - name: Run golden dataset evaluation
         run: |
           python -m src.demo_runner.run_golden_dataset \
-            tests/golden_dataset/scenarios.json
+            --scenarios tests/golden_dataset/scenarios.json 
+            --rubric tests/golden_dataset/rubric.json
 
       - name: Enforce golden thresholds
         run: |
