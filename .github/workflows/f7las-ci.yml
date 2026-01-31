@@ -29,7 +29,13 @@ jobs:
           pip install pytest
 
       # ------------------------------------------------------------
-      # HARD GATE: Python package integrity (no pretending)
+      # REQUIRED: Make src/ importable for python + pytest
+      # ------------------------------------------------------------
+      - name: Add repo root to PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+
+      # ------------------------------------------------------------
+      # HARD GATE: Python package integrity
       # ------------------------------------------------------------
       - name: Verify src.policy package imports
         run: |
@@ -51,14 +57,14 @@ jobs:
           python scripts/validate-settings.py config/settings.yaml
 
       # ------------------------------------------------------------
-      # Unit tests (must include real assertions)
+      # Unit tests 
       # ------------------------------------------------------------
       - name: Run unit tests
         run: |
           pytest -q
 
       # ------------------------------------------------------------
-      # Golden dataset execution (not decorative)
+      # Golden dataset execution 
       # ------------------------------------------------------------
       - name: Run golden dataset evaluation
         run: |
