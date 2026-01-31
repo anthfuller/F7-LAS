@@ -57,19 +57,19 @@ jobs:
           python scripts/validate-settings.py config/settings.yaml
 
       # ------------------------------------------------------------
-      # Unit tests 
+      # Unit tests
       # ------------------------------------------------------------
       - name: Run unit tests
         run: |
           pytest -q
 
       # ------------------------------------------------------------
-      # Golden dataset execution 
+      # Golden dataset execution (CORRECT)
       # ------------------------------------------------------------
       - name: Run golden dataset evaluation
         run: |
           python -m src.demo_runner.run_golden_dataset \
-            --scenarios tests/golden_dataset/scenarios.json 
+            --scenarios tests/golden_dataset/scenarios.json \
             --rubric tests/golden_dataset/rubric.json
 
       - name: Enforce golden thresholds
