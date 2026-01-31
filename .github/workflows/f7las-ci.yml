@@ -64,7 +64,7 @@ jobs:
           pytest -q
 
       # ------------------------------------------------------------
-      # Golden dataset execution (CORRECT)
+      # Golden dataset execution (CLI CONTRACT CORRECT)
       # ------------------------------------------------------------
       - name: Run golden dataset evaluation
         run: |
@@ -72,8 +72,10 @@ jobs:
             --scenarios tests/golden_dataset/scenarios.json \
             --rubric tests/golden_dataset/rubric.json
 
+      # ------------------------------------------------------------
+      # Golden threshold enforcement (CLI CONTRACT CORRECT)
+      # ------------------------------------------------------------
       - name: Enforce golden thresholds
         run: |
           python scripts/check_golden_thresholds.py \
-            tests/golden_dataset/golden_eval_results.json \
-            tests/golden_dataset/rubric.json
+            tests/golden_dataset/golden_eval_results.json
