@@ -1,6 +1,6 @@
 name: F7-LAS CI
 
-on:
+"on":
   push:
     branches: [ main ]
   pull_request:
@@ -10,60 +10,63 @@ permissions:
   contents: read
 
 jobs:
-  build-and-test:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
-      # 1 — Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2 — Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 3 — Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
 
-      # 4 — Run placeholder unit test
-      - name: Run unit tests
+      # ------------------------------------------------------------
+      # HARD GATE: Python package integrity (no pretending)
+      # ------------------------------------------------------------
+      - name: Verify src.policy package imports
         run: |
-          pytest -q tests/test_agents_basic.py
+          python -c "import src.policy"
 
-      # 5 — Run golden dataset evaluator
-      - name: Golden dataset evaluation
-        run: |
-          python src/demo_runner/run_golden_dataset.py \
-            --scenarios tests/golden_dataset/scenarios.json \
-            --rubric tests/golden_dataset/rubric.json \
-            --output tests/golden_dataset/golden_eval_results.json
-
-      # 6 — Enforce golden dataset threshold
-      - name: Check golden thresholds
-        run: |
-          python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_results.json
-
-      # 7 — Validate prompts
+      # ------------------------------------------------------------
+      # Artifact validation (existing scripts only)
+      # ------------------------------------------------------------
       - name: Validate prompts
         run: |
-          python scripts/validate-prompts.py
+          python scripts/validate-prompts.py config/prompts
 
-      # 8 — Validate policies
       - name: Validate policies
         run: |
-          if [ -d config/policies ]; then python scripts/validate-policies.py; else echo "No policies yet"; fi
+          python scripts/validate-policies.py
 
-      # 9 — Validate settings
       - name: Validate settings
         run: |
           python scripts/validate-settings.py config/settings.yaml
 
-      # 10 — Placeholder SBOM scanning hook
-      - name: SBOM scan (placeholder)
+      # ------------------------------------------------------------
+      # Unit tests (must include real assertions)
+      # ------------------------------------------------------------
+      - name: Run unit tests
         run: |
-          echo "SBOM/SCA step can be added here later."
+          pytest -q
+
+      # ------------------------------------------------------------
+      # Golden dataset execution (not decorative)
+      # ------------------------------------------------------------
+      - name: Run golden dataset evaluation
+        run: |
+          python -m src.demo_runner.run_golden_dataset \
+            tests/golden_dataset/scenarios.json
+
+      - name: Enforce golden thresholds
+        run: |
+          python scripts/check_golden_thresholds.py \
+            tests/golden_dataset/golden_eval_results.json \
+            tests/golden_dataset/rubric.json
