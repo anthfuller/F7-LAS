@@ -345,13 +345,13 @@ Follow the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md) 
 If you reference or build upon this work in research, engineering documentation, or academic publications, please cite the Zenodo-archived version below.
 
 ### **APA**
-Fuller, A. (2025). *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. Zenodo. https://doi.org/10.5281/zenodo.17795922
+Fuller, A. (2025). *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. Zenodo. https://doi.org/10.5281/zenodo.18292122
 
 ### **MLA**
-Fuller, Anthony. *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. 2025, Zenodo, https://doi.org/10.5281/zenodo.17795922.
+Fuller, Anthony. *Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model*. 2025, Zenodo, https://doi.org/10.5281/zenodo.18292122.
 
 ### **Atlanta**
-Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.” Zenodo, 2025. https://doi.org/10.5281/zenodo.17795922.
+Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.” Zenodo, 2025. https://doi.org/10.5281/zenodo.18292122.
 
 ### **BibTeX**
 ```bibtex
@@ -360,8 +360,8 @@ Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.�
   author       = {Fuller, Anthony},
   year         = {2025},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.17795922},
-  url          = {https://doi.org/10.5281/zenodo.17795922}
+  doi          = {10.5281/zenodo.18292122},
+  url          = {https://doi.org/10.5281/zenodo.18292122}
 }
 ```
 
