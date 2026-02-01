@@ -36,9 +36,8 @@ This repository currently provides:
 - Early examples and patterns for applying seven-layer security to agentic workflows
 
 **Maturity roadmap.**  
-F7-LAS is currently at **Stage 1 – Prototype**.  
-The repository includes conceptual material plus minimal, demonstrative runtime components.
-Future stages will introduce richer agents, stronger sandboxing, deeper telemetry integration, golden datasets, and hardened reference implementations suitable for lab and pilot use.
+F7-LAS is currently at **Stage 2 – Beta**.  
+The repository includes behavioral CI, negative test coverage, and golden dataset enforcement validating allow and deny paths. Coverage and reference implementations continue to expand toward stable, production-ready patterns.
 
 
 
