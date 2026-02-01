@@ -2,7 +2,7 @@
 """
 F7-LAS Tool Allowlist Validator (CI-grade)
 
-Fixes CI by validating config/tools/allowlist.json against
+Fixes CI theater by validating config/tools/allowlist.json against
 docs/f7-las-implementation-guide/layer-s/allowlist-schema.json using jsonschema.
 
 The previous implementation incorrectly assumed allowlist.json was an array.
