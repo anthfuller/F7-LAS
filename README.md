@@ -4,7 +4,7 @@
 ![ci_status](https://img.shields.io/badge/CI-passing-brightgreen)
 ![version](https://img.shields.io/badge/version-v3.1.1-blue)
 ![license](https://img.shields.io/badge/license-CC%20BY%204.0%20%2B%20MIT-blue)
-![maturity](https://img.shields.io/badge/maturity-Stage%201%20—%20Prototype-yellowgreen)
+![maturity](https://img.shields.io/badge/maturity-Stage%202%20—%20Beta-blue)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17887940-blue.svg)](https://doi.org/10.5281/zenodo.18292122)
 
 
