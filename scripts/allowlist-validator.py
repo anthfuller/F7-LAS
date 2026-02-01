@@ -1,74 +1,62 @@
 #!/usr/bin/env python3
+"""
+F7-LAS Tool Allowlist Validator (CI-grade)
+
+Fixes CI by validating config/tools/allowlist.json against
+docs/f7-las-implementation-guide/layer-s/allowlist-schema.json using jsonschema.
+
+The previous implementation incorrectly assumed allowlist.json was an array.
+"""
+
 import json
 import sys
-import os
+from pathlib import Path
 
-SCHEMA_PATH = "docs/f7-las-implementation-guide/layer-s/allowlist-schema.json"
-ALLOWLIST_PATH = "config/tools/allowlist.json"
+from jsonschema import Draft202012Validator
 
-def load_json(path):
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SCHEMA_PATH = REPO_ROOT / "docs" / "f7-las-implementation-guide" / "layer-s" / "allowlist-schema.json"
+ALLOWLIST_PATH = REPO_ROOT / "config" / "tools" / "allowlist.json"
+
+
+def _load_json(path: Path):
+    with path.open("r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def main() -> int:
+    if not SCHEMA_PATH.exists():
+        print(f"[FAIL] allowlist schema not found: {SCHEMA_PATH}", file=sys.stderr)
+        return 1
+    if not ALLOWLIST_PATH.exists():
+        print(f"[FAIL] allowlist file not found: {ALLOWLIST_PATH}", file=sys.stderr)
+        return 1
+
     try:
-        with open(path, "r") as f:
-            return json.load(f)
+        schema = _load_json(SCHEMA_PATH)
+        Draft202012Validator.check_schema(schema)
+        validator = Draft202012Validator(schema)
     except Exception as e:
-        print(f"[ERROR] Unable to load {path}: {e}")
-        sys.exit(1)
+        print(f"[FAIL] invalid allowlist schema: {e}", file=sys.stderr)
+        return 1
 
-def validate_item(item, schema_props):
-    errors = []
+    try:
+        allowlist = _load_json(ALLOWLIST_PATH)
+    except Exception as e:
+        print(f"[FAIL] invalid allowlist JSON: {e}", file=sys.stderr)
+        return 1
 
-    for prop, rules in schema_props.items():
-        # Required fields
-        if rules.get("required", False):
-            if prop not in item:
-                errors.append(f"Missing required field: {prop}")
-                continue
+    errors = sorted(validator.iter_errors(allowlist), key=lambda e: list(e.absolute_path))
+    if errors:
+        print("❌ allowlist.json validation FAILED:", file=sys.stderr)
+        for err in errors:
+            loc = "/".join(str(x) for x in err.absolute_path) if err.absolute_path else "<root>"
+            print(f" - {loc}: {err.message}", file=sys.stderr)
+        return 1
 
-        if prop not in item:
-            continue  # not required → skip
+    print("✅ allowlist.json is valid according to allowlist-schema.json")
+    return 0
 
-        # Type validation
-        expected_type = rules.get("type")
-        if expected_type:
-            actual_type = type(item[prop]).__name__
-            if actual_type != expected_type:
-                errors.append(f"Field '{prop}' expected type '{expected_type}', got '{actual_type}'")
-
-        # Enum validation
-        if "enum" in rules:
-            if item[prop] not in rules["enum"]:
-                errors.append(f"Field '{prop}' invalid value '{item[prop]}' (allowed: {rules['enum']})")
-
-    return errors
-
-def main():
-    print("Validating F7-LAS Tool Allowlist...")
-
-    schema = load_json(SCHEMA_PATH)
-    allowlist = load_json(ALLOWLIST_PATH)
-
-    schema_props = schema.get("properties", {})
-
-    if not isinstance(allowlist, list):
-        print("[FAIL] allowlist.json must be a JSON array")
-        sys.exit(1)
-
-    overall_errors = []
-    for idx, item in enumerate(allowlist):
-        errors = validate_item(item, schema_props)
-        if errors:
-            overall_errors.append((idx, errors))
-
-    if overall_errors:
-        print("\n❌ Validation FAILED:")
-        for idx, errs in overall_errors:
-            print(f"\n  Entry #{idx}:")
-            for e in errs:
-                print(f"   - {e}")
-        sys.exit(1)
-
-    print("allowlist.json is valid according to allowlist-schema.json")
-    sys.exit(0)
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
