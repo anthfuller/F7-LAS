@@ -1,0 +1,5 @@
+# Golden dataset & CI guardrails
+/tests/golden_dataset/ @anthfuller
+/src/demo_runner/run_golden_dataset.py @anthfuller
+/scripts/check_golden_thresholds.py @anthfuller
+/config/policies/policy-schema.json @anthfuller
