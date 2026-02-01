@@ -1,55 +1,45 @@
 # F7-LAS Roadmap
 
-This roadmap outlines the evolution of F7-LAS from **Stage 0 (Foundational Draft)** toward a more complete conceptual and example-driven framework.
+This roadmap outlines the evolution of F7-LAS across clearly defined maturity stages, aligned with the current **Stage 2 — Beta** status described in the README.
 
 ---
 
-## Stage 0 — Current
-- Whitepaper published  
-- Core model defined (Layers 1–7 + Supplemental Layer S)  
-- Repo structure created  
-- Initial governance and documentation  
-- Placeholder schemas + examples pending  
+## Current Maturity — Stage 2 (Beta)
+
+F7-LAS is currently **Stage 2 — Beta**.
+
+**What this means:**
+- Layers 1–7 have working *reference implementations and examples (beta quality)*
+- Behavioral CI and golden dataset enforcement are present
+- The framework is suitable for controlled pilots and evaluation, not production
+
+**Included in Stage 2:**
+- System prompts (Layer 1)
+- Grounding profile and allowlist (Layer 2)
+- Simple planner stub (Layer 3)
+- Stub tools and schemas (Layer 4)
+- Multi-vendor PDP/PEP examples (OPA, Cedar, Sentinel, Kyverno, SpiceDB) (Layer 5)
+- Minimal sandbox boundary (Layer 6)
+- Telemetry schema and logger (Layer 7)
 
 ---
 
-## Stage 1 — Minimum Viable Framework
-**Goal:** Basic working examples and schema validations
+## Stage 3 — Stable
+
+**Goal:** Production-ready reference patterns
 
 ### Planned:
-- Add `/examples` demonstrating simple agent flow  
-- Add validated JSON/YAML schemas for tool calls & policy checks  
-- Add diagrams for each layer  
-- Expand glossary and security rationale  
-- Add initial integration patterns  
-
----
-
-## Stage 2 — Maturing Framework
-**Goal:** More robust reference material
-
-### Planned:
-- Add multiple agent patterns (Coordinator/Investigator/Remediator)  
-- Add more detailed policy-as-code patterns  
-- Expand supply-chain security guidance  
-- Provide sample telemetry log formats  
-- Add mapping to MITRE ATLAS (high level, non-normative)  
-
----
-
-## Stage 3 — Community Adoption
-**Goal:** Broader ecosystem engagement
-
-### Planned:
-- Invite community contributions  
-- Add reference implementations contributed by others  
-- Provide an F7-LAS maturity assessment tool  
-- Build alignment examples for enterprise environments  
+- Full control-to-test traceability
+- Expanded golden dataset coverage
+- Hardened sandbox and tool isolation examples
+- Formal versioning and backward compatibility guarantees
+- Enterprise deployment patterns and guidance
 
 ---
 
 ## Long-Term Vision
-F7-LAS becomes a widely recognized conceptual framework for **Agentic AI Security**, complementing:
+
+F7-LAS aims to become a widely recognized **Agentic AI Security Framework**, complementing:
 
 - NIST AI RMF  
 - MITRE ATLAS  
@@ -58,4 +48,4 @@ F7-LAS becomes a widely recognized conceptual framework for **Agentic AI Securit
 - AIGN  
 - AAM  
 
-This roadmap will evolve based on community feedback.
+This roadmap will continue to evolve based on implementation feedback and community input.
