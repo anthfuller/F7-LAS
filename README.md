@@ -24,7 +24,7 @@ This repository currently provides:
 
 - The F7-LAS whitepaper and implementation guide
 - Schemas, prompts, and policy examples
-- A Stage-1 prototype of key runtime pieces:
+- A Stage-2 beta reference implementation of key runtime pieces:
   - Layer 1: example system prompts for Investigator / Coordinator / Remediator agents
   - Layer 2: grounding / allowlist profiles
   - Layer 3: a simple planner stub
@@ -89,13 +89,15 @@ Plus:
 **Is F7-LAS a framework or a model?**  
 F7-LAS is primarily a **security model** for agentic AI, with example code and patterns. It is not a full production agent framework.
 
-**What is “Stage-1 / Prototype” in this repo?**  
-Stage-1 means the repo includes:
-- The whitepaper and implementation guide,
-- Example prompts and grounding configs,
-- A working Layer-5 Policy Engine pattern (PDP/PEP),
-- Sandbox and telemetry stubs,  
-but **no fully wired production agent** yet.
+**What is “Stage-2 / Beta” mean for this repo?**  
+Stage 2 (Beta) means the repository includes:
+- Behavioral CI enforcing real execution paths
+- Negative test coverage (deny and malformed cases)
+- Golden dataset enforcement
+- Working Layer-5 policy patterns (PDP/PEP)
+- Reference sandbox and telemetry stubs
+
+The project is suitable for controlled lab use and pilot experimentation, but is not yet production-ready.
 
 **Can I use this in production?**  
 Not as-is. The examples are meant as reference patterns and starting points. Any real deployment should go through your own engineering, security review, and hardening.
@@ -234,7 +236,7 @@ Run tests:
 pytest -q tests/test_agents_basic.py
 ```
 
-Run the golden evaluator (Stage-1 placeholder):
+Run the golden evaluator (Stage-2 beta enforcement):
 
 ```bash
 python scripts/check_golden_thresholds.py tests/golden_dataset/golden_eval_results.json
