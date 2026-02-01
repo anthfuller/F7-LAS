@@ -275,7 +275,7 @@ F7-LAS is evolving through clearly defined maturity stages to ensure transparenc
 ![maturity](https://img.shields.io/badge/maturity-Stage%202%20—%20Beta-blue)
 
 F7-LAS is currently **Stage 2 — Beta**. 
-Layers 1–7 include working reference implementations and examples, validated by behavioral CI and golden dataset enforcement, including:
+Layers 1–7 include working reference implementations and examples (beta), validated by behavioral CI and golden dataset enforcement, including:
 - System prompts (L1)  
 - Grounding profile + allowlist (L2)  
 - Simple planner stub (L3)  
