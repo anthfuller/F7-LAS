@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Reporting Vulnerabilities
-If you discover a security issue in the repository (schemas, examples, or documentation):
+If you discover a security issue in this repository (schemas, examples, or documentation):
 
 1. Do **not** open a public issue.
 2. Email the maintainer directly with:
@@ -10,18 +10,22 @@ If you discover a security issue in the repository (schemas, examples, or docume
    - Suggested mitigation
 
 ## Supported Content
-Because F7-LAS is primarily a conceptual model, the following items are in scope:
+F7-LAS is a conceptual and reference framework. The following items are **in scope**:
 
 - JSON/YAML schemas  
-- Policy examples  
-- Documentation  
+- Policy-as-code examples  
+- Documentation and whitepaper artifacts  
 - Diagrams and architecture notes  
+- **Illustrative runtime stubs and reference examples** (non-production)
 
 ## Out of Scope
-- Real agent code  
-- Runtime implementations  
-- External dependencies  
-- Vendor-specific integrations  
+The following are **explicitly not supported for production use**:
+
+- Production-grade agent implementations  
+- Hardened runtime environments  
+- Full tool execution engines  
+- External dependencies and services  
+- Vendor-specific production integrations  
 
 ## Responsible Disclosure
-We appreciate responsible disclosure and will work to address issues promptly.
+We appreciate responsible disclosure and will work to address issues related to supported content promptly.
