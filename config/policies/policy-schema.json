@@ -19,7 +19,15 @@
     },
     "policy_type": {
       "type": "string",
-      "enum": ["agent", "tool", "sandbox", "rag"],
+      "enum": [
+        "agent",
+        "constraints",
+        "escalation",
+        "rag",
+        "safety",
+        "sandbox",
+        "tool"
+      ],
       "description": "What this policy governs"
     },
     "description": {
@@ -44,7 +52,12 @@
     },
     "default_decision": {
       "type": "string",
-      "enum": ["allow", "deny", "log-only"],
+      "enum": [
+        "allow",
+        "deny",
+        "escalate",
+        "log-only"
+      ],
       "description": "Baseline decision when no rule matches"
     },
     "notes": {
@@ -56,7 +69,11 @@
       "description": "Ordered set of policy rules",
       "items": {
         "type": "object",
-        "required": ["id", "description", "effect"],
+        "required": [
+          "conditions",
+          "description",
+          "effect"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -68,42 +85,54 @@
           },
           "effect": {
             "type": "string",
-            "enum": ["allow", "deny", "log-only"],
+            "enum": [
+              "allow",
+              "deny",
+              "log-only",
+              "obligation"
+            ],
             "description": "Decision if this rule matches"
           },
           "conditions": {
-            "type": "object",
-            "description": "Simple structured conditions",
-            "properties": {
-              "applies_to_agents": {
+            "oneOf": [
+              {
                 "type": "array",
-                "items": { "type": "string" }
+                "items": {
+                  "type": "string"
+                }
               },
-              "applies_to_tools": {
-                "type": "array",
-                "items": { "type": "string" }
-              },
-              "max_risk_tier": {
-                "type": "string",
-                "description": "Highest allowed risk tier for this rule (e.g., medium)"
-              },
-              "requires_hitl": {
-                "type": "boolean",
-                "description": "Whether human-in-the-loop is required"
-              },
-              "allowed_collections": {
-                "type": "array",
-                "items": { "type": "string" }
-              },
-              "denied_collections": {
-                "type": "array",
-                "items": { "type": "string" }
+              {
+                "type": "object"
               }
+            ],
+            "description": "Rule conditions as CEL-like strings or structured conditions"
+          },
+          "rule_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Unique rule identifier within the policy"
+          },
+          "obligations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
-            "additionalProperties": true
+            "description": "Obligations to execute when rule triggers"
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "anyOf": [
+          {
+            "required": [
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "rule_id"
+            ]
+          }
+        ]
       }
     }
   },
