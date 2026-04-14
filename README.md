@@ -337,7 +337,12 @@ Contributions welcome — scenarios, policies, prompts, controls, tools.
 Follow the [Engineering Review Checklist](docs/Engineering-Review-Checklist.md) for:
 - Engineering review steps  
 - CI pipeline requirements  
-- PSP formatting rules  
+- PSP formatting rules
+  
+By submitting a contribution, you agree that your contribution is licensed
+under the same terms as this project (CC BY 4.0 for content, MIT for code)
+and that Anthony L. Fuller retains authorship and trademark rights over the
+F7-LAS™ framework as a whole.
 
 ---
 
