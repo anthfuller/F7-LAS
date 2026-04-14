@@ -377,6 +377,7 @@ Fuller, Anthony. “Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model.�
 
 © 2025 Anthony L. Fuller. Content licensed under CC BY 4.0; source code licensed under MIT License. All trademark rights reserved.
 F7-LAS™ is a trademark of Anthony L. Fuller. Trademark application pending.
+Unauthorized commercial use of the F7-LAS™ name or brand without written permission is prohibited.
 
 This project was created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer.  
 All opinions, designs, diagrams, and documentation represent the author’s personal work and do not reflect the views of Microsoft.
