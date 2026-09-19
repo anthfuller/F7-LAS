@@ -1,4 +1,4 @@
-# Simple RAG Query Walkthrough (Stage 0)
+# Simple RAG Query Walkthrough (Experimental)
 
 This example shows how a single analyst-style question would conceptually
 flow through an F7-LAS–aligned system.

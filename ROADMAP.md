@@ -1,51 +1,30 @@
-# F7-LAS Roadmap
+# F7-LAS Overhaul Roadmap
 
-This roadmap outlines the evolution of F7-LAS across clearly defined maturity stages, aligned with the current **Stage 2 — Beta** status described in the README.
+## Current maturity
 
----
+F7-LAS is an established seven-layer reference model with a **prototype reference implementation**. The repository is not Beta and is not production-ready. Existing code and CI primarily demonstrate examples and structural validation; they do not yet prove a complete runtime control path.
 
-## Current Maturity — Stage 2 (Beta)
+## Approved target
 
-F7-LAS is currently **Stage 2 — Beta**.
+The target is an **Executable Reference Implementation**: one offline, deterministic Python + OPA workflow that demonstrates bounded behavior and correlated evidence across Layers 1–7. It will remain a reference implementation, not a production agent platform.
 
-**What this means:**
-- Layers 1–7 have working *reference implementations and examples (beta quality)*
-- Behavioral CI and golden dataset enforcement are present
-- The framework is suitable for controlled pilots and evaluation, not production
+## Milestones
 
-**Included in Stage 2:**
-- System prompts (Layer 1)
-- Grounding profile and allowlist (Layer 2)
-- Simple planner stub (Layer 3)
-- Stub tools and schemas (Layer 4)
-- Multi-vendor PDP/PEP examples (OPA, Cedar, Sentinel, Kyverno, SpiceDB) (Layer 5)
-- Minimal sandbox boundary (Layer 6)
-- Telemetry schema and logger (Layer 7)
+1. **Repository truth and terminology** — reconcile maturity, versioning, paths, licensing, unsupported claims, and private-reasoning terminology.
+2. **Canonical data contracts** — define deterministic request, context, plan, proposed action, approval, decision, result, and audit records.
+3. **Canonical Python + OPA path** — implement one offline, fail-closed Layers 1–7 workflow.
+4. **Approval binding** — bind synthetic approval to the exact request/action digest, scope, policy version, and expiry.
+5. **Behavioral scenarios** — test permitted, denied, malformed, unauthorized, unavailable, tampered, recovery, and other required paths.
+6. **Evidence and replay** — correlate records, detect tampering, and reproduce deterministic outcomes.
+7. **Supply chain and CI** — pin dependencies and actions; add integrity, vulnerability, secret, and SBOM checks.
+8. **Documentation reconciliation** — execute every documented command in a clean environment.
+9. **F7-LAS-specific diagrams** — replace diagrams only after execution semantics are frozen.
+10. **Independent review** — review the complete branch diff and CI evidence before any merge, release, or Zenodo update.
 
----
+## Release boundary
 
-## Stage 3 — Stable
+The intended repository release after all acceptance gates is **4.0.0**. The whitepaper remains **v3.0** until it is separately reviewed and revised. No milestone authorizes a merge to `main`, a release, or a Zenodo update without explicit approval.
 
-**Goal:** Production-ready reference patterns
+## Completion standard
 
-### Planned:
-- Full control-to-test traceability
-- Expanded golden dataset coverage
-- Hardened sandbox and tool isolation examples
-- Formal versioning and backward compatibility guarantees
-- Enterprise deployment patterns and guidance
-
----
-
-## Long-Term Vision
-
-F7-LAS aims to become a widely recognized **Agentic AI Security Framework**, complementing:
-
-- NIST AI RMF  
-- MITRE ATLAS  
-- OWASP ASVS  
-- MAESTRO  
-- AIGN  
-- AAM  
-
-This roadmap will continue to evolve based on implementation feedback and community input.
+Completion requires a clean-user install and walkthrough, meaningful behavior tests, control-to-evidence traceability, accurate diagrams, consistent licensing/versioning, independent review, and explicit merge approval. Test counts alone are not a maturity measure.

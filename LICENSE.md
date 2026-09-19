@@ -1,21 +1,33 @@
-Creative Commons Attribution 4.0 International Public License
+# F7-LAS License Map
 
-By exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution 4.0 International Public License ("Public License").
+F7-LAS uses separate licenses for authored content and executable code.
 
-Full license text:
-https://creativecommons.org/licenses/by/4.0/legalcode
+## CC BY 4.0 content
 
-Summary:
-You are free to:
+[LICENSE-CONTENT.md](LICENSE-CONTENT.md) applies to:
 
-- Share — copy and redistribute the material in any medium or format.
-- Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+- the F7-LAS model and control descriptions;
+- Markdown and other prose documentation;
+- diagrams and other visual assets;
+- the historical whitepaper;
+- files under `docs/` and `schemas/`, unless a file states otherwise;
+- README files and other prose within mixed directories.
 
-Under the following terms:
+## MIT code
 
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+[LICENSE-CODE](LICENSE-CODE) applies to:
 
-No additional restrictions:
-You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+- executable source under `src/` and `scripts/`;
+- workflow code under `.github/workflows/`;
+- executable source, policy-as-code, and runtime configuration examples under `config/` and `examples/`;
+- test code under `tests/`.
 
-This license applies to the models, documentation, diagrams, schemas, and examples in this repository unless a file or directory contains its own explicit license.
+For a mixed file, the file's explicit SPDX identifier controls. If none is present, prose and visual content use CC BY 4.0, while executable source and machine-executable policy/configuration use MIT.
+
+## Trademark
+
+F7-LAS™ is a trademark of Anthony L. Fuller. These copyright licenses do not grant trademark rights, permission to imply endorsement, or permission to misrepresent modified work as an official F7-LAS release.
+
+## Independent work
+
+This is independent personal work and is not affiliated with, endorsed by, or representative of Microsoft or any other employer.

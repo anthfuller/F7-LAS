@@ -1,4 +1,4 @@
-# F7-LAS Layer 4 – AWS EC2 Client Stub (Stage-1)
+# F7-LAS Layer 4 – Illustrative AWS EC2 Client Stub
 # ------------------------------------------------
 # This simulates an EC2 tool interface.
 # No real cloud calls. Purely deterministic and safe.

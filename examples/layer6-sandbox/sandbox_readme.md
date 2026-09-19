@@ -1,8 +1,8 @@
-# F7-LAS Layer 6 — Sandboxed Execution Environment (Stage-1)
+# F7-LAS Layer 6 — Illustrative Sandboxed Execution Environment
 
 Layer 6 (Sandbox) is responsible for limiting the blast radius of any action that passes the Layer 5 Policy Engine.
 
-This directory contains the minimal sandbox implementation for the F7-LAS Stage-1 prototype.
+This directory contains an illustrative minimal sandbox prototype.
 
 ---
 
@@ -79,7 +79,7 @@ It is a minimal demonstration of F7-LAS Layer 6 mechanics:
 - Post-policy validation
 - Minimal blast radius
 
-A full Layer-6 implementation (Stage-3) would include:
+A production Layer-6 implementation would require:
 
 - Firecracker microVM isolation
 - Seccomp/eBPF syscall restrictions
@@ -87,5 +87,4 @@ A full Layer-6 implementation (Stage-3) would include:
 - Capability dropping (Linux capabilities)
 - Per-tool micro-sandboxes
 
-This Stage-1 sandbox is intentionally lightweight to demonstrate the control flow between Layer 5 → Layer 6.
-
+This sandbox is intentionally lightweight and illustrates a possible Layer 5 → Layer 6 handoff. It is not verified containment.

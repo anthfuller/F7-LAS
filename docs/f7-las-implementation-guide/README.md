@@ -1,41 +1,40 @@
-# F7-LAS Implementation Guide v3.1
+# F7-LAS Implementation Guide — Draft
 
-### This guide assumes a security-first deployment model and is intended for teams implementing agentic AI systems that can observe, recommend, or execute actions in production environments.
+This guide translates the seven-layer model into engineering guidance. It describes desired controls and patterns; it does **not** claim that the current repository implements or automatically verifies every requirement.
 
-This directory contains the Implementation Guide for the  
-**Fuller 7-Layer Agentic AI Security (F7-LAS) model**.
+The guide remains draft until it is reconciled with the canonical offline Python + OPA workflow, control-to-evidence traceability, clean-user validation, and independent review. Its release version will be assigned then.
 
-It provides practical, engineering-focused guidance for applying F7-LAS in real systems.
+## Contents
 
-## Files
-
-- `00_Introduction.md` – Overview, scope, audience, how to use the guide.
-- `01_Control_Objectives.md` – High-level control objectives and control families.
-- `02_Layer_By_Layer_Controls.md` – Implementation requirements for Layers 1–7.
-- `03_Supplemental_Layer_S.md` – Supply-chain and software integrity controls.
-- `04_Model_Security_Annex.md` – Model-level threats and mitigations.
-- `05_Metrics_and_SLOs.md` – Metrics, telemetry, and Service-Level Objectives.
-- `06_Operational_Playbooks.md` – Layer-aligned operational playbooks.
-- `07_RACI_Model.md` – Ownership and responsibility across teams.
-- `08_Implementation_Profiles.md` – How to build F7-LAS implementation profiles.
+- [00 — Introduction](00-introduction.md)
+- [01 — Control objectives](01-control-objectives.md)
+- [02 — Layer-by-layer controls](02-layer-by-layer-controls.md)
+- [03 — Supplemental Layer S](03-supplemental-layer-s.md)
+- [04 — Model security annex](04-model-security-annex.md)
+- [05 — Metrics and SLOs](05-metrics-and-slos.md)
+- [06 — Operational playbooks](06-operational-playbooks.md)
+- [07 — RACI model](07-raci-model.md)
+- [Optional MCP security profile](08-implementation-profiles/Optional-MCP-Security-Profile.md) — protocol-specific illustrative guidance, not part of the vendor-neutral core.
 
 ### Appendices
 
-- `Appendices/A_Schemas.md` – Event and telemetry schemas.
-- `Appendices/B_Templates.md` – Profiles, prompts, CAB and policy templates.
-- `Appendices/C_Checklist.md` – Engineering review checklist.
-- `Appendices/D_Reference_Patterns.md` – Example secure patterns.
+- [A — Schemas](Appendices/a-schemas.md)
+- [B — Templates](Appendices/b-templates.md)
+- [C — Checklist](Appendices/c-checklist.md)
+- [D — Reference patterns](Appendices/d-reference-patterns.md)
 
-### Layer S - Software Supply-Chain Security
+### Layer S — software supply-chain security
 
-- Checklist  
-- SBOM-guidance
-- Vetting-workflow 
-- Allowlist-schema  
+- [Overview](layer-s/README.md)
+- [Checklist](layer-s/checklist.md)
+- [SBOM guidance](layer-s/sbom-guidance.md)
+- [Vetting workflow](layer-s/vetting-workflow.md)
+- [Allowlist schema](layer-s/allowlist-schema.json)
 
-## Feedback
+Layer S is cross-cutting and is not an eighth F7-LAS layer.
 
-- Open a GitHub Issue  
-- Submit a Pull Request  
-- Model Author: **Anthony Fuller**  
-- GitHub: <https://github.com/anthfuller>
+## Interpretation
+
+Normative words such as **SHALL** express the model's desired control objective. Implementation status must be established separately through the control catalog and evidence traceability; wording alone is not evidence of enforcement.
+
+Model author: **Anthony Fuller** · [GitHub](https://github.com/anthfuller)

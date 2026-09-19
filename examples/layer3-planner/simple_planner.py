@@ -1,11 +1,11 @@
-# F7-LAS Layer 3 – Simple Planner (Stage 1 Stub)
+# F7-LAS Layer 3 – Illustrative Simple Planner Stub
 # ---------------------------------------------
 # This planner is intentionally minimal. It simulates
 # LLM→Planner behavior without using an actual model.
 
 def simple_planner(user_input: str) -> dict:
     """
-    Stage-1 Planner Stub.
+    Illustrative planner stub.
     Takes user input -> identifies intent -> returns a tool call structure.
     
     This is a safe, deterministic stand-in for an LLM planner.

@@ -36,7 +36,7 @@
     },
     {
       "id": "RAG-003",
-      "description": "Log-only rule for experimental collections in Stage 0.",
+      "description": "Log-only rule for experimental collections.",
       "effect": "log-only",
       "conditions": {
         "allowed_collections": [

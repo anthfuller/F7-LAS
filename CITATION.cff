@@ -1,10 +1,10 @@
 cff-version: 1.2.0
-message: "If you use this work, please cite it as below."
+message: "If you use F7-LAS, cite the archived whitepaper below."
 authors:
   - family-names: Fuller
     given-names: Anthony L.
 title: "Securing Agentic AI: The AFuller F7-LAS™ (7-Layer) Model"
-version: 1.0.0
+version: "3.0"
 date-released: 2025
 doi: 10.5281/zenodo.18292122
 url: https://github.com/anthfuller/F7-LAS

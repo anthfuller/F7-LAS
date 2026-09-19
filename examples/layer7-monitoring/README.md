@@ -1,4 +1,4 @@
-# Layer 7 — Monitoring & Telemetry (Stage-1)
+# Layer 7 — Illustrative Monitoring & Telemetry
 
 This folder implements a lightweight demonstration of F7-LAS Layer 7.
 
@@ -17,7 +17,7 @@ Layer 7 provides:
   A simple logger that enriches and prints telemetry events in JSON format.
 
 This is not a full observability pipeline.  
-A real implementation (Stage-3) would include:
+A production implementation would require:
 - SIEM integration
 - Distributed tracing
 - Correlation across agent steps

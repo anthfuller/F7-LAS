@@ -99,7 +99,7 @@ Layer S supports and constrains other layers as follows:
 
 ## How to Use This Folder
 
-For a Stage-1 / Stage-2 adoption of F7-LAS:
+For a prototype adoption of F7-LAS:
 
 1. **Adopt the checklist**  
    - Use `checklist.md` as a working document in design and security reviews.

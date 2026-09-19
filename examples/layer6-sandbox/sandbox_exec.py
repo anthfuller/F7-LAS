@@ -1,5 +1,5 @@
 """
-F7-LAS Layer 6 – Minimal Sandbox Execution Wrapper (Stage-1)
+F7-LAS Layer 6 – Illustrative Minimal Sandbox Execution Wrapper
 
 This safely executes tool functions ONLY if Layer 5 approved the action.
 """
