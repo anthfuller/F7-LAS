@@ -15,7 +15,7 @@ The target is an **Executable Reference Implementation**: one offline, determini
 3. **Canonical Python + OPA path** — one offline, fail-closed Layers 1–7 workflow is implemented for the bounded synthetic action.
 4. **Approval binding** — synthetic approval is bound to the exact request/action digests, scope, complete policy reference, authority, and expiry in the canonical path.
 5. **Behavioral scenarios** — an executable canonical matrix tests permitted, denied, malformed, unauthorized, unavailable, timed-out, tampered, expired, obligation, and recovery paths.
-6. **Evidence and replay** — correlate records, detect tampering, and reproduce deterministic outcomes.
+6. **Evidence and replay** — canonical evidence can be independently verified for complete correlation and tampering, then replayed from the admitted input to reproduce the exact canonical outcome.
 7. **Supply chain and CI** — pin dependencies and actions; add integrity, vulnerability, secret, and SBOM checks.
 8. **Documentation reconciliation** — execute every documented command in a clean environment.
 9. **F7-LAS-specific diagrams** — replace diagrams only after execution semantics are frozen.

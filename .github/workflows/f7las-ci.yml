@@ -66,6 +66,23 @@ jobs:
       run: 'pytest -q tests/test_behavioral_scenarios.py
 
         '
+    - name: Generate canonical evidence
+      run: |
+        python -m src.canonical.cli \
+          --input examples/canonical-workflow/request.json \
+          --output "$RUNNER_TEMP/f7las-canonical-evidence.json" \
+          --opa-binary "$OPA_BIN"
+    - name: Verify canonical evidence integrity
+      run: |
+        python -m src.canonical.evidence \
+          --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json"
+    - name: Replay canonical evidence deterministically
+      run: |
+        python -m src.canonical.replay \
+          --input examples/canonical-workflow/request.json \
+          --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json" \
+          --output "$RUNNER_TEMP/f7las-replayed-evidence.json" \
+          --opa-binary "$OPA_BIN"
     - name: Run unit tests
       run: 'pytest -q --ignore=tests/test_behavioral_scenarios.py
 

@@ -50,6 +50,17 @@ PDP/PEP boundaries. The current Layer 6 demonstration is a synthetic in-process
 executor that makes no network calls; it is not an OS/container sandbox or an
 enforced network-isolation boundary.
 
+## What do evidence verification and replay prove?
+
+The canonical verifier independently checks the complete record chain,
+cross-record bindings, policy and action digests, and final audit correlation.
+Deterministic replay reruns the same admitted input through the synthetic
+workflow and requires the complete canonical evidence document to match. These
+checks detect inconsistent mutation, and a previously trusted evidence-set
+digest exposes later replacement. Replay reproduces this bounded outcome. The
+checks do not provide a digital signature, trusted timestamp, external
+attestation, or replay of real-world side effects.
+
 ## Does F7-LAS expose internal model reasoning?
 
 No. Architecture and evidence use auditable plans, decisions, source references, proposed actions, policy outcomes, approvals, results, and evaluations. Private chain-of-thought is neither required nor treated as an audit artifact.

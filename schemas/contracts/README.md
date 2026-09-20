@@ -59,6 +59,7 @@ record: SHA-256("F7-LAS:record:<record_type>:1.0.0\n" || JCS(record without reco
 action: SHA-256("F7-LAS:action:1.0.0\n" || JCS(security-relevant action projection))
 output: SHA-256("F7-LAS:output:1.0.0\n" || JCS(output))
 policy: SHA-256("F7-LAS:policy:1.0.0\n" || JCS(policy document))
+evidence-set: SHA-256("F7-LAS:evidence-set:1.0.0\n" || JCS(complete evidence document))
 ```
 
 Digests use `sha256:<64 lowercase hexadecimal characters>`. Object key order is
@@ -71,9 +72,18 @@ the exact `action_digest`.
 
 Milestone 2 defined these contracts. The canonical workflow emits and validates
 them around a real offline OPA decision and binds its deterministic synthetic
-approval through PDP and PEP enforcement. This does not claim an interactive
+approval through PDP and PEP enforcement. The canonical evidence verifier adds
+a stricter single-action profile: exactly one record of each type, a final audit
+event that binds every preceding record in order, and an audit summary that
+matches the decision and result. This does not claim an interactive
 human-approval service, identity proofing, OS/container sandbox containment,
-enforced network isolation, or replay.
+enforced network isolation, signed evidence, or external attestation.
+
+The evidence-set digest detects later mutation only when it is compared with a
+previously trusted copy. Because the records are not signed, a party able to
+replace both the evidence and its expected digest can construct another
+self-consistent set. Deterministic replay adds an independent comparison to the
+reviewed input and repository policy, but it is not proof of provenance.
 
 ## Validate
 
