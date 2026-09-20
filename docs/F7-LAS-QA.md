@@ -17,7 +17,8 @@ executable or production-ready. The existing golden-dataset evaluator validates
 scenario and rubric structure; it does not execute or prove the stated security
 behavior.
 
-The canonical path has automated behavioral checks, but repository-wide control
+The canonical path has automated behavioral checks, evidence verification,
+deterministic replay, and a clean-user acceptance gate. Repository-wide control
 status is not yet machine-readable or evidence-linked.
 
 ## Is the code production-ready?
@@ -85,6 +86,16 @@ downloaded Linux binaries. They do not attest the GitHub-hosted runner image,
 prove that dependencies are non-malicious, guarantee that no secret exists, or
 create a signed release SBOM or provenance attestation. See
 [Supply-chain and CI controls](supply-chain-and-ci.md) for the exact boundary.
+
+## Has the documented canonical path been tested as a clean user?
+
+Yes, within a deliberately narrow boundary. The
+[clean-user acceptance gate](clean-user-acceptance.md) copies the repository
+without Git metadata, removes inherited Python import settings, creates a new
+Python 3.12.14 virtual environment, performs a hash-locked installation, and
+runs the supported validation and canonical walkthrough commands with the
+checksum-verified OPA 1.20.2 binary. It does not test the illustrative layer
+examples or establish production readiness.
 
 ## How should practitioners use the repository today?
 
