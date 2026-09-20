@@ -56,6 +56,31 @@ def test_bare_pytest_command_is_rejected(tmp_path: Path) -> None:
         MODULE.validate_command_boundaries(document, tmp_path)
 
 
+def test_substituted_canonical_diagram_is_rejected(tmp_path: Path) -> None:
+    source = ROOT / "docs" / "images" / "F7-LAS-Executive-Control-Loop.png"
+    substituted = tmp_path / source.name
+    substituted.write_bytes(source.read_bytes() + b"substituted")
+    with pytest.raises(MODULE.DocumentationError, match="diagram digest mismatch"):
+        MODULE.validate_png(
+            substituted,
+            MODULE.EXPECTED_DIAGRAMS[
+                Path("docs/images/F7-LAS-Executive-Control-Loop.png")
+            ][0],
+            (1672, 941),
+        )
+
+
+def test_control_loop_semantics_are_required() -> None:
+    expected = {
+        "returns to the PDP for reevaluation",
+        "Only a PDP permit may proceed to PEP enforcement",
+        "PEP authorization occurs before tool access or execution",
+        "distinct terminal outcomes",
+        "Agent Planning",
+    }
+    assert expected <= MODULE.REQUIRED_DIAGRAM_NOTICES
+
+
 def test_clean_user_gate_rejects_substituted_opa(tmp_path: Path) -> None:
     fake_opa = tmp_path / "opa"
     fake_opa.write_text("#!/bin/sh\necho 'Version: 1.20.2'\n", encoding="utf-8")

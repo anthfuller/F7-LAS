@@ -15,10 +15,15 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
 - [Canonical offline workflow](../examples/canonical-workflow/README.md) — the bounded synthetic Python + OPA Layers 1–7 demonstration.
 - [Supply-chain and CI controls](supply-chain-and-ci.md) — implemented dependency, action, download, vulnerability, secret, and SBOM checks and their limits.
 - [Clean-user acceptance](clean-user-acceptance.md) — the exact supported environment, complete walkthrough, command inventory, and assurance boundary.
+- [Architecture diagrams](architecture-diagrams.md) — executive and layer-specific F7-LAS control-loop views, with an explicit implementation mapping and assurance boundary.
 
 ## Architecture graphics
 
-Existing diagrams remain under `docs/` and `docs/images/` while their references and semantics are inventoried. They are historical/current draft visuals, not evidence of implemented behavior. Purpose-built replacement diagrams will be created only after the canonical execution semantics are approved.
+The [current architecture diagrams](architecture-diagrams.md) describe the
+F7-LAS control model at executive and layer-specific levels. Their semantic map
+states exactly which elements the bounded canonical path implements and which
+remain reference-architecture requirements. A diagram is not evidence of
+production readiness or control effectiveness.
 
 ## Status and use
 
