@@ -42,3 +42,21 @@ If OPA is missing, times out, rejects the policy, or returns malformed output,
 the workflow emits a denial and `not_executed` result. It never falls back to an
 allow decision. The evidence file is preserved and the CLI returns exit status
 `3` for a denied or otherwise unexecuted action.
+
+## Behavioral scenarios
+
+The executable scenario manifest at `tests/behavioral_scenarios.json` covers
+permit, policy denial, malformed input and PDP output, unauthorized identity,
+PDP unavailability and timeout, post-decision tampering, missing obligations,
+approval expiry, and recovery after a transient PDP outage. Accepted attempts
+must emit schema-valid, cross-record-valid evidence with no reported side
+effects. Admission refusals must emit no workflow records.
+
+Run the matrix with the pinned OPA CLI available:
+
+```bash
+OPA_BIN=opa pytest -q tests/test_behavioral_scenarios.py
+```
+
+These are deterministic reference-workflow scenarios, not claims of production
+fault injection, infrastructure recovery, or OS/container isolation.

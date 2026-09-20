@@ -14,7 +14,7 @@ The target is an **Executable Reference Implementation**: one offline, determini
 2. **Canonical data contracts** — define deterministic request, context, plan, proposed action, approval, decision, result, and audit records.
 3. **Canonical Python + OPA path** — one offline, fail-closed Layers 1–7 workflow is implemented for the bounded synthetic action.
 4. **Approval binding** — synthetic approval is bound to the exact request/action digests, scope, complete policy reference, authority, and expiry in the canonical path.
-5. **Behavioral scenarios** — test permitted, denied, malformed, unauthorized, unavailable, tampered, recovery, and other required paths.
+5. **Behavioral scenarios** — an executable canonical matrix tests permitted, denied, malformed, unauthorized, unavailable, timed-out, tampered, expired, obligation, and recovery paths.
 6. **Evidence and replay** — correlate records, detect tampering, and reproduce deterministic outcomes.
 7. **Supply chain and CI** — pin dependencies and actions; add integrity, vulnerability, secret, and SBOM checks.
 8. **Documentation reconciliation** — execute every documented command in a clean environment.

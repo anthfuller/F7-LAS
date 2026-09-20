@@ -1,0 +1,195 @@
+{
+  "scenario_set_version": "1.0.0",
+  "scenarios": [
+    {
+      "id": "BHV-001",
+      "category": "permitted",
+      "title": "Approved read-only action succeeds",
+      "driver": "permitted",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "permit",
+          "decision_reason": "approved-synthetic-read",
+          "execution": "succeeded",
+          "execution_reason": null,
+          "audit": "success",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-002",
+      "category": "denied",
+      "title": "OPA policy denial prevents execution",
+      "driver": "policy_denied",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "deny",
+          "decision_reason": "policy-denied",
+          "execution": "not_executed",
+          "execution_reason": "policy-denied",
+          "audit": "denied",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-003",
+      "category": "malformed",
+      "title": "Malformed workflow interface is refused",
+      "driver": "malformed_input",
+      "expected_attempts": [
+        {
+          "admission": "refused",
+          "refusal_reason": "malformed-input",
+          "cli_exit": 2,
+          "records_emitted": 0
+        }
+      ]
+    },
+    {
+      "id": "BHV-004",
+      "category": "unauthorized",
+      "title": "Unauthorized actor is refused",
+      "driver": "unauthorized_actor",
+      "expected_attempts": [
+        {
+          "admission": "refused",
+          "refusal_reason": "unauthorized-identity",
+          "cli_exit": 2,
+          "records_emitted": 0
+        }
+      ]
+    },
+    {
+      "id": "BHV-005",
+      "category": "unavailable",
+      "title": "Unavailable PDP fails closed with evidence",
+      "driver": "pdp_unavailable",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "deny",
+          "decision_reason": "pdp-unavailable",
+          "execution": "not_executed",
+          "execution_reason": "pdp-unavailable",
+          "audit": "denied",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-006",
+      "category": "unavailable",
+      "title": "Timed-out PDP fails closed with evidence",
+      "driver": "pdp_timeout",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "deny",
+          "decision_reason": "pdp-unavailable",
+          "execution": "not_executed",
+          "execution_reason": "pdp-unavailable",
+          "audit": "denied",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-007",
+      "category": "malformed",
+      "title": "Malformed PDP response fails closed with evidence",
+      "driver": "pdp_malformed_response",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "deny",
+          "decision_reason": "pdp-invalid-response",
+          "execution": "not_executed",
+          "execution_reason": "pdp-invalid-response",
+          "audit": "denied",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-008",
+      "category": "tampered",
+      "title": "Post-decision action tampering is blocked by the executor",
+      "driver": "tampered_action",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "permit",
+          "decision_reason": "approved-synthetic-read",
+          "execution": "not_executed",
+          "execution_reason": "executor-binding-mismatch",
+          "audit": "not_executed",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-009",
+      "category": "obligation",
+      "title": "Permit missing a required obligation is not executed",
+      "driver": "missing_obligation",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "permit",
+          "decision_reason": "mocked-permit",
+          "execution": "not_executed",
+          "execution_reason": "unfulfilled-policy-obligation",
+          "audit": "not_executed",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-010",
+      "category": "expired",
+      "title": "Approval at its expiration boundary is not executed",
+      "driver": "expired_approval",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "permit",
+          "decision_reason": "approved-synthetic-read",
+          "execution": "not_executed",
+          "execution_reason": "executor-approval-invalid-at-execution",
+          "audit": "not_executed",
+          "side_effects": []
+        }
+      ]
+    },
+    {
+      "id": "BHV-011",
+      "category": "recovery",
+      "title": "Workflow recovers after a transient PDP outage",
+      "driver": "recovery_after_pdp_unavailable",
+      "expected_attempts": [
+        {
+          "admission": "accepted",
+          "decision": "deny",
+          "decision_reason": "pdp-unavailable",
+          "execution": "not_executed",
+          "execution_reason": "pdp-unavailable",
+          "audit": "denied",
+          "side_effects": []
+        },
+        {
+          "admission": "accepted",
+          "decision": "permit",
+          "decision_reason": "approved-synthetic-read",
+          "execution": "succeeded",
+          "execution_reason": null,
+          "audit": "success",
+          "side_effects": []
+        }
+      ]
+    }
+  ]
+}
