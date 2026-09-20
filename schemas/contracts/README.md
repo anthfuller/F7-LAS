@@ -42,7 +42,7 @@ decision-to-execution consistency.
 - Timestamps use whole-second RFC 3339 UTC form ending in `Z`.
 - `scope_id` is the required vendor-neutral boundary. `tenant_id` is optional.
 - Core records reject undeclared fields. Tool `arguments`, execution `output`,
-  and audit `details` allow bounded record-specific JSON.
+  and audit `details` allow record-specific JSON.
 - Approval and policy-decision records carry an identical `policy_ref` with
   policy ID, version, and digest.
 - Credentials, tokens, secrets, and private model reasoning are prohibited.

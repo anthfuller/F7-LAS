@@ -59,6 +59,24 @@ def test_schema_rejects_not_executed_with_start_time():
     assert list(validator().iter_errors(result))
 
 
+def test_schema_rejects_failed_result_without_error_and_timestamps():
+    document = fixture()
+    result = record(document, "execution_result")
+    result["status"] = "failed"
+    assert list(validator().iter_errors(result))
+
+
+def test_load_json_rejects_duplicate_keys(tmp_path):
+    path = tmp_path / "duplicate.json"
+    path.write_text('{"record_id":"first","record_id":"second"}', encoding="utf-8")
+    try:
+        contracts.load_json(path)
+    except ValueError as exc:
+        assert "duplicate JSON object key: record_id" in str(exc)
+    else:
+        raise AssertionError("duplicate JSON key was accepted")
+
+
 def test_cross_validator_enforces_cardinality():
     document = fixture()
     document["records"].insert(2, copy.deepcopy(record(document, "context")))
@@ -100,6 +118,17 @@ def test_cross_validator_rejects_expired_approval():
     assert any("after approval expiry" in error for error in cross_errors(document))
 
 
+def test_cross_validator_rejects_execution_after_approval_expiry():
+    document = fixture()
+    record(document, "request")["constraints"]["dry_run"] = False
+    record(document, "approval")["expires_at"] = "2026-01-15T12:00:05Z"
+    result = record(document, "execution_result")
+    result["status"] = "succeeded"
+    result["started_at"] = "2026-01-15T12:00:06Z"
+    result["completed_at"] = "2026-01-15T12:00:06Z"
+    assert any("starts after approval expiry" in error for error in cross_errors(document))
+
+
 def test_cross_validator_rejects_timestamp_reordering():
     document = fixture()
     record(document, "policy_decision")["occurred_at"] = "2026-01-15T11:59:59Z"
@@ -124,3 +153,35 @@ def test_cross_validator_rejects_execution_after_deny():
     result["started_at"] = "2026-01-15T12:00:05Z"
     result["completed_at"] = "2026-01-15T12:00:06Z"
     assert any("must be not_executed after deny" in error for error in cross_errors(document))
+
+
+def test_cross_validator_rejects_not_required_when_approval_is_required():
+    document = fixture()
+    approval = record(document, "approval")
+    approval["status"] = "not_required"
+    approval["expires_at"] = None
+    approval["approved_scope"] = None
+    record(document, "policy_decision")["authorization_basis"] = "not_required"
+    assert any("cannot be not_required" in error for error in cross_errors(document))
+
+
+def test_cross_validator_rejects_execution_after_referral():
+    document = fixture()
+    record(document, "request")["constraints"]["dry_run"] = False
+    decision = record(document, "policy_decision")
+    decision["decision"] = "refer_to_human"
+    decision["authorization_basis"] = "none"
+    result = record(document, "execution_result")
+    result["status"] = "succeeded"
+    result["started_at"] = "2026-01-15T12:00:05Z"
+    result["completed_at"] = "2026-01-15T12:00:06Z"
+    assert any("must be not_executed after deny or referral" in error for error in cross_errors(document))
+
+
+def test_cross_validator_rejects_duplicate_plan_step_ids():
+    document = fixture()
+    plan = record(document, "plan")
+    duplicate = copy.deepcopy(plan["steps"][0])
+    duplicate["order"] = 2
+    plan["steps"].append(duplicate)
+    assert any("plan step_id values must be unique" in error for error in cross_errors(document))

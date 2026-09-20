@@ -45,9 +45,18 @@ FORBIDDEN_KEYS = {
 }
 
 
+def reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+        return json.load(handle, object_pairs_hook=reject_duplicate_keys)
 
 
 def digest_payload(domain: str, value: Any) -> str:
@@ -219,7 +228,10 @@ def validate_record_set(
     step_orders = [step["order"] for step in plan["steps"]]
     if step_orders != list(range(1, len(plan["steps"]) + 1)):
         errors.append("plan step order must be contiguous and start at 1")
-    step_ids = {step["step_id"] for step in plan["steps"]}
+    step_id_list = [step["step_id"] for step in plan["steps"]]
+    if len(step_id_list) != len(set(step_id_list)):
+        errors.append("plan step_id values must be unique")
+    step_ids = set(step_id_list)
 
     if len(actions) > min(request_limits["max_actions"], plan["limits"]["max_actions"]):
         errors.append("proposed-action count exceeds the request or plan limit")
@@ -321,6 +333,8 @@ def validate_record_set(
             complete = parse_timestamp(result["completed_at"])
             if start < decision_time:
                 errors.append(f"{result['record_id']} starts before the policy decision")
+            if approval["status"] == "approved" and start > parse_timestamp(approval["expires_at"]):
+                errors.append(f"{result['record_id']} starts after approval expiry")
             if complete < start:
                 errors.append(f"{result['record_id']} completes before it starts")
             if parse_timestamp(result["occurred_at"]) < complete:
