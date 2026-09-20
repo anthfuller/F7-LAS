@@ -112,21 +112,28 @@ def test_cross_validator_rejects_unregistered_policy_digest():
     assert any("does not match the repository policy" in error for error in cross_errors(document))
 
 
-def test_cross_validator_rejects_expired_approval():
+def test_cross_validator_rejects_decision_at_approval_expiry():
     document = fixture()
-    record(document, "approval")["expires_at"] = "2026-01-15T12:00:04Z"
-    assert any("after approval expiry" in error for error in cross_errors(document))
+    record(document, "approval")["expires_at"] = "2026-01-15T12:00:05Z"
+    assert any("occurs at or after approval expiry" in error for error in cross_errors(document))
 
 
-def test_cross_validator_rejects_execution_after_approval_expiry():
+def test_cross_validator_rejects_execution_at_approval_expiry():
     document = fixture()
     record(document, "request")["constraints"]["dry_run"] = False
-    record(document, "approval")["expires_at"] = "2026-01-15T12:00:05Z"
+    record(document, "approval")["expires_at"] = "2026-01-15T12:00:06Z"
     result = record(document, "execution_result")
     result["status"] = "succeeded"
     result["started_at"] = "2026-01-15T12:00:06Z"
     result["completed_at"] = "2026-01-15T12:00:06Z"
-    assert any("starts after approval expiry" in error for error in cross_errors(document))
+    assert any("starts at or after approval expiry" in error for error in cross_errors(document))
+
+
+def test_cross_validator_rejects_zero_length_approval_window():
+    document = fixture()
+    approval = record(document, "approval")
+    approval["expires_at"] = approval["issued_at"]
+    assert any("validity window must have positive duration" in error for error in cross_errors(document))
 
 
 def test_cross_validator_rejects_timestamp_reordering():

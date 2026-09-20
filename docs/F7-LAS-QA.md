@@ -32,9 +32,15 @@ executable path is the offline, deterministic Python + OPA workflow under
 Other policy-engine examples remain non-canonical illustrative patterns unless
 explicitly reclassified later.
 
-## How will human approval work?
+## How does approval work in the canonical path?
 
-The approved design requires synthetic approval evidence bound to the exact request/action digest, arguments, target, environment, policy version, and expiry. Approval must return through PDP evaluation and PEP enforcement; it must never bypass policy or invoke a tool directly. This behavior is planned and is not yet implemented.
+The canonical path creates deterministic synthetic approval evidence bound to
+the exact request and action references and digests, arguments, complete scope,
+complete policy reference, approving authority, and validity window. Approval
+returns through OPA evaluation and independent executor enforcement; it never
+bypasses policy or invokes a tool directly. This demonstrates the binding and
+enforcement pattern, not an interactive human-approval service or proof that a
+real person's identity was verified.
 
 ## How are Layer 4 and Layer 6 separated?
 

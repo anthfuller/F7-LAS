@@ -13,7 +13,7 @@ The target is an **Executable Reference Implementation**: one offline, determini
 1. **Repository truth and terminology** — reconcile maturity, versioning, paths, licensing, unsupported claims, and private-reasoning terminology.
 2. **Canonical data contracts** — define deterministic request, context, plan, proposed action, approval, decision, result, and audit records.
 3. **Canonical Python + OPA path** — one offline, fail-closed Layers 1–7 workflow is implemented for the bounded synthetic action.
-4. **Approval binding** — bind synthetic approval to the exact request/action digest, scope, policy version, and expiry.
+4. **Approval binding** — synthetic approval is bound to the exact request/action digests, scope, complete policy reference, authority, and expiry in the canonical path.
 5. **Behavioral scenarios** — test permitted, denied, malformed, unauthorized, unavailable, tampered, recovery, and other required paths.
 6. **Evidence and replay** — correlate records, detect tampering, and reproduce deterministic outcomes.
 7. **Supply chain and CI** — pin dependencies and actions; add integrity, vulnerability, secret, and SBOM checks.

@@ -69,10 +69,11 @@ defaults, and self-inclusion of a digest field are not permitted.
 both `record_id` and `record_digest`; action-specific records additionally bind
 the exact `action_digest`.
 
-Milestone 2 defined these contracts, and the Milestone 3 canonical workflow now
-emits and validates them around a real offline OPA decision. This does not claim
-that explicit approval binding, OS/container sandbox containment, enforced
-network isolation, or replay is operational.
+Milestone 2 defined these contracts. The canonical workflow emits and validates
+them around a real offline OPA decision and binds its deterministic synthetic
+approval through PDP and PEP enforcement. This does not claim an interactive
+human-approval service, identity proofing, OS/container sandbox containment,
+enforced network isolation, or replay.
 
 ## Validate
 
