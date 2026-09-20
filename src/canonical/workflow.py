@@ -31,6 +31,11 @@ EXPECTED_ACTOR = {
     "subject_type": "agent",
     "role": "investigator",
 }
+EXPECTED_APPROVER = {
+    "subject_id": "approver-0001",
+    "subject_type": "human",
+    "role": "security-reviewer",
+}
 EXPECTED_TOOL = {"tool_id": "siem-query", "version": "1.0.0"}
 EXPECTED_OPERATION = "workspace-health"
 EXPECTED_ARGUMENTS = {"workspace_id": "workspace-0001"}
@@ -73,7 +78,7 @@ class CanonicalWorkflow:
         if set(workflow_input) != required:
             raise WorkflowError("workflow input fields do not match the canonical interface")
         if workflow_input["workflow_id"] != "workflow-0001":
-            raise WorkflowError("Milestone 3 accepts only workflow-0001")
+            raise WorkflowError("canonical workflow accepts only workflow-0001")
         if workflow_input["mission"] != EXPECTED_MISSION:
             raise WorkflowError("mission is outside the canonical offline path")
         if workflow_input["requester"] != EXPECTED_REQUESTER:
@@ -109,7 +114,13 @@ class CanonicalWorkflow:
         return record
 
     @staticmethod
-    def _execute(action: dict[str, Any], decision: dict[str, Any]) -> dict[str, Any]:
+    def _execute(
+        request: dict[str, Any],
+        action: dict[str, Any],
+        approval: dict[str, Any],
+        decision: dict[str, Any],
+        execution_started_at: str,
+    ) -> dict[str, Any]:
         if decision["decision"] != "permit":
             return {"status": "not_executed", "output": {"reason_code": decision["reason_code"]}}
         obligations = set(decision["obligations"])
@@ -127,13 +138,55 @@ class CanonicalWorkflow:
         expected_digest = calculate_action_digest(action)
         if (
             action["action_digest"] != expected_digest
+            or action["request_ref"] != _reference(request)
             or decision["action_ref"] != _action_reference(action)
+            or not action["requires_approval"]
             or action["tool"] != EXPECTED_TOOL
             or action["operation"] != EXPECTED_OPERATION
             or action["arguments"] != EXPECTED_ARGUMENTS
             or action["target"] != EXPECTED_TARGET
         ):
             return {"status": "not_executed", "output": {"reason_code": "executor-binding-mismatch"}}
+        if (
+            approval["status"] != "approved"
+            or approval["request_ref"] != _reference(request)
+            or approval["action_ref"] != _action_reference(action)
+            or approval["issued_at"] != approval["occurred_at"]
+            or approval["authority"] != EXPECTED_APPROVER
+            or approval["approved_scope"] != action["target"]
+            or approval["policy_ref"] != CanonicalWorkflow._policy_ref()
+            or approval["policy_ref"] != decision["policy_ref"]
+            or decision["request_ref"] != _reference(request)
+            or decision["approval_ref"] != _reference(approval)
+            or decision["authorization_basis"] != "approved"
+        ):
+            return {
+                "status": "not_executed",
+                "output": {"reason_code": "executor-approval-binding-mismatch"},
+            }
+        try:
+            issued_at = datetime.strptime(approval["issued_at"], "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc
+            )
+            decision_at = datetime.strptime(
+                decision["occurred_at"], "%Y-%m-%dT%H:%M:%SZ"
+            ).replace(tzinfo=timezone.utc)
+            execution_at = datetime.strptime(
+                execution_started_at, "%Y-%m-%dT%H:%M:%SZ"
+            ).replace(tzinfo=timezone.utc)
+            expires_at = datetime.strptime(
+                approval["expires_at"], "%Y-%m-%dT%H:%M:%SZ"
+            ).replace(tzinfo=timezone.utc)
+        except (TypeError, ValueError):
+            return {
+                "status": "not_executed",
+                "output": {"reason_code": "executor-approval-invalid-at-execution"},
+            }
+        if not issued_at <= decision_at <= execution_at <= expires_at:
+            return {
+                "status": "not_executed",
+                "output": {"reason_code": "executor-approval-invalid-at-execution"},
+            }
         return {
             "status": "succeeded",
             "output": {
@@ -229,7 +282,7 @@ class CanonicalWorkflow:
             "arguments": dict(EXPECTED_ARGUMENTS),
             "target": scope,
             "risk_tier": "low",
-            "requires_approval": False,
+            "requires_approval": True,
         }
         action["action_digest"] = calculate_action_digest(action)
         action = self._finalize(action, plan)
@@ -241,34 +294,43 @@ class CanonicalWorkflow:
                 **header("approval", 5),
                 "request_ref": _reference(request),
                 "action_ref": _action_reference(action),
-                "status": "not_required",
-                "authority": {
-                    "subject_id": "canonical-workflow",
-                    "subject_type": "service",
-                    "role": "policy-enforcement-point",
-                },
-                "reason_code": "low-risk-read-only",
+                "status": "approved",
+                "authority": dict(EXPECTED_APPROVER),
+                "reason_code": "approved-synthetic-read",
                 "policy_ref": policy_ref,
                 "issued_at": _timestamp(started_at, 4),
-                "expires_at": None,
-                "approved_scope": None,
+                "expires_at": _timestamp(started_at, 34),
+                "approved_scope": scope,
             },
             action,
         )
         records.append(approval)
 
         policy_action = {field: action[field] for field in ACTION_DIGEST_FIELDS}
+        policy_action["record_id"] = action["record_id"]
+        policy_action["record_digest"] = action["record_digest"]
         policy_action["action_digest"] = action["action_digest"]
         opa_result = self.opa.evaluate(
             {
                 "request": {
+                    "reference": _reference(request),
                     "dry_run": request["constraints"]["dry_run"],
                     "scope": request["scope"],
                 },
                 "actor": context["actor"],
                 "action": policy_action,
-                "authorized_action_digest": approval["action_ref"]["action_digest"],
-                "approval_status": approval["status"],
+                "approval": {
+                    "request_ref": approval["request_ref"],
+                    "action_ref": approval["action_ref"],
+                    "status": approval["status"],
+                    "authority": approval["authority"],
+                    "policy_ref": approval["policy_ref"],
+                    "issued_at": approval["issued_at"],
+                    "expires_at": approval["expires_at"],
+                    "approved_scope": approval["approved_scope"],
+                },
+                "decision_at": _timestamp(started_at, 5),
+                "execution_at": _timestamp(started_at, 6),
                 "policy_ref": policy_ref,
             }
         )
@@ -281,7 +343,7 @@ class CanonicalWorkflow:
                 "approval_ref": _reference(approval),
                 "pdp_id": "opa-cli",
                 "decision": decision_value,
-                "authorization_basis": "not_required" if decision_value == "permit" else "none",
+                "authorization_basis": "approved" if decision_value == "permit" else "none",
                 "reason_code": opa_result["reason_code"],
                 "policy_ref": policy_ref,
                 "obligations": sorted(opa_result["obligations"]),
@@ -290,7 +352,14 @@ class CanonicalWorkflow:
         )
         records.append(decision)
 
-        execution = self._execute(action, decision)
+        execution_started_at = _timestamp(started_at, 6)
+        execution = self._execute(
+            request,
+            action,
+            approval,
+            decision,
+            execution_started_at,
+        )
         execution_status = execution["status"]
         was_executed = execution_status == "succeeded"
         result = self._finalize(
@@ -312,8 +381,8 @@ class CanonicalWorkflow:
                     ),
                 },
                 "status": execution_status,
-                "started_at": _timestamp(started_at, 6) if was_executed else None,
-                "completed_at": _timestamp(started_at, 6) if was_executed else None,
+                "started_at": execution_started_at if was_executed else None,
+                "completed_at": execution_started_at if was_executed else None,
                 "output": execution["output"],
                 "output_digest": calculate_output_digest(execution["output"]),
                 "error_code": None,

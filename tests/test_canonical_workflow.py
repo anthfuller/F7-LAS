@@ -9,7 +9,7 @@ import pytest
 from jsonschema import Draft202012Validator, FormatChecker
 
 from src.canonical import cli
-from src.canonical.contracts import calculate_action_digest
+from src.canonical.contracts import calculate_action_digest, calculate_record_digest
 from src.canonical.opa import OfflineOPA
 from src.canonical.workflow import CanonicalWorkflow, DEFAULT_POLICY_PATH, WorkflowError
 
@@ -44,6 +44,21 @@ def assert_valid(document):
     assert contracts.validate_record_set(document, validator()) == []
 
 
+def set_nested(document, path, value):
+    target = document
+    for key in path[:-1]:
+        target = target[key]
+    target[path[-1]] = value
+
+
+def rebind_approval(approval, decision):
+    approval["record_digest"] = calculate_record_digest(approval)
+    decision["approval_ref"] = {
+        "record_id": approval["record_id"],
+        "record_digest": approval["record_digest"],
+    }
+
+
 def capture_policy_input():
     captured = {}
     workflow = CanonicalWorkflow(opa_binary="/does/not/matter")
@@ -69,7 +84,10 @@ def test_real_opa_path_is_deterministic_permitted_and_contract_valid():
     second = workflow.run(workflow_input())
 
     assert first == second
+    assert record(first, "proposed_action")["requires_approval"] is True
+    assert record(first, "approval")["status"] == "approved"
     assert record(first, "policy_decision")["decision"] == "permit"
+    assert record(first, "policy_decision")["authorization_basis"] == "approved"
     assert record(first, "execution_result")["status"] == "succeeded"
     assert record(first, "audit_event")["outcome"] == "success"
     assert_valid(first)
@@ -100,6 +118,29 @@ def test_real_opa_policy_binds_arguments_and_action_digest():
     tampered_digest = copy.deepcopy(policy_input)
     tampered_digest["action"]["action_digest"] = "sha256:" + "f" * 64
     assert opa.evaluate(tampered_digest)["decision"] == "deny"
+
+
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+@pytest.mark.parametrize(
+    ("path", "value"),
+    [
+        (("approval", "request_ref", "record_digest"), "sha256:" + "f" * 64),
+        (("approval", "action_ref", "action_digest"), "sha256:" + "f" * 64),
+        (("approval", "approved_scope", "scope_id"), "other-boundary"),
+        (("approval", "policy_ref", "version"), "v2.0"),
+        (("approval", "authority", "subject_id"), "other-approver"),
+        (("approval", "expires_at"), None),
+        (("execution_at",), "2026-01-15T12:00:35Z"),
+    ],
+)
+def test_real_opa_policy_denies_invalid_approval_binding(path, value):
+    policy_input = capture_policy_input()
+    set_nested(policy_input, path, value)
+
+    result = OfflineOPA(OPA_BINARY, DEFAULT_POLICY_PATH).evaluate(policy_input)
+
+    assert result["decision"] == "deny"
+    assert result["reason_code"] == "policy-denied"
 
 
 def test_missing_opa_fails_closed_and_emits_valid_evidence():
@@ -154,16 +195,84 @@ def test_permit_with_unsupported_obligation_is_not_executed():
 @pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
 def test_executor_independently_rejects_tampered_action_binding():
     document = CanonicalWorkflow(opa_binary=OPA_BINARY).run(workflow_input())
+    request = record(document, "request")
     action = copy.deepcopy(record(document, "proposed_action"))
+    approval = record(document, "approval")
     decision = record(document, "policy_decision")
     action["arguments"]["workspace_id"] = "workspace-other"
     action["action_digest"] = calculate_action_digest(action)
 
-    execution = CanonicalWorkflow._execute(action, decision)
+    execution = CanonicalWorkflow._execute(
+        request,
+        action,
+        approval,
+        decision,
+        "2026-01-15T12:00:06Z",
+    )
 
     assert execution == {
         "status": "not_executed",
         "output": {"reason_code": "executor-binding-mismatch"},
+    }
+
+
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+@pytest.mark.parametrize(
+    ("field", "value", "expected_reason"),
+    [
+        (
+            "request_ref",
+            {"record_id": "request-0001", "record_digest": "sha256:" + "f" * 64},
+            "executor-approval-binding-mismatch",
+        ),
+        (
+            "approved_scope",
+            {
+                "scope_id": "other-boundary",
+                "environment": "lab",
+                "resource_ids": ["workspace-0001"],
+            },
+            "executor-approval-binding-mismatch",
+        ),
+        (
+            "policy_ref",
+            {
+                "policy_id": "constraints-default-v1",
+                "version": "v2.0",
+                "policy_digest": "sha256:" + "f" * 64,
+            },
+            "executor-approval-binding-mismatch",
+        ),
+        (
+            "expires_at",
+            "2026-01-15T12:00:05Z",
+            "executor-approval-invalid-at-execution",
+        ),
+        ("expires_at", None, "executor-approval-invalid-at-execution"),
+    ],
+)
+def test_executor_independently_rejects_invalid_approval(field, value, expected_reason):
+    document = CanonicalWorkflow(opa_binary=OPA_BINARY).run(workflow_input())
+    request = record(document, "request")
+    action = record(document, "proposed_action")
+    approval = copy.deepcopy(record(document, "approval"))
+    decision = copy.deepcopy(record(document, "policy_decision"))
+    approval[field] = value
+    if field == "policy_ref":
+        decision["policy_ref"] = copy.deepcopy(value)
+    rebind_approval(approval, decision)
+
+    execution = CanonicalWorkflow._execute(
+        request,
+        action,
+        approval,
+        decision,
+        "2026-01-15T12:00:06Z",
+    )
+
+    assert execution == {
+        "status": "not_executed",
+        "output": {"reason_code": expected_reason},
     }
 
 

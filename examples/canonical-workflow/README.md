@@ -1,6 +1,6 @@
 # Canonical Offline Workflow
 
-This is the single Milestone 3 executable path across F7-LAS Layers 1–7. It is
+This is the single canonical executable path across F7-LAS Layers 1–7. It is
 deterministic, synthetic, offline, and fail-closed. It does not call an LLM,
 cloud API, production service, or network tool.
 
@@ -11,9 +11,12 @@ synthetic in-process executor that makes no network calls (Layer 6), and
 correlated canonical audit records (Layer 7). Layer 6 here is not an OS or
 container sandbox and does not enforce a network-isolation boundary.
 
-Milestone 3 uses `not_required` for the low-risk synthetic read. Binding an
-explicit approval to the complete request/action/policy/scope/expiry tuple is
-Milestone 4 and is intentionally not claimed here.
+The synthetic approval is bound to the exact request and action references and
+digests, complete scope, complete policy reference, approving authority, issue
+time, and expiry. OPA validates the binding before permitting, and the
+in-process executor independently revalidates it at execution time. This is
+deterministic approval evidence for the reference workflow, not an interactive
+human-approval service or identity proofing system.
 
 ## Requirements
 
