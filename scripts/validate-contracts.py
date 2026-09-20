@@ -273,10 +273,13 @@ def validate_record_set(
             errors.append(f"{decision['record_id']} occurs before its approval disposition")
 
         if approval["status"] == "approved":
+            expires_time = parse_timestamp(approval["expires_at"])
             if approval["approved_scope"] != action["target"]:
                 errors.append(f"{approval['record_id']}.approved_scope must exactly equal action target")
-            if decision_time > parse_timestamp(approval["expires_at"]):
-                errors.append(f"{decision['record_id']} occurs after approval expiry")
+            if expires_time <= approval_time:
+                errors.append(f"{approval['record_id']} validity window must have positive duration")
+            if decision_time >= expires_time:
+                errors.append(f"{decision['record_id']} occurs at or after approval expiry")
         if action["requires_approval"] and approval["status"] != "approved":
             errors.append(f"{action['record_id']} requires an approved approval record")
         if approval["status"] == "not_required" and action["requires_approval"]:
@@ -306,8 +309,8 @@ def validate_record_set(
             complete = parse_timestamp(result["completed_at"])
             if start < decision_time:
                 errors.append(f"{result['record_id']} starts before the policy decision")
-            if approval["status"] == "approved" and start > parse_timestamp(approval["expires_at"]):
-                errors.append(f"{result['record_id']} starts after approval expiry")
+            if approval["status"] == "approved" and start >= parse_timestamp(approval["expires_at"]):
+                errors.append(f"{result['record_id']} starts at or after approval expiry")
             if complete < start:
                 errors.append(f"{result['record_id']} completes before it starts")
             if parse_timestamp(result["occurred_at"]) < complete:

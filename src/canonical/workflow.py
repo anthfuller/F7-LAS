@@ -182,7 +182,7 @@ class CanonicalWorkflow:
                 "status": "not_executed",
                 "output": {"reason_code": "executor-approval-invalid-at-execution"},
             }
-        if not issued_at <= decision_at <= execution_at <= expires_at:
+        if not issued_at <= decision_at <= execution_at < expires_at:
             return {
                 "status": "not_executed",
                 "output": {"reason_code": "executor-approval-invalid-at-execution"},

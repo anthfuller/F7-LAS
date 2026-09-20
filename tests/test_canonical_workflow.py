@@ -143,6 +143,41 @@ def test_real_opa_policy_denies_invalid_approval_binding(path, value):
     assert result["reason_code"] == "policy-denied"
 
 
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+def test_real_opa_policy_denies_execution_exactly_at_expiration():
+    policy_input = capture_policy_input()
+    policy_input["execution_at"] = policy_input["approval"]["expires_at"]
+
+    result = OfflineOPA(OPA_BINARY, DEFAULT_POLICY_PATH).evaluate(policy_input)
+
+    assert result["decision"] == "deny"
+
+
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+def test_real_opa_policy_denies_decision_and_execution_at_expiration():
+    policy_input = capture_policy_input()
+    expires_at = policy_input["approval"]["expires_at"]
+    policy_input["decision_at"] = expires_at
+    policy_input["execution_at"] = expires_at
+
+    result = OfflineOPA(OPA_BINARY, DEFAULT_POLICY_PATH).evaluate(policy_input)
+
+    assert result["decision"] == "deny"
+
+
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+def test_real_opa_policy_denies_zero_length_approval_window():
+    policy_input = capture_policy_input()
+    issued_at = policy_input["approval"]["issued_at"]
+    policy_input["approval"]["expires_at"] = issued_at
+    policy_input["decision_at"] = issued_at
+    policy_input["execution_at"] = issued_at
+
+    result = OfflineOPA(OPA_BINARY, DEFAULT_POLICY_PATH).evaluate(policy_input)
+
+    assert result["decision"] == "deny"
+
+
 def test_missing_opa_fails_closed_and_emits_valid_evidence():
     document = CanonicalWorkflow(opa_binary="/does/not/exist/opa").run(workflow_input())
 
@@ -273,6 +308,39 @@ def test_executor_independently_rejects_invalid_approval(field, value, expected_
     assert execution == {
         "status": "not_executed",
         "output": {"reason_code": expected_reason},
+    }
+
+
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+@pytest.mark.parametrize(
+    ("expires_at", "decision_at", "execution_at"),
+    [
+        ("2026-01-15T12:00:06Z", "2026-01-15T12:00:05Z", "2026-01-15T12:00:06Z"),
+        ("2026-01-15T12:00:34Z", "2026-01-15T12:00:34Z", "2026-01-15T12:00:34Z"),
+        ("2026-01-15T12:00:04Z", "2026-01-15T12:00:04Z", "2026-01-15T12:00:04Z"),
+    ],
+)
+def test_executor_rejects_expiration_boundary_windows(expires_at, decision_at, execution_at):
+    document = CanonicalWorkflow(opa_binary=OPA_BINARY).run(workflow_input())
+    request = record(document, "request")
+    action = record(document, "proposed_action")
+    approval = copy.deepcopy(record(document, "approval"))
+    decision = copy.deepcopy(record(document, "policy_decision"))
+    approval["expires_at"] = expires_at
+    decision["occurred_at"] = decision_at
+    rebind_approval(approval, decision)
+
+    execution = CanonicalWorkflow._execute(
+        request,
+        action,
+        approval,
+        decision,
+        execution_at,
+    )
+
+    assert execution == {
+        "status": "not_executed",
+        "output": {"reason_code": "executor-approval-invalid-at-execution"},
     }
 
 

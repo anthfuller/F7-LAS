@@ -46,7 +46,7 @@ result := {
     expires_at := time.parse_rfc3339_ns(input.approval.expires_at)
     issued_at <= decision_at
     decision_at <= execution_at
-    execution_at <= expires_at
+    execution_at < expires_at
     input.action.actor_id == input.actor.subject_id
     input.action.step_id == "step-0001"
     input.action.tool == {"tool_id": "siem-query", "version": "1.0.0"}
