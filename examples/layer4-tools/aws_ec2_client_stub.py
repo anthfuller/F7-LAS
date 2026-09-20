@@ -6,8 +6,9 @@
 def terminate_instance(instance_id: str) -> dict:
     """
     Simulate a destructive EC2 action.
-    Actual execution only happens AFTER passing Layer 5 (PDP/PEP)
-    and running inside Layer 6 (Sandbox).
+
+    This stub contains no Layer 5 or Layer 6 enforcement. A calling workflow
+    can invoke it directly, so it must be treated as illustrative only.
     """
     print(f"[SIMULATION] Terminating instance: {instance_id}")
     return {

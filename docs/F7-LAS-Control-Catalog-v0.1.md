@@ -631,7 +631,7 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 
 Together, they define a full lifecycle for designing, implementing, and assuring secure agentic AI systems.
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller. Licensed under [CC BY 4.0](../LICENSE-CONTENT.md).
 
 This work is created independently by the author and is not affiliated with,
 endorsed by, or associated with Microsoft or any other employer. All opinions,

@@ -8,8 +8,9 @@ def simple_planner(user_input: str) -> dict:
     Illustrative planner stub.
     Takes user input -> identifies intent -> returns a tool call structure.
     
-    This is a safe, deterministic stand-in for an LLM planner.
-    It will ALWAYS route through Layer 5 (PDP/PEP) before L4 executes.
+    This is a deterministic stand-in for an LLM planner. It returns proposal
+    data only. This function does not route through or enforce Layer 5; the
+    calling workflow must perform policy evaluation before any invocation.
     """
 
     text = user_input.lower()

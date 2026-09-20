@@ -299,6 +299,6 @@ Represents a coordination or task handoff event between agents.
 
 ## License & Disclaimer
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller. Licensed under [CC BY 4.0](../../../LICENSE-CONTENT.md).
 
 #### This work is created independently by the author and is not affiliated with, endorsed by, or associated with Microsoft or any other employer. Opinions and materials represent the author’s personal work.

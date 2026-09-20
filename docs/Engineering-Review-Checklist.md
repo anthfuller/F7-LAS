@@ -188,9 +188,8 @@ You may optionally assign **risk levels** (Low / Medium / High) per item.
 
 > Save this checklist together with your architecture decision records (ADRs), risk assessments, and model documentation as evidence of F7‑LAS application.
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller. Licensed under [CC BY 4.0](../LICENSE-CONTENT.md).
 
 This work is created independently by the author and is not affiliated with,
 endorsed by, or associated with Microsoft or any other employer. All opinions,
 models, and materials represent the author's personal work.
-
