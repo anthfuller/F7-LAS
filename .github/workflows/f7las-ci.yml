@@ -1,95 +1,149 @@
 name: F7-LAS CI
+
 'on':
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
+      - main
+
 permissions:
   contents: read
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-    - name: Install dependencies
-      run: 'python -m pip install --upgrade pip
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12.14'
 
-        pip install pytest
+      - name: Install hash-locked dependencies
+        run: python -m pip install --require-hashes -r requirements-ci.lock
 
-        '
-    - name: Add repo root to PYTHONPATH
-      run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
-    - name: Install pinned OPA CLI
-      env:
-        OPA_VERSION: 1.20.2
-        OPA_SHA256: 69da5179ee403d10fa11bab6cfb4ffb0d23dba5f9b682fa977db772a1da5670f
-      run: |
-        mkdir -p "$RUNNER_TEMP/f7las-bin"
-        curl -fsSL "https://openpolicyagent.org/downloads/v${OPA_VERSION}/opa_linux_amd64_static" -o "$RUNNER_TEMP/f7las-bin/opa"
-        echo "${OPA_SHA256}  $RUNNER_TEMP/f7las-bin/opa" | sha256sum -c -
-        chmod 0755 "$RUNNER_TEMP/f7las-bin/opa"
-        echo "$RUNNER_TEMP/f7las-bin" >> "$GITHUB_PATH"
-        echo "OPA_BIN=$RUNNER_TEMP/f7las-bin/opa" >> "$GITHUB_ENV"
-        "$RUNNER_TEMP/f7las-bin/opa" version
-    - name: Verify src.policy package imports
-      run: 'python -c "import src.policy"
+      - name: Add repo root to PYTHONPATH
+        run: echo "PYTHONPATH=$PWD" >> "$GITHUB_ENV"
 
-        '
-    - name: Validate prompts
-      run: 'python scripts/validate-prompts.py config/prompts
+      - name: Validate supply-chain invariants
+        run: python scripts/validate-supply-chain.py
 
-        '
-    - name: Validate policies
-      run: 'python scripts/validate-policies.py
+      - name: Audit dependencies and generate CycloneDX SBOM
+        run: |
+          mkdir -p "$RUNNER_TEMP/f7las-sbom"
+          pip-audit \
+            --require-hashes \
+            --disable-pip \
+            --strict \
+            --progress-spinner off \
+            --requirement requirements-ci.lock \
+            --format cyclonedx-json \
+            --output "$RUNNER_TEMP/f7las-sbom/f7las-python.cdx.json"
 
-        '
-    - name: Validate tool allowlist
-      run: python scripts/allowlist-validator.py
-    - name: Validate settings
-      run: 'python scripts/validate-settings.py config/settings.yaml
+      - name: Upload CycloneDX SBOM
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: f7las-python-sbom-${{ github.sha }}
+          path: ${{ runner.temp }}/f7las-sbom/f7las-python.cdx.json
+          if-no-files-found: error
+          retention-days: 30
 
-        '
-    - name: Validate canonical data contracts
-      run: python scripts/validate-contracts.py
-    - name: Validate canonical OPA policy
-      run: opa check --strict config/policies/canonical-workflow.rego
-    - name: Run behavioral scenarios
-      run: 'pytest -q tests/test_behavioral_scenarios.py
+      - name: Install checksum-verified Gitleaks
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          mkdir -p "$RUNNER_TEMP/f7las-bin"
+          archive="$RUNNER_TEMP/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl --proto '=https' --tlsv1.2 -fsSLo "$archive" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  $archive" | sha256sum -c -
+          tar --no-same-owner -xzf "$archive" -C "$RUNNER_TEMP/f7las-bin" gitleaks
+          chmod 0755 "$RUNNER_TEMP/f7las-bin/gitleaks"
+          "$RUNNER_TEMP/f7las-bin/gitleaks" version
 
-        '
-    - name: Generate canonical evidence
-      run: |
-        python -m src.canonical.cli \
-          --input examples/canonical-workflow/request.json \
-          --output "$RUNNER_TEMP/f7las-canonical-evidence.json" \
-          --opa-binary "$OPA_BIN"
-    - name: Verify canonical evidence integrity
-      run: |
-        python -m src.canonical.evidence \
-          --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json"
-    - name: Replay canonical evidence deterministically
-      run: |
-        python -m src.canonical.replay \
-          --input examples/canonical-workflow/request.json \
-          --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json" \
-          --output "$RUNNER_TEMP/f7las-replayed-evidence.json" \
-          --opa-binary "$OPA_BIN"
-    - name: Run unit tests
-      run: 'pytest -q --ignore=tests/test_behavioral_scenarios.py
+      - name: Scan Git history for secrets
+        run: |
+          "$RUNNER_TEMP/f7las-bin/gitleaks" git --redact --no-banner --exit-code 1 .
 
-        '
-    - name: Run golden dataset evaluation
-      run: "python -m src.demo_runner.run_golden_dataset \\\n  --scenarios tests/golden_dataset/scenarios.json\
-        \ \\\n  --rubric tests/golden_dataset/rubric.json \\\n  --output tests/golden_dataset/golden_eval_results.ci.json\
-        \ \\\n  --strict\n"
-    - name: Enforce golden thresholds
-      run: "python scripts/check_golden_thresholds.py \\\n  tests/golden_dataset/golden_eval_results.ci.json\n"
+      - name: Install checksum-verified OPA CLI
+        env:
+          OPA_VERSION: 1.20.2
+          OPA_SHA256: 69da5179ee403d10fa11bab6cfb4ffb0d23dba5f9b682fa977db772a1da5670f
+        run: |
+          mkdir -p "$RUNNER_TEMP/f7las-bin"
+          curl --proto '=https' --tlsv1.2 -fsSLo "$RUNNER_TEMP/f7las-bin/opa" \
+            "https://openpolicyagent.org/downloads/v${OPA_VERSION}/opa_linux_amd64_static"
+          echo "${OPA_SHA256}  $RUNNER_TEMP/f7las-bin/opa" | sha256sum -c -
+          chmod 0755 "$RUNNER_TEMP/f7las-bin/opa"
+          echo "$RUNNER_TEMP/f7las-bin" >> "$GITHUB_PATH"
+          echo "OPA_BIN=$RUNNER_TEMP/f7las-bin/opa" >> "$GITHUB_ENV"
+          "$RUNNER_TEMP/f7las-bin/opa" version
+
+      - name: Verify src.policy package imports
+        run: python -c "import src.policy"
+
+      - name: Validate prompts
+        run: python scripts/validate-prompts.py config/prompts
+
+      - name: Validate policies
+        run: python scripts/validate-policies.py
+
+      - name: Validate tool allowlist
+        run: python scripts/allowlist-validator.py
+
+      - name: Validate settings
+        run: python scripts/validate-settings.py config/settings.yaml
+
+      - name: Validate canonical data contracts
+        run: python scripts/validate-contracts.py
+
+      - name: Validate canonical OPA policy
+        run: opa check --strict config/policies/canonical-workflow.rego
+
+      - name: Run behavioral scenarios
+        run: pytest -q tests/test_behavioral_scenarios.py
+
+      - name: Generate canonical evidence
+        run: |
+          python -m src.canonical.cli \
+            --input examples/canonical-workflow/request.json \
+            --output "$RUNNER_TEMP/f7las-canonical-evidence.json" \
+            --opa-binary "$OPA_BIN"
+
+      - name: Verify canonical evidence integrity
+        run: |
+          python -m src.canonical.evidence \
+            --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json"
+
+      - name: Replay canonical evidence deterministically
+        run: |
+          python -m src.canonical.replay \
+            --input examples/canonical-workflow/request.json \
+            --evidence "$RUNNER_TEMP/f7las-canonical-evidence.json" \
+            --output "$RUNNER_TEMP/f7las-replayed-evidence.json" \
+            --opa-binary "$OPA_BIN"
+
+      - name: Run unit tests
+        run: pytest -q --ignore=tests/test_behavioral_scenarios.py
+
+      - name: Run golden dataset evaluation
+        run: |
+          python -m src.demo_runner.run_golden_dataset \
+            --scenarios tests/golden_dataset/scenarios.json \
+            --rubric tests/golden_dataset/rubric.json \
+            --output tests/golden_dataset/golden_eval_results.ci.json \
+            --strict
+
+      - name: Enforce golden thresholds
+        run: |
+          python scripts/check_golden_thresholds.py \
+            tests/golden_dataset/golden_eval_results.ci.json

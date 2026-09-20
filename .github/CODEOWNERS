@@ -3,3 +3,11 @@
 /src/demo_runner/run_golden_dataset.py @anthfuller
 /scripts/check_golden_thresholds.py @anthfuller
 /config/policies/policy-schema.json @anthfuller
+
+# Supply-chain and CI guardrails
+/.github/workflows/ @anthfuller
+/.github/dependabot.yml @anthfuller
+/requirements.txt @anthfuller
+/requirements-ci.in @anthfuller
+/requirements-ci.lock @anthfuller
+/scripts/validate-supply-chain.py @anthfuller

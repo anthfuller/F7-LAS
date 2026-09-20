@@ -13,6 +13,7 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
 - [QA and maturity](F7-LAS-QA.md) — current repository truth and limitations.
 - [Canonical data contracts v1.0.0](../schemas/contracts/README.md) — machine-validated request-through-audit definitions used by the canonical executable path.
 - [Canonical offline workflow](../examples/canonical-workflow/README.md) — the bounded synthetic Python + OPA Layers 1–7 demonstration.
+- [Supply-chain and CI controls](supply-chain-and-ci.md) — implemented dependency, action, download, vulnerability, secret, and SBOM checks and their limits.
 
 ## Architecture graphics
 

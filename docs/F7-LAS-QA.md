@@ -71,6 +71,21 @@ No. Architecture and evidence use auditable plans, decisions, source references,
 
 Layer S is a cross-cutting software supply-chain control domain. It is not an eighth layer and does not change the fundamental seven-layer model.
 
+## Which Layer S controls are implemented in this repository?
+
+The canonical CI installs a fully resolved, SHA-256-hashed Python lock, pins
+external GitHub Actions to full commit SHAs, verifies downloaded OPA and
+Gitleaks binaries against fixed SHA-256 values, scans the Git history for
+recognized secret patterns, checks the locked Python graph for published known
+vulnerabilities, and retains a CycloneDX JSON SBOM for 30 days. Dependabot is
+configured to propose weekly Python and GitHub Actions updates for review.
+
+These controls cover the repository's Python CI environment and the two
+downloaded Linux binaries. They do not attest the GitHub-hosted runner image,
+prove that dependencies are non-malicious, guarantee that no secret exists, or
+create a signed release SBOM or provenance attestation. See
+[Supply-chain and CI controls](supply-chain-and-ci.md) for the exact boundary.
+
 ## How should practitioners use the repository today?
 
 Use it as a design-review lens, threat-modeling aid, draft control catalog, and source of clearly labeled examples. Verify each claimed outcome independently before adapting any pattern.
