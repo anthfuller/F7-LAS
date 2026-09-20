@@ -29,7 +29,7 @@ Software supply-chain security is a cross-cutting supplemental domain, **Layer S
 - The immutable [F7-LAS whitepaper v3.0](docs/F7-LAS-model-whitepaper_v3.0.pdf)
 - A draft [implementation guide](docs/f7-las-implementation-guide/README.md)
 - A draft [46-control catalog](docs/F7-LAS-Control-Catalog-v0.1.md)
-- Architecture diagrams and engineering review material
+- Current [architecture diagrams](docs/architecture-diagrams.md), with explicit implementation boundaries, and engineering review material
 - Canonical v1.0.0 data contracts and one synthetic, offline Python + OPA workflow
 - Illustrative prompts, additional policies, validators, and runtime stubs
 - Supply-chain CI, behavioral tests, evidence verification, deterministic replay,
@@ -86,6 +86,7 @@ These commands validate the **current prototype and repository structure**. They
 - [Canonical offline workflow](examples/canonical-workflow/README.md)
 - [Supply-chain and CI controls](docs/supply-chain-and-ci.md)
 - [Clean-user acceptance](docs/clean-user-acceptance.md)
+- [Architecture diagrams](docs/architecture-diagrams.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
 

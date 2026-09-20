@@ -51,6 +51,17 @@ PDP/PEP boundaries. The current Layer 6 demonstration is a synthetic in-process
 executor that makes no network calls; it is not an OS/container sandbox or an
 enforced network-isolation boundary.
 
+## How should the architecture diagrams be interpreted?
+
+The [architecture diagrams](architecture-diagrams.md) describe F7-LAS control
+responsibilities and the governed execution flow. They are not deployment
+diagrams or proof that a control is implemented. Layer numbers identify control
+domains rather than a universally linear runtime order: a Layer 4 action is
+proposed before Layer 5 authorization, while actual Layer 4 tool access is
+allowed only after permit and within the applicable Layer 6 boundary. The
+diagram guide maps every visual stage to the bounded canonical implementation
+and states the unimplemented production boundaries.
+
 ## What do evidence verification and replay prove?
 
 The canonical verifier independently checks the complete record chain,

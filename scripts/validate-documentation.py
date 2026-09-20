@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
+import struct
 import sys
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -21,6 +23,30 @@ RUNNABLE_COMMAND_DOCS = {
     Path("schemas/contracts/README.md"),
 }
 IGNORED_DIRECTORIES = {".git", ".venv", "venv", "node_modules", "__pycache__"}
+EXPECTED_DIAGRAMS = {
+    Path("docs/images/F7-LAS-Executive-Control-Loop.png"): (
+        "e56b99d3811ca36e2c2fa0a3f1ef09ba21297845dc86bc2d4f9d2922596dc252",
+        (1672, 941),
+    ),
+    Path("docs/images/F7-LAS-Agentic-Execution-Control-Loop.png"): (
+        "dd93d67596ef99dc86179097b817735ca4fca9539e47f64b35e378ba9162c480",
+        (1672, 941),
+    ),
+}
+RETIRED_DIAGRAMS = {
+    Path("config/prompts/F7-LAS-Model-v1.png"),
+    Path("docs/F7-LAS-Model-v1.png"),
+    Path("docs/images/F7-LAS-Model-v1A.png"),
+    Path("docs/images/F7-LAS-Model-v1B.png"),
+    Path("docs/images/F7-LAS_Execution_Control_Loop.png"),
+    Path("docs/images/Multi-Agent-F7-LAS_Model-v1.png"),
+}
+REQUIRED_DIAGRAM_NOTICES = {
+    "Layer numbers name responsibility domains",
+    "proposal has no authority to execute",
+    "synthetic in-process executor—not an OS/container sandbox",
+    "The implementation does not self-modify",
+}
 
 
 class DocumentationError(ValueError):
@@ -109,10 +135,44 @@ def validate_command_boundaries(path: Path, root: Path) -> None:
                 )
 
 
+def validate_png(path: Path, expected_digest: str, expected_size: tuple[int, int]) -> None:
+    try:
+        content = path.read_bytes()
+    except OSError as exc:
+        raise DocumentationError(f"missing canonical diagram asset: {path}") from exc
+    if hashlib.sha256(content).hexdigest() != expected_digest:
+        raise DocumentationError(f"canonical diagram digest mismatch: {path}")
+    if len(content) < 24 or content[:8] != b"\x89PNG\r\n\x1a\n":
+        raise DocumentationError(f"canonical diagram is not a valid PNG: {path}")
+    width, height = struct.unpack(">II", content[16:24])
+    if (width, height) != expected_size:
+        raise DocumentationError(
+            f"canonical diagram dimensions mismatch: {path}: {(width, height)}"
+        )
+
+
+def validate_diagrams(root: Path) -> None:
+    for relative, (digest, dimensions) in EXPECTED_DIAGRAMS.items():
+        validate_png(root / relative, digest, dimensions)
+    for relative in RETIRED_DIAGRAMS:
+        if (root / relative).exists():
+            raise DocumentationError(f"retired legacy diagram returned: {relative}")
+
+    guide = (root / "docs" / "architecture-diagrams.md").read_text(encoding="utf-8")
+    normalized_guide = " ".join(guide.split())
+    for notice in REQUIRED_DIAGRAM_NOTICES:
+        if notice not in normalized_guide:
+            raise DocumentationError(
+                f"architecture diagram guide is missing required semantics: {notice}"
+            )
+
+
 def validate_repository(root: Path = ROOT) -> None:
     for path in markdown_files(root):
         validate_links(path, root)
         validate_command_boundaries(path, root)
+
+    validate_diagrams(root)
 
     illustrative_opa = (
         root / "examples" / "layer5-policy-engines" / "opa-rego" / "README.md"
