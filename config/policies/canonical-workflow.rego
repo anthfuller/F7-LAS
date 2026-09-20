@@ -25,8 +25,13 @@ result := {
     input.request.scope.resource_ids == ["workspace-0001"]
     input.actor.subject_id == "investigator-0001"
     input.actor.role == "investigator"
+    regex.match("^sha256:[0-9a-f]{64}$", input.action.action_digest)
+    input.action.action_digest == input.authorized_action_digest
+    input.action.actor_id == input.actor.subject_id
+    input.action.step_id == "step-0001"
     input.action.tool == {"tool_id": "siem-query", "version": "1.0.0"}
     input.action.operation == "workspace-health"
+    input.action.arguments == {"workspace_id": "workspace-0001"}
     input.action.target == input.request.scope
     input.action.risk_tier == "low"
     input.action.requires_approval == false

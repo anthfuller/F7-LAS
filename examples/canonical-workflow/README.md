@@ -7,8 +7,9 @@ cloud API, production service, or network tool.
 The path uses fixed prompt intent and admission checks (Layer 1), synthetic
 grounding (Layer 2), a bounded deterministic plan (Layer 3), one proposed
 read-only action (Layer 4), an offline OPA CLI decision (Layer 5), a registered
-no-network synthetic executor (Layer 6), and correlated canonical audit records
-(Layer 7).
+synthetic in-process executor that makes no network calls (Layer 6), and
+correlated canonical audit records (Layer 7). Layer 6 here is not an OS or
+container sandbox and does not enforce a network-isolation boundary.
 
 Milestone 3 uses `not_required` for the low-risk synthetic read. Binding an
 explicit approval to the complete request/action/policy/scope/expiry tuple is
@@ -36,4 +37,5 @@ decision=permit execution=succeeded output=/tmp/f7las-canonical-records.json
 
 If OPA is missing, times out, rejects the policy, or returns malformed output,
 the workflow emits a denial and `not_executed` result. It never falls back to an
-allow decision.
+allow decision. The evidence file is preserved and the CLI returns exit status
+`3` for a denied or otherwise unexecuted action.

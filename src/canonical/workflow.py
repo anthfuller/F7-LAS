@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .contracts import (
+    ACTION_DIGEST_FIELDS,
     calculate_action_digest,
     calculate_output_digest,
     calculate_record_digest,
@@ -30,6 +31,15 @@ EXPECTED_ACTOR = {
     "subject_type": "agent",
     "role": "investigator",
 }
+EXPECTED_TOOL = {"tool_id": "siem-query", "version": "1.0.0"}
+EXPECTED_OPERATION = "workspace-health"
+EXPECTED_ARGUMENTS = {"workspace_id": "workspace-0001"}
+EXPECTED_TARGET = {
+    "scope_id": "lab-boundary-0001",
+    "environment": "lab",
+    "resource_ids": ["workspace-0001"],
+}
+REQUIRED_EXECUTION_OBLIGATIONS = {"audit-required", "offline-runtime-required"}
 
 
 class WorkflowError(ValueError):
@@ -71,11 +81,7 @@ class CanonicalWorkflow:
         if workflow_input["actor"] != EXPECTED_ACTOR:
             raise WorkflowError("actor is outside the canonical offline path")
         scope = workflow_input["scope"]
-        if scope != {
-            "scope_id": "lab-boundary-0001",
-            "environment": "lab",
-            "resource_ids": ["workspace-0001"],
-        }:
+        if scope != EXPECTED_TARGET:
             raise WorkflowError("scope is outside the canonical lab boundary")
         try:
             started_at = datetime.strptime(workflow_input["started_at"], "%Y-%m-%dT%H:%M:%SZ")
@@ -106,12 +112,28 @@ class CanonicalWorkflow:
     def _execute(action: dict[str, Any], decision: dict[str, Any]) -> dict[str, Any]:
         if decision["decision"] != "permit":
             return {"status": "not_executed", "output": {"reason_code": decision["reason_code"]}}
+        obligations = set(decision["obligations"])
+        missing_obligations = REQUIRED_EXECUTION_OBLIGATIONS - obligations
+        unsupported_obligations = obligations - REQUIRED_EXECUTION_OBLIGATIONS
+        if missing_obligations or unsupported_obligations:
+            return {
+                "status": "not_executed",
+                "output": {
+                    "reason_code": "unfulfilled-policy-obligation",
+                    "missing_obligations": sorted(missing_obligations),
+                    "unsupported_obligations": sorted(unsupported_obligations),
+                },
+            }
+        expected_digest = calculate_action_digest(action)
         if (
-            action["tool"] != {"tool_id": "siem-query", "version": "1.0.0"}
-            or action["operation"] != "workspace-health"
-            or action["target"]["environment"] != "lab"
+            action["action_digest"] != expected_digest
+            or decision["action_ref"] != _action_reference(action)
+            or action["tool"] != EXPECTED_TOOL
+            or action["operation"] != EXPECTED_OPERATION
+            or action["arguments"] != EXPECTED_ARGUMENTS
+            or action["target"] != EXPECTED_TARGET
         ):
-            return {"status": "not_executed", "output": {"reason_code": "executor-scope-mismatch"}}
+            return {"status": "not_executed", "output": {"reason_code": "executor-binding-mismatch"}}
         return {
             "status": "succeeded",
             "output": {
@@ -202,9 +224,9 @@ class CanonicalWorkflow:
             "plan_ref": _reference(plan),
             "step_id": "step-0001",
             "actor_id": workflow_input["actor"]["subject_id"],
-            "tool": {"tool_id": "siem-query", "version": "1.0.0"},
-            "operation": "workspace-health",
-            "arguments": {"workspace_id": "workspace-0001"},
+            "tool": dict(EXPECTED_TOOL),
+            "operation": EXPECTED_OPERATION,
+            "arguments": dict(EXPECTED_ARGUMENTS),
             "target": scope,
             "risk_tier": "low",
             "requires_approval": False,
@@ -235,6 +257,8 @@ class CanonicalWorkflow:
         )
         records.append(approval)
 
+        policy_action = {field: action[field] for field in ACTION_DIGEST_FIELDS}
+        policy_action["action_digest"] = action["action_digest"]
         opa_result = self.opa.evaluate(
             {
                 "request": {
@@ -242,13 +266,8 @@ class CanonicalWorkflow:
                     "scope": request["scope"],
                 },
                 "actor": context["actor"],
-                "action": {
-                    "tool": action["tool"],
-                    "operation": action["operation"],
-                    "target": action["target"],
-                    "risk_tier": action["risk_tier"],
-                    "requires_approval": action["requires_approval"],
-                },
+                "action": policy_action,
+                "authorized_action_digest": approval["action_ref"]["action_digest"],
                 "approval_status": approval["status"],
                 "policy_ref": policy_ref,
             }
@@ -281,11 +300,15 @@ class CanonicalWorkflow:
                 "action_ref": _action_reference(action),
                 "decision_ref": _reference(decision),
                 "execution_environment": {
-                    "sandbox_id": "offline-runtime",
-                    "profile_id": "synthetic-no-network",
+                    "sandbox_id": "synthetic-executor",
+                    "profile_id": "synthetic-in-process",
                     "profile_digest": digest_payload(
                         "sandbox-profile",
-                        {"network": False, "registered_tools": ["siem-query:workspace-health"]},
+                        {
+                            "executor": "in-process",
+                            "network_isolation": False,
+                            "registered_tools": ["siem-query:workspace-health"],
+                        },
                     ),
                 },
                 "status": execution_status,

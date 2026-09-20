@@ -28,6 +28,8 @@ def main() -> int:
     decision = next(record for record in result["records"] if record["record_type"] == "policy_decision")
     execution = next(record for record in result["records"] if record["record_type"] == "execution_result")
     print(f"decision={decision['decision']} execution={execution['status']} output={args.output}")
+    if decision["decision"] != "permit" or execution["status"] != "succeeded":
+        return 3
     return 0
 
 
