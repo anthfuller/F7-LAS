@@ -1,6 +1,6 @@
 # F7-LAS Canonical Data Contracts
 
-Version **1.0.0** defines eight record types for the planned deterministic,
+Version **1.0.0** defines eight record types for the canonical deterministic,
 offline Python + OPA reference workflow:
 
 1. `request`
@@ -69,8 +69,10 @@ defaults, and self-inclusion of a digest field are not permitted.
 both `record_id` and `record_digest`; action-specific records additionally bind
 the exact `action_digest`.
 
-Milestone 2 defines and validates these contracts. It does not claim that OPA
-evaluation, approval enforcement, sandbox containment, or replay is operational.
+Milestone 2 defined these contracts, and the Milestone 3 canonical workflow now
+emits and validates them around a real offline OPA decision. This does not claim
+that explicit approval binding, OS/container sandbox containment, enforced
+network isolation, or replay is operational.
 
 ## Validate
 

@@ -10,9 +10,15 @@ No. F7-LAS is an engineering and governance reference model. This repository con
 
 ## What is the current implementation maturity?
 
-**Prototype reference implementation.** The repository does not currently contain a coherent, tested Layers 1–7 execution path. Existing validators perform useful structural checks. The existing golden-dataset evaluator validates scenario and rubric structure; it does not execute or prove the stated security behavior.
+**Prototype reference implementation.** The repository contains one coherent,
+tested, synthetic and offline Layers 1–7 execution path. It demonstrates a
+bounded Python + OPA flow; it does not make the broader illustrative code
+executable or production-ready. The existing golden-dataset evaluator validates
+scenario and rubric structure; it does not execute or prove the stated security
+behavior.
 
-No current control is classified as implemented and automatically verified end-to-end. Control status will be made machine-readable and evidence-linked during the overhaul.
+The canonical path has automated behavioral checks, but repository-wide control
+status is not yet machine-readable or evidence-linked.
 
 ## Is the code production-ready?
 
@@ -20,7 +26,11 @@ No. Current planners, tools, sandboxing, telemetry, and policy adapters are inco
 
 ## What is canonical?
 
-The seven-layer model and whitepaper v3.0 are the design baseline. The future canonical executable path will be one offline, deterministic Python + OPA workflow. Other policy-engine examples are non-canonical illustrative patterns unless explicitly reclassified later.
+The seven-layer model and whitepaper v3.0 are the design baseline. The canonical
+executable path is the offline, deterministic Python + OPA workflow under
+[`examples/canonical-workflow/`](../examples/canonical-workflow/README.md).
+Other policy-engine examples remain non-canonical illustrative patterns unless
+explicitly reclassified later.
 
 ## How will human approval work?
 
@@ -28,7 +38,11 @@ The approved design requires synthetic approval evidence bound to the exact requ
 
 ## How are Layer 4 and Layer 6 separated?
 
-Layer 4 defines and validates proposed tool requests and the external action surface. A proposal is data, not authority. Layer 5 authorizes or denies it at PDP/PEP boundaries. Layer 6 constrains the environment in which an authorized simulated action runs.
+Layer 4 defines and validates proposed tool requests and the external action
+surface. A proposal is data, not authority. Layer 5 authorizes or denies it at
+PDP/PEP boundaries. The current Layer 6 demonstration is a synthetic in-process
+executor that makes no network calls; it is not an OS/container sandbox or an
+enforced network-isolation boundary.
 
 ## Does F7-LAS expose internal model reasoning?
 

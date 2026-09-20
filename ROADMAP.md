@@ -2,7 +2,7 @@
 
 ## Current maturity
 
-F7-LAS is an established seven-layer reference model with a **prototype reference implementation**. The repository is not Beta and is not production-ready. Existing code and CI primarily demonstrate examples and structural validation; they do not yet prove a complete runtime control path.
+F7-LAS is an established seven-layer reference model with a **prototype reference implementation**. The repository is not Beta and is not production-ready. The canonical Python + OPA workflow demonstrates one bounded, synthetic runtime control path; the broader repository remains illustrative and incomplete.
 
 ## Approved target
 
@@ -12,7 +12,7 @@ The target is an **Executable Reference Implementation**: one offline, determini
 
 1. **Repository truth and terminology** — reconcile maturity, versioning, paths, licensing, unsupported claims, and private-reasoning terminology.
 2. **Canonical data contracts** — define deterministic request, context, plan, proposed action, approval, decision, result, and audit records.
-3. **Canonical Python + OPA path** — implement one offline, fail-closed Layers 1–7 workflow.
+3. **Canonical Python + OPA path** — one offline, fail-closed Layers 1–7 workflow is implemented for the bounded synthetic action.
 4. **Approval binding** — bind synthetic approval to the exact request/action digest, scope, policy version, and expiry.
 5. **Behavioral scenarios** — test permitted, denied, malformed, unauthorized, unavailable, tampered, recovery, and other required paths.
 6. **Evidence and replay** — correlate records, detect tampering, and reproduce deterministic outcomes.

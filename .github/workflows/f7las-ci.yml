@@ -28,6 +28,18 @@ jobs:
         '
     - name: Add repo root to PYTHONPATH
       run: echo "PYTHONPATH=$PWD" >> $GITHUB_ENV
+    - name: Install pinned OPA CLI
+      env:
+        OPA_VERSION: 1.20.2
+        OPA_SHA256: 69da5179ee403d10fa11bab6cfb4ffb0d23dba5f9b682fa977db772a1da5670f
+      run: |
+        mkdir -p "$RUNNER_TEMP/f7las-bin"
+        curl -fsSL "https://openpolicyagent.org/downloads/v${OPA_VERSION}/opa_linux_amd64_static" -o "$RUNNER_TEMP/f7las-bin/opa"
+        echo "${OPA_SHA256}  $RUNNER_TEMP/f7las-bin/opa" | sha256sum -c -
+        chmod 0755 "$RUNNER_TEMP/f7las-bin/opa"
+        echo "$RUNNER_TEMP/f7las-bin" >> "$GITHUB_PATH"
+        echo "OPA_BIN=$RUNNER_TEMP/f7las-bin/opa" >> "$GITHUB_ENV"
+        "$RUNNER_TEMP/f7las-bin/opa" version
     - name: Verify src.policy package imports
       run: 'python -c "import src.policy"
 
@@ -48,6 +60,8 @@ jobs:
         '
     - name: Validate canonical data contracts
       run: python scripts/validate-contracts.py
+    - name: Validate canonical OPA policy
+      run: opa check --strict config/policies/canonical-workflow.rego
     - name: Run unit tests
       run: 'pytest -q
 

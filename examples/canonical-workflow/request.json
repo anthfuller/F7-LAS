@@ -1,0 +1,22 @@
+{
+  "workflow_id": "workflow-0001",
+  "started_at": "2026-01-15T12:00:00Z",
+  "mission": "Evaluate synthetic lab workspace health.",
+  "requester": {
+    "subject_id": "operator-0001",
+    "subject_type": "human",
+    "role": "soc-analyst"
+  },
+  "actor": {
+    "subject_id": "investigator-0001",
+    "subject_type": "agent",
+    "role": "investigator"
+  },
+  "scope": {
+    "scope_id": "lab-boundary-0001",
+    "environment": "lab",
+    "resource_ids": [
+      "workspace-0001"
+    ]
+  }
+}
