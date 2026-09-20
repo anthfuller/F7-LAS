@@ -57,7 +57,7 @@ effects. Admission refusals must emit no workflow records.
 Run the matrix with the pinned OPA CLI available:
 
 ```bash
-OPA_BIN=opa pytest -q tests/test_behavioral_scenarios.py
+OPA_BIN=opa python -m pytest -q tests/test_behavioral_scenarios.py
 ```
 
 These are deterministic reference-workflow scenarios, not claims of production

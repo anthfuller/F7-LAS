@@ -28,12 +28,13 @@ python -m venv .venv
 source .venv/bin/activate
 python -m pip install --require-hashes -r requirements-ci.lock
 python scripts/validate-supply-chain.py
+python scripts/validate-documentation.py
 pip-audit --require-hashes --disable-pip --strict \
   --progress-spinner off \
   --requirement requirements-ci.lock \
   --format cyclonedx-json \
   --output f7las-python.cdx.json
-pytest -q tests/test_supply_chain.py
+python -m pytest -q tests/test_supply_chain.py
 ```
 
 Gitleaks and OPA are installed in CI from the exact versioned URLs and digests
@@ -42,19 +43,12 @@ running the corresponding workflow commands on Linux x64.
 
 ## Updating the Python lock
 
-Change exact top-level pins deliberately, then regenerate the lock with the
-same resolver command and review all transitive changes:
-
-```bash
-python -m pip install pip-tools==7.6.1
-pip-compile --allow-unsafe --generate-hashes --resolver=backtracking \
-  --strip-extras --output-file requirements-ci.lock requirements-ci.in
-python scripts/validate-supply-chain.py
-```
-
-An update is incomplete until the known-vulnerability audit, full tests, and
-the complete dependency diff have been reviewed. Dependabot proposals are not
-auto-merged.
+Dependency-lock regeneration is a maintainer operation, not a supported
+clean-user command. Change exact top-level pins deliberately, regenerate the
+lock in a separately reviewed maintenance environment, and review every
+transitive version and hash change. An update is incomplete until the
+known-vulnerability audit, full tests, and complete dependency diff have been
+reviewed. Dependabot proposals are not auto-merged.
 
 ## Assurance boundary
 

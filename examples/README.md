@@ -34,4 +34,6 @@ A minimal simulated execution wrapper and container example. Containment is not 
 ### Layer 7 — Monitoring & Telemetry  
 A simple event schema + Python logger for auditability.
 
-Each layer folder contains its own README with instructions.
+Each layer folder contains its own README with its classification and
+limitations. Only [`canonical-workflow/`](canonical-workflow/README.md) provides
+a supported runnable walkthrough.

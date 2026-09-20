@@ -32,9 +32,10 @@ Software supply-chain security is a cross-cutting supplemental domain, **Layer S
 - Architecture diagrams and engineering review material
 - Canonical v1.0.0 data contracts and one synthetic, offline Python + OPA workflow
 - Illustrative prompts, additional policies, validators, and runtime stubs
-- Structural CI checks and prototype tests
+- Supply-chain CI, behavioral tests, evidence verification, deterministic replay,
+  and a clean-user acceptance gate for the canonical path
 
-The canonical workflow provides one deliberately constrained executable Layers 1–7 path. It does not make the other examples executable or production-ready. The existing golden-dataset runner validates scenario structure; it does not prove the described allow/deny behavior. Placeholder tests and incomplete examples are being replaced as part of the [overhaul roadmap](ROADMAP.md).
+The canonical workflow provides one deliberately constrained executable Layers 1–7 path. It does not make the other examples executable or production-ready. The behavioral scenario matrix exercises the canonical enforcement path; the separate golden-dataset runner validates scenario structure and does not prove the described allow/deny behavior. Non-canonical examples remain illustrative unless they are explicitly reclassified and tested.
 
 ## Executable versus illustrative
 
@@ -45,7 +46,7 @@ The canonical workflow provides one deliberately constrained executable Layers 1
 | Other OPA/PDP/PEP code | Partial prototype |
 | Planner, tools, sandbox, telemetry | Illustrative prototypes |
 | Other policy-engine examples | Illustrative, non-canonical patterns |
-| Other end-to-end workflows | Planned; not yet implemented |
+| Other end-to-end workflows | Not provided |
 | Production integrations or actions | Not provided |
 
 Nothing in this repository should be connected to production data, identities, cloud resources, security platforms, or remediation systems without independent engineering and security review.
@@ -61,12 +62,14 @@ python -m venv .venv
 source .venv/bin/activate
 python -m pip install --require-hashes -r requirements-ci.lock
 python scripts/validate-supply-chain.py
+python scripts/validate-documentation.py
 python scripts/validate-prompts.py
 python scripts/validate-policies.py
+python scripts/allowlist-validator.py
 python scripts/validate-settings.py config/settings.yaml
 python scripts/validate-contracts.py
 opa check --strict config/policies/canonical-workflow.rego
-pytest -q
+python -m pytest -q
 ```
 
 These commands validate the **current prototype and repository structure**. They are not evidence of production readiness or full behavioral enforcement.
@@ -82,6 +85,7 @@ These commands validate the **current prototype and repository structure**. They
 - [Canonical data contracts v1.0.0](schemas/contracts/README.md)
 - [Canonical offline workflow](examples/canonical-workflow/README.md)
 - [Supply-chain and CI controls](docs/supply-chain-and-ci.md)
+- [Clean-user acceptance](docs/clean-user-acceptance.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
 

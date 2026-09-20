@@ -95,5 +95,5 @@ reviewed input and repository policy, but it is not proof of provenance.
 
 ```bash
 python scripts/validate-contracts.py
-pytest -q
+python -m pytest -q
 ```

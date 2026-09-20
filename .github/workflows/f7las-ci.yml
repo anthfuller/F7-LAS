@@ -35,6 +35,9 @@ jobs:
       - name: Validate supply-chain invariants
         run: python scripts/validate-supply-chain.py
 
+      - name: Validate documentation
+        run: python scripts/validate-documentation.py
+
       - name: Audit dependencies and generate CycloneDX SBOM
         run: |
           mkdir -p "$RUNNER_TEMP/f7las-sbom"
@@ -88,6 +91,12 @@ jobs:
           echo "OPA_BIN=$RUNNER_TEMP/f7las-bin/opa" >> "$GITHUB_ENV"
           "$RUNNER_TEMP/f7las-bin/opa" version
 
+      - name: Run clean-user acceptance
+        env:
+          OPA_BIN: ${{ runner.temp }}/f7las-bin/opa
+          PYTHON_BIN: python
+        run: scripts/run-clean-user-acceptance.sh
+
       - name: Verify src.policy package imports
         run: python -c "import src.policy"
 
@@ -110,7 +119,7 @@ jobs:
         run: opa check --strict config/policies/canonical-workflow.rego
 
       - name: Run behavioral scenarios
-        run: pytest -q tests/test_behavioral_scenarios.py
+        run: python -m pytest -q tests/test_behavioral_scenarios.py
 
       - name: Generate canonical evidence
         run: |
@@ -133,7 +142,7 @@ jobs:
             --opa-binary "$OPA_BIN"
 
       - name: Run unit tests
-        run: pytest -q --ignore=tests/test_behavioral_scenarios.py
+        run: python -m pytest -q --ignore=tests/test_behavioral_scenarios.py
 
       - name: Run golden dataset evaluation
         run: |

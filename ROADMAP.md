@@ -17,7 +17,7 @@ The target is an **Executable Reference Implementation**: one offline, determini
 5. **Behavioral scenarios** — an executable canonical matrix tests permitted, denied, malformed, unauthorized, unavailable, timed-out, tampered, expired, obligation, and recovery paths.
 6. **Evidence and replay** — canonical evidence can be independently verified for complete correlation and tampering, then replayed from the admitted input to reproduce the exact canonical outcome.
 7. **Supply chain and CI** — implement pinned and hashed dependencies, immutable action references, verified tool downloads, known-vulnerability and Git-history secret gates, and a retained CI SBOM.
-8. **Documentation reconciliation** — execute every documented command in a clean environment.
+8. **Documentation reconciliation** — execute every supported user command in a clean environment; classify maintainer-only and illustrative material explicitly.
 9. **F7-LAS-specific diagrams** — replace diagrams only after execution semantics are frozen.
 10. **Independent review** — review the complete branch diff and CI evidence before any merge, release, or Zenodo update.
 
