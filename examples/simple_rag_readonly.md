@@ -1,4 +1,4 @@
-# Simple Read-Only RAG Query (Stage 0 — Experimental)
+# Simple Read-Only RAG Query (Experimental)
 
 A minimal, safe, read-only example showing how F7-LAS governs a simple RAG lookup.
 
@@ -16,7 +16,7 @@ This is a **low-risk**, read-only request:
 - No write actions  
 - RAG-only lookup
 
-Perfect for Stage 0 validation.
+Suitable for limited structural validation.
 
 ---
 
@@ -67,7 +67,7 @@ Telemetry (Layer 7):
 
 ## 3. Response Synthesis (Layer 3)
 
-Under Stage 0 constraints:
+Under these experimental constraints:
 
 - Coordinator summarizes retrieved intel  
 - No tool calls attempted  
@@ -110,12 +110,10 @@ The answer is delivered to the analyst with no side effects.
 
 This file provides:
 
-- A **minimal, safe** Stage 0 example  
+- A **minimal, illustrative** example
 - A companion to the more complex multi-agent walkthrough  
 - A “Hello World” demonstration for GitHub visitors  
 - Clarity on how grounding + policy + telemetry work together  
-
-
 
 
 

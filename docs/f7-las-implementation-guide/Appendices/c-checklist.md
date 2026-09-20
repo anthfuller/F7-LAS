@@ -109,5 +109,5 @@ The Implementation Guide should not rewrite the checklist; it references the sou
 
 ### C.6 Copyright Notice
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller. Licensed under [CC BY 4.0](../../../LICENSE-CONTENT.md).
 This work is independent of Microsoft and does not represent the views of any employer.

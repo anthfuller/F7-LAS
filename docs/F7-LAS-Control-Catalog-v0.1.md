@@ -528,8 +528,8 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
 
 - **Control:**  
   The system **SHALL** be evaluated against a **golden dataset** of scenarios and rubrics, with thresholds enforced in CI/CD.
-- **Implementation Notes:**  
-  - Use `run_golden_dataset` + `check_golden_thresholds` as in the DevSecOps pipeline.  
+- **Implementation Notes:**
+  - Execute scenarios against the canonical workflow and apply documented thresholds to behavioral outcomes. The current `run_golden_dataset` runner validates structure only and does not satisfy this control.
 - **Evidence:**  
   - CI logs, evaluation reports.
 
@@ -625,13 +625,13 @@ Prompts are **soft controls** and must be treated as such, but they are still a 
   - Capture **evidence** and **owners**.
 - Combine this catalog with:
   - The **F7-LAS Whitepaper**  
-  - The **Implementation Guide v3.0**  
+  - The draft **Implementation Guide**
   - The **Engineering Review Checklist**  
   - The **DevSecOps Pipeline** (CI enforcement)
 
 Together, they define a full lifecycle for designing, implementing, and assuring secure agentic AI systems.
 
-© 2025 Anthony L. Fuller. All rights reserved.
+© 2025 Anthony L. Fuller. Licensed under [CC BY 4.0](../LICENSE-CONTENT.md).
 
 This work is created independently by the author and is not affiliated with,
 endorsed by, or associated with Microsoft or any other employer. All opinions,

@@ -28,3 +28,6 @@ main = rule {
   # Allow only if the unsafe combination is NOT true
   not (action == "terminate_instance" && env == "production" && time_ok == false)
 }
+```
+
+This is an illustrative policy fragment, not a tested canonical implementation.

@@ -1,7 +1,10 @@
 """
-F7-LAS Layer 6 – Minimal Sandbox Execution Wrapper (Stage-1)
+F7-LAS Layer 6 – Illustrative Minimal Execution Wrapper
 
-This safely executes tool functions ONLY if Layer 5 approved the action.
+This prototype trusts an unsigned JSON ``allowed`` Boolean and then dispatches
+a local stub. It does not authenticate the decision, bind it to an action,
+validate a policy version or expiry, or prove sandbox containment. Do not treat
+it as evidence that Layer 5 approved an action.
 """
 
 import json
@@ -29,7 +32,8 @@ def run_action(action: str, args: dict):
 
 def main():
     """
-    Expects a file called /workspace/l5_decision.json written by the PEP.
+    Expects an illustrative /workspace/l5_decision.json input. The file is not
+    authenticated or cryptographically bound to the requested action.
     """
     decision_file = Path("/workspace/l5_decision.json")
 

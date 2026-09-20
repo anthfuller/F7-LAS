@@ -7,7 +7,7 @@
   "owner_team": "AI Security / F7-LAS",
   "last_reviewed": "2025-01-01",
   "default_decision": "deny",
-  "notes": "Stage 0: conservative agent policy with explicit allow list and HITL for high-risk activity.",
+  "notes": "Experimental conservative agent policy with an explicit allowlist and HITL for high-risk activity.",
   "rules": [
     {
       "id": "AGENT-001",
@@ -40,7 +40,7 @@
     },
     {
       "id": "AGENT-004",
-      "description": "Log-only rule for experimental capabilities at Stage 0.",
+      "description": "Log-only rule for experimental capabilities.",
       "effect": "log-only",
       "conditions": {
         "applies_to_agents": ["coordinator", "investigator", "remediator"],

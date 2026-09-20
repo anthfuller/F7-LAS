@@ -44,7 +44,7 @@ class OPAPEP(BasePEP):
         """
         Construct the `input` object sent to OPA.
 
-        NOTE: For Stage-1 we derive `current_time_ok_for_change` from
+        NOTE: In this prototype we derive `current_time_ok_for_change` from
         a simple 9–17 ET change-freeze window.
         """
         now_est = datetime.now(tz=EASTERN_TZ)

@@ -1,55 +1,41 @@
 # Contributing to F7-LAS
 
-Thank you for your interest in contributing to the **Fuller 7-Layer Agentic AI Security Model (F7-LAS)**.  
-This project is currently in **Stage 0 (Foundational Draft)**. Contributions are welcome, but all changes must align with the framework’s purpose and roadmap.
+F7-LAS is Anthony Fuller's seven-layer agentic AI security model. The repository currently contains a **prototype reference implementation** and is undergoing a controlled, evidence-driven overhaul.
 
-## How to Contribute
-You can contribute in several ways:
+## Contribution boundaries
 
-- Improve documentation (preferred at this stage)
-- Add examples to `/examples`
-- Propose new or refined JSON/YAML schemas
-- Suggest extensions to Layers or patterns
-- Identify issues, missing controls, or clarifications
-- Submit small, focused code samples demonstrating F7-LAS concepts
+- Preserve the fundamental seven-layer model unless a conceptual change is identified and explicitly approved by the author.
+- Keep the project vendor-neutral and protocol-agnostic.
+- Do not add production-readiness, enforcement, or assurance claims without executable evidence.
+- Use synthetic data, identities, policies, approvals, and actions.
+- Do not add code that executes external cloud, identity, security, or remediation actions.
+- Prefer one coherent canonical path over multiple incomplete integrations.
+- Do not expose, request, or model private chain-of-thought. Use auditable plans, decisions, evidence, requests, actions, and outcomes.
 
-## Contribution Requirements
-Before submitting a PR, ensure the following:
+## Pull requests
 
-1. The contribution **aligns with the F7-LAS model** and its security intent.
-2. Changes are **narrow in scope** and logically grouped.
-3. Any new files include a short comment describing purpose and which layer(s) they relate to.
-4. JSON/YAML schemas must be valid and formatted consistently.
-5. Documentation updates follow the tone and structure of the whitepaper.
+Keep changes focused. A pull request must state:
 
-## Pull Requests
-All PRs must use the provided pull request template and include:
+- the purpose and affected F7-LAS layer(s),
+- security and compatibility implications,
+- files and claims changed,
+- validation performed and reproducible commands,
+- limitations and unverified behavior,
+- whether control-catalog or traceability evidence changes.
 
-- Description of the change  
-- Justification: how does this align with F7-LAS?  
-- Impact: which layer(s) or appendix does this touch?  
-- Any risks, limitations, or future considerations  
-- Testing or validation notes (if applicable)
+Runnable examples require automated tests. Non-runnable patterns must be labeled **illustrative**. Documentation links and commands must work case-sensitively in a clean environment.
 
-## What Will Not Be Accepted
-- Marketing, vendor promotion, or product tie-ins  
-- Entire agent runtimes or unrelated frameworks  
-- Large architectural overhauls  
-- AI-generated content without human review  
-- Unvalidated schemas or pseudo-code without context
+## Review requirements
 
-## Reuse and Attribution Guidelines
-This project uses the **CC BY 4.0** license.  
-You may contribute, reuse, or adapt the materials in this repository.
+Changes to policy semantics, approval binding, execution order, control status, diagrams, maturity, versioning, or licensing require explicit maintainer review. The historical whitepaper v3.0 PDF must not be modified.
 
-When reusing or referencing the model, please include:
+All contributors must follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and [SECURITY.md](SECURITY.md).
 
-"Based on F7-LAS — The Fuller 7-Layer Agentic AI Security Model (Anthony Fuller, CC BY 4.0)"
+## Licensing contributions
 
-This ensures clear attribution while allowing broad community and industry adoption.
+By contributing, you agree that:
 
-
-## Code of Conduct
-By contributing, you agree to follow the project’s Code of Conduct.
-
-Thank you for helping shape the future of agentic AI security.
+- authored documentation, diagrams, model content, and prose are licensed under [CC BY 4.0](LICENSE-CONTENT.md);
+- executable source code and policy/configuration examples are licensed under [MIT](LICENSE-CODE);
+- the detailed file boundary in [LICENSE.md](LICENSE.md) applies;
+- no trademark rights or endorsement are granted.
