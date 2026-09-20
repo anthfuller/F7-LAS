@@ -70,6 +70,17 @@ def test_substituted_canonical_diagram_is_rejected(tmp_path: Path) -> None:
         )
 
 
+def test_control_loop_semantics_are_required() -> None:
+    expected = {
+        "returns to the PDP for reevaluation",
+        "Only a PDP permit may proceed to PEP enforcement",
+        "PEP authorization occurs before tool access or execution",
+        "distinct terminal outcomes",
+        "Agent Planning",
+    }
+    assert expected <= MODULE.REQUIRED_DIAGRAM_NOTICES
+
+
 def test_clean_user_gate_rejects_substituted_opa(tmp_path: Path) -> None:
     fake_opa = tmp_path / "opa"
     fake_opa.write_text("#!/bin/sh\necho 'Version: 1.20.2'\n", encoding="utf-8")

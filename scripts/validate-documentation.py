@@ -25,11 +25,11 @@ RUNNABLE_COMMAND_DOCS = {
 IGNORED_DIRECTORIES = {".git", ".venv", "venv", "node_modules", "__pycache__"}
 EXPECTED_DIAGRAMS = {
     Path("docs/images/F7-LAS-Executive-Control-Loop.png"): (
-        "e56b99d3811ca36e2c2fa0a3f1ef09ba21297845dc86bc2d4f9d2922596dc252",
+        "23449ac61fc65089d96956d5900916f69ee637960d83a46ff847093e3da59159",
         (1672, 941),
     ),
     Path("docs/images/F7-LAS-Agentic-Execution-Control-Loop.png"): (
-        "dd93d67596ef99dc86179097b817735ca4fca9539e47f64b35e378ba9162c480",
+        "9f4400b86796f1f047e51f595f416be5c2c398801a146778833a821277cdd8d6",
         (1672, 941),
     ),
 }
@@ -46,6 +46,11 @@ REQUIRED_DIAGRAM_NOTICES = {
     "proposal has no authority to execute",
     "synthetic in-process executor—not an OS/container sandbox",
     "The implementation does not self-modify",
+    "returns to the PDP for reevaluation",
+    "Only a PDP permit may proceed to PEP enforcement",
+    "PEP authorization occurs before tool access or execution",
+    "distinct terminal outcomes",
+    "Agent Planning",
 }
 
 

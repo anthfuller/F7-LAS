@@ -12,7 +12,11 @@ is the bounded synthetic workflow documented under
 
 This view summarizes the governance path for an executive audience: mission
 context, an action proposal, policy decision, conditional human approval,
-scoped execution, validation, monitoring, and governed feedback.
+enforcement, scoped execution, validation, monitoring, and governed feedback.
+An approval-required outcome returns to the PDP for reevaluation. Only a PDP
+permit may proceed to PEP enforcement, and PEP authorization occurs before tool
+access or execution. Deny/block and clarify/refer-to-human are distinct terminal
+outcomes.
 
 ## Layer-specific execution control loop
 
@@ -22,18 +26,19 @@ This view maps the same control loop to F7-LAS Layers 1–7. Layer numbers name
 responsibility domains; they do not require every runtime event to occur in
 numeric order. In particular, Layer 4 first defines a proposed tool action as
 data before Layer 5 authorization. Actual Layer 4 tool access may occur only
-after permit, through an enforcement point and within the applicable Layer 6
-execution boundary.
+after permit and successful PEP enforcement, within the applicable Layer 6
+execution boundary. Human approval never bypasses the PDP or PEP.
 
 ## Canonical implementation alignment
 
 | Diagram concept | Canonical repository behavior |
 |---|---|
 | Mission request and context | `request` and `context` records establish the fixed mission, actor, evidence, and lab scope. |
-| Reasoning and action proposal | A deterministic `plan` produces one `proposed_action`; the proposal has no authority to execute. No LLM or private chain-of-thought is used or recorded. |
+| Agent Planning and action proposal | A deterministic `plan` produces one `proposed_action`; the proposal has no authority to execute. No LLM or private chain-of-thought is used or recorded. |
 | Policy decision point | OPA evaluates the complete action, scope, approval binding, execution time, and policy-bundle digest, then permits or denies fail closed. |
 | Conditional human approval | The canonical fixture creates deterministic synthetic approval evidence before the `policy_decision` record. It demonstrates binding and expiry enforcement, not an interactive approval service or verified human identity. |
-| Scoped execution and tool access | The permit path invokes one registered, synthetic, read-only in-process executor. It makes no network or external API call and independently rechecks the action, approval, decision, scope, policy, obligations, and expiry. |
+| PEP enforcement | Only a PDP permit reaches the PEP. The PEP verifies the decision and its action, approval, scope, policy, obligation, and expiry bindings before authorizing access. |
+| Scoped execution and tool access | Only after PEP authorization does the permit path enter the Layer 6 boundary and invoke one registered, synthetic, read-only in-process executor. It makes no network or external API call and independently rechecks the complete binding. |
 | Validation, monitoring, and evaluation | `execution_result` and `audit_event` records preserve the outcome; evidence verification and deterministic replay check their correlations and digests. This is not production telemetry or continuous monitoring. |
 | Feedback and continuous assurance | Test, review, policy, prompt, and process changes use the normal governed repository workflow. The implementation does not self-modify. |
 
@@ -42,9 +47,10 @@ The permit flow is therefore:
 1. admit a request and context;
 2. create a bounded plan and proposed Layer 4 action;
 3. bind any required approval to the exact request, action, scope, policy, authority, and validity window;
-4. obtain a Layer 5 decision;
-5. on permit only, revalidate at the Layer 6 executor and perform the registered synthetic action;
-6. emit correlated Layer 7 result and audit evidence.
+4. obtain or reevaluate a Layer 5 PDP decision, returning any human approval to the PDP;
+5. on PDP permit only, enforce the complete authorization at the PEP;
+6. after PEP authorization, enter the Layer 6 boundary and perform the registered synthetic action;
+7. emit correlated Layer 7 result and audit evidence.
 
 A denial or invalid prerequisite stops before execution and still preserves
 canonical evidence when admission succeeded.
@@ -66,8 +72,8 @@ F7-LAS trademark rights or imply endorsement.
 
 | File | Dimensions | SHA-256 |
 |---|---:|---|
-| `images/F7-LAS-Executive-Control-Loop.png` | 1672 × 941 | `e56b99d3811ca36e2c2fa0a3f1ef09ba21297845dc86bc2d4f9d2922596dc252` |
-| `images/F7-LAS-Agentic-Execution-Control-Loop.png` | 1672 × 941 | `dd93d67596ef99dc86179097b817735ca4fca9539e47f64b35e378ba9162c480` |
+| `images/F7-LAS-Executive-Control-Loop.png` | 1672 × 941 | `23449ac61fc65089d96956d5900916f69ee637960d83a46ff847093e3da59159` |
+| `images/F7-LAS-Agentic-Execution-Control-Loop.png` | 1672 × 941 | `9f4400b86796f1f047e51f595f416be5c2c398801a146778833a821277cdd8d6` |
 
 Legacy draft graphics were removed from the current documentation set because
 they contained ambiguous execution routing, private-reasoning terminology, or
