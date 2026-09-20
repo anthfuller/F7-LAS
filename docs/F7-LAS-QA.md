@@ -53,7 +53,9 @@ enforced network-isolation boundary.
 ## What do evidence verification and replay prove?
 
 The canonical verifier independently checks the complete record chain,
-cross-record bindings, policy and action digests, and final audit correlation.
+cross-record bindings, the policy-bundle digest covering metadata and exact
+executable Rego bytes, action digests, and final audit correlation. The OPA
+adapter verifies that bundle reference before executing the policy.
 Deterministic replay reruns the same admitted input through the synthetic
 workflow and requires the complete canonical evidence document to match. These
 checks detect inconsistent mutation, and a previously trusted evidence-set

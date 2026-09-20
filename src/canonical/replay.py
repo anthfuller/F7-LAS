@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,12 @@ from .workflow import CanonicalWorkflow, WorkflowError
 
 class ReplayMismatchError(ValueError):
     """A valid evidence set was not reproduced exactly by replay."""
+
+
+def _same_file(first: Path, second: Path) -> bool:
+    if first.resolve() == second.resolve():
+        return True
+    return first.exists() and second.exists() and os.path.samefile(first, second)
 
 
 def replay_evidence(
@@ -51,14 +58,13 @@ def main() -> int:
     parser.add_argument("--opa-binary", default="opa")
     args = parser.parse_args()
 
-    if args.output is not None and args.output.resolve() in {
-        args.input.resolve(),
-        args.evidence.resolve(),
-    }:
-        print("F7-LAS replay FAILED: output must not overwrite input or reviewed evidence")
-        return 4
-
     try:
+        if args.output is not None and (
+            _same_file(args.output, args.input) or _same_file(args.output, args.evidence)
+        ):
+            raise ReplayMismatchError(
+                "output must not overwrite input or reviewed evidence"
+            )
         workflow_input = load_json(args.input)
         expected = load_json(args.evidence)
         replayed = replay_evidence(workflow_input, expected, args.opa_binary)

@@ -12,9 +12,11 @@ correlated canonical audit records (Layer 7). Layer 6 here is not an OS or
 container sandbox and does not enforce a network-isolation boundary.
 
 The synthetic approval is bound to the exact request and action references and
-digests, complete scope, complete policy reference, approving authority, issue
-time, and expiry. OPA validates the binding before permitting, and the
-in-process executor independently revalidates it at execution time. This is
+digests, complete scope, approving authority, issue time, expiry, and a
+versioned policy-bundle digest covering both policy metadata and the exact Rego
+bytes executed by OPA. The adapter verifies that bundle before invoking OPA,
+and the in-process executor independently revalidates the reference at execution
+time. This is
 deterministic approval evidence for the reference workflow, not an interactive
 human-approval service or identity proofing system.
 

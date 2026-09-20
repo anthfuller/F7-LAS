@@ -58,7 +58,7 @@ SHA-256 inputs are domain-separated:
 record: SHA-256("F7-LAS:record:<record_type>:1.0.0\n" || JCS(record without record_digest))
 action: SHA-256("F7-LAS:action:1.0.0\n" || JCS(security-relevant action projection))
 output: SHA-256("F7-LAS:output:1.0.0\n" || JCS(output))
-policy: SHA-256("F7-LAS:policy:1.0.0\n" || JCS(policy document))
+policy-bundle: SHA-256("F7-LAS:policy-bundle:1.0.0\n" || JCS({metadata, SHA-256(exact Rego bytes)}))
 evidence-set: SHA-256("F7-LAS:evidence-set:1.0.0\n" || JCS(complete evidence document))
 ```
 
@@ -69,6 +69,12 @@ defaults, and self-inclusion of a digest field are not permitted.
 `previous_record_digest` creates a linear record chain. Record references bind
 both `record_id` and `record_digest`; action-specific records additionally bind
 the exact `action_digest`.
+
+The canonical `policy_ref.policy_digest` is the policy-bundle digest. It binds
+the versioned JSON metadata and exact bytes of the Rego module executed
+by OPA. The adapter recomputes and verifies this reference before invoking OPA;
+the approval, decision, evidence verifier, and replay path require the same
+bundle reference.
 
 Milestone 2 defined these contracts. The canonical workflow emits and validates
 them around a real offline OPA decision and binds its deterministic synthetic

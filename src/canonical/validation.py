@@ -20,6 +20,7 @@ if str(REPO_ROOT) not in sys.path:
 from src.canonical.contracts import (
     calculate_action_digest,
     calculate_output_digest,
+    calculate_policy_bundle_digest,
     calculate_record_digest,
     digest_payload,
 )
@@ -28,6 +29,8 @@ from src.canonical.contracts import (
 SCHEMA_PATH = REPO_ROOT / "schemas" / "contracts" / "f7las-records-v1.schema.json"
 EXAMPLES_DIR = REPO_ROOT / "schemas" / "contracts" / "examples"
 POLICY_DIR = REPO_ROOT / "config" / "policies"
+CANONICAL_POLICY_METADATA_PATH = POLICY_DIR / "policy-constraints-default.json"
+CANONICAL_REGO_PATH = POLICY_DIR / "canonical-workflow.rego"
 
 FORBIDDEN_KEYS = {
     "api_key",
@@ -60,9 +63,15 @@ def load_policy_registry() -> dict[str, dict[str, Any]]:
         if path.name == "policy-schema.json":
             continue
         policy = load_json(path)
+        policy_digest = digest_payload("policy", policy)
+        if path == CANONICAL_POLICY_METADATA_PATH:
+            policy_digest = calculate_policy_bundle_digest(
+                policy,
+                CANONICAL_REGO_PATH.read_bytes(),
+            )
         registry[policy["policy_id"]] = {
             "version": policy["version"],
-            "policy_digest": digest_payload("policy", policy),
+            "policy_digest": policy_digest,
         }
     return registry
 

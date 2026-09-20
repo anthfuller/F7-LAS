@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from src.canonical import evidence, replay
+from src.canonical import evidence, replay, validation
 from src.canonical.contracts import calculate_record_digest
 from src.canonical.evidence import EvidenceIntegrityError, evidence_digest, verify_evidence
 from src.canonical.replay import ReplayMismatchError, replay_evidence
 from src.canonical.validation import load_json
-from src.canonical.workflow import CanonicalWorkflow
+from src.canonical.workflow import CanonicalWorkflow, DEFAULT_POLICY_PATH
 
 
 INPUT_PATH = Path("examples/canonical-workflow/request.json")
@@ -129,6 +129,19 @@ def test_replay_detects_different_admitted_input():
         replay_evidence(changed_input, expected, opa_binary="/does/not/exist/opa")
 
 
+@pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
+def test_modified_rego_fails_evidence_verification_and_replay(tmp_path, monkeypatch):
+    expected = CanonicalWorkflow(opa_binary=OPA_BINARY).run(workflow_input())
+    modified_policy = tmp_path / "modified.rego"
+    modified_policy.write_bytes(DEFAULT_POLICY_PATH.read_bytes() + b"\n# substituted policy\n")
+    monkeypatch.setattr(validation, "CANONICAL_REGO_PATH", modified_policy)
+
+    with pytest.raises(EvidenceIntegrityError, match="does not match the repository policy"):
+        verify_evidence(expected)
+    with pytest.raises(EvidenceIntegrityError, match="does not match the repository policy"):
+        replay_evidence(workflow_input(), expected, OPA_BINARY)
+
+
 def test_evidence_cli_returns_nonzero_for_tampering(tmp_path, monkeypatch):
     document = denied_evidence()
     record(document, "request")["mission"] = "tampered"
@@ -179,3 +192,26 @@ def test_replay_cli_does_not_overwrite_reviewed_evidence(tmp_path, monkeypatch):
     )
 
     assert replay.main() == 4
+
+
+def test_replay_cli_does_not_overwrite_hard_linked_evidence(tmp_path, monkeypatch):
+    expected_path = tmp_path / "expected.json"
+    output_path = tmp_path / "hard-linked-output.json"
+    original = json.dumps(denied_evidence())
+    expected_path.write_text(original, encoding="utf-8")
+    os.link(expected_path, output_path)
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "f7las-replay",
+            "--input",
+            str(INPUT_PATH),
+            "--evidence",
+            str(expected_path),
+            "--output",
+            str(output_path),
+        ],
+    )
+
+    assert replay.main() == 4
+    assert expected_path.read_text(encoding="utf-8") == original

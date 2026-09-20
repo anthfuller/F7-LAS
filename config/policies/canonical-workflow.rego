@@ -6,18 +6,14 @@ default result := {
     "obligations": ["audit-required"],
 }
 
-expected_policy_ref := {
-    "policy_id": "constraints-default-v1",
-    "version": "v1.0",
-    "policy_digest": "sha256:091de3f0a96ec85a610f42456aaba98c8d04e148b9f910c570f96af37795b44d",
-}
-
 result := {
     "decision": "permit",
     "reason_code": "approved-synthetic-read",
     "obligations": ["audit-required", "offline-runtime-required"],
 } if {
-    input.policy_ref == expected_policy_ref
+    input.policy_ref.policy_id == "constraints-default-v1"
+    input.policy_ref.version == "v1.0"
+    regex.match("^sha256:[0-9a-f]{64}$", input.policy_ref.policy_digest)
     input.request.dry_run == false
     input.request.scope.scope_id == "lab-boundary-0001"
     input.request.scope.environment == "lab"
