@@ -62,8 +62,12 @@ jobs:
       run: python scripts/validate-contracts.py
     - name: Validate canonical OPA policy
       run: opa check --strict config/policies/canonical-workflow.rego
+    - name: Run behavioral scenarios
+      run: 'pytest -q tests/test_behavioral_scenarios.py
+
+        '
     - name: Run unit tests
-      run: 'pytest -q
+      run: 'pytest -q --ignore=tests/test_behavioral_scenarios.py
 
         '
     - name: Run golden dataset evaluation
