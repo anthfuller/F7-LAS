@@ -52,12 +52,15 @@ Nothing in this repository should be connected to production data, identities, c
 
 ## Validate the current repository
 
-Use Python 3.10 or later in an isolated environment:
+The canonical code supports Python 3.10 or later. To reproduce the CI dependency
+environment, use Python 3.12.14 in an isolated environment and install the
+hash-locked file:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements-ci.lock
+python scripts/validate-supply-chain.py
 python scripts/validate-prompts.py
 python scripts/validate-policies.py
 python scripts/validate-settings.py config/settings.yaml
@@ -78,6 +81,7 @@ These commands validate the **current prototype and repository structure**. They
 - [Current QA and maturity statement](docs/F7-LAS-QA.md)
 - [Canonical data contracts v1.0.0](schemas/contracts/README.md)
 - [Canonical offline workflow](examples/canonical-workflow/README.md)
+- [Supply-chain and CI controls](docs/supply-chain-and-ci.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
 
