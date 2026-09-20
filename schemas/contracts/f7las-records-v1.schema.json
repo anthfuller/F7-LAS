@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:f7-las:schema:records:1.0.0",
+  "title": "F7-LAS Canonical Records v1.0.0",
+  "description": "Single-record contracts for the canonical F7-LAS workflow. Cross-record relationships are validated separately.",
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[a-z][a-z0-9]*(?:[-_][a-z0-9]+)*$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "record_header": {
+      "type": "object",
+      "properties": {
+        "schema_version": { "const": "1.0.0" },
+        "record_id": { "$ref": "#/$defs/identifier" },
+        "workflow_id": { "$ref": "#/$defs/identifier" },
+        "sequence": { "type": "integer", "minimum": 1 },
+        "occurred_at": { "$ref": "#/$defs/timestamp" },
+        "previous_record_digest": {
+          "oneOf": [
+            { "$ref": "#/$defs/digest" },
+            { "type": "null" }
+          ]
+        },
+        "record_digest": { "$ref": "#/$defs/digest" }
+      },
+      "required": [
+        "schema_version",
+        "record_id",
+        "workflow_id",
+        "sequence",
+        "occurred_at",
+        "previous_record_digest",
+        "record_digest"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subject_id": { "$ref": "#/$defs/identifier" },
+        "subject_type": { "enum": ["human", "agent", "service"] },
+        "role": { "$ref": "#/$defs/identifier" }
+      },
+      "required": ["subject_id", "subject_type", "role"]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scope_id": { "$ref": "#/$defs/identifier" },
+        "environment": { "$ref": "#/$defs/identifier" },
+        "tenant_id": { "$ref": "#/$defs/identifier" },
+        "resource_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/identifier" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["scope_id", "environment", "resource_ids"]
+    },
+    "record_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_id": { "$ref": "#/$defs/identifier" },
+        "record_digest": { "$ref": "#/$defs/digest" }
+      },
+      "required": ["record_id", "record_digest"]
+    },
+    "action_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "record_id": { "$ref": "#/$defs/identifier" },
+        "record_digest": { "$ref": "#/$defs/digest" },
+        "action_digest": { "$ref": "#/$defs/digest" }
+      },
+      "required": ["record_id", "record_digest", "action_digest"]
+    },
+    "policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy_id": { "$ref": "#/$defs/identifier" },
+        "version": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "policy_digest": { "$ref": "#/$defs/digest" }
+      },
+      "required": ["policy_id", "version", "policy_digest"]
+    },
+    "request": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "request" },
+            "mission": { "type": "string", "minLength": 1, "maxLength": 1000 },
+            "requester": { "$ref": "#/$defs/identity" },
+            "scope": { "$ref": "#/$defs/scope" },
+            "constraints": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "max_steps": { "type": "integer", "minimum": 1, "maximum": 100 },
+                "max_actions": { "type": "integer", "minimum": 1, "maximum": 100 },
+                "max_duration_seconds": { "type": "integer", "minimum": 1, "maximum": 3600 },
+                "dry_run": { "type": "boolean" }
+              },
+              "required": ["max_steps", "max_actions", "max_duration_seconds", "dry_run"]
+            }
+          },
+          "required": ["record_type", "mission", "requester", "scope", "constraints"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "context": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "context" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "actor": { "$ref": "#/$defs/identity" },
+            "target": { "$ref": "#/$defs/scope" },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "evidence_id": { "$ref": "#/$defs/identifier" },
+                  "source_id": { "$ref": "#/$defs/identifier" },
+                  "content_digest": { "$ref": "#/$defs/digest" },
+                  "retrieved_at": { "$ref": "#/$defs/timestamp" },
+                  "trust_basis_points": { "type": "integer", "minimum": 0, "maximum": 10000 }
+                },
+                "required": ["evidence_id", "source_id", "content_digest", "retrieved_at", "trust_basis_points"]
+              },
+              "uniqueItems": true
+            }
+          },
+          "required": ["record_type", "request_ref", "actor", "target", "evidence"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "plan": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "plan" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "context_ref": { "$ref": "#/$defs/record_ref" },
+            "planner_id": { "$ref": "#/$defs/identifier" },
+            "limits": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "max_steps": { "type": "integer", "minimum": 1, "maximum": 100 },
+                "max_actions": { "type": "integer", "minimum": 1, "maximum": 100 },
+                "max_duration_seconds": { "type": "integer", "minimum": 1, "maximum": 3600 }
+              },
+              "required": ["max_steps", "max_actions", "max_duration_seconds"]
+            },
+            "steps": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 100,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "step_id": { "$ref": "#/$defs/identifier" },
+                  "order": { "type": "integer", "minimum": 1 },
+                  "summary": { "type": "string", "minLength": 1, "maxLength": 500 }
+                },
+                "required": ["step_id", "order", "summary"]
+              }
+            }
+          },
+          "required": ["record_type", "request_ref", "context_ref", "planner_id", "limits", "steps"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "proposed_action": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "proposed_action" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "context_ref": { "$ref": "#/$defs/record_ref" },
+            "plan_ref": { "$ref": "#/$defs/record_ref" },
+            "step_id": { "$ref": "#/$defs/identifier" },
+            "actor_id": { "$ref": "#/$defs/identifier" },
+            "tool": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "tool_id": { "$ref": "#/$defs/identifier" },
+                "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" }
+              },
+              "required": ["tool_id", "version"]
+            },
+            "operation": { "$ref": "#/$defs/identifier" },
+            "arguments": { "type": "object" },
+            "target": { "$ref": "#/$defs/scope" },
+            "risk_tier": { "enum": ["low", "medium", "high", "critical"] },
+            "requires_approval": { "type": "boolean" },
+            "action_digest": { "$ref": "#/$defs/digest" }
+          },
+          "required": ["record_type", "request_ref", "context_ref", "plan_ref", "step_id", "actor_id", "tool", "operation", "arguments", "target", "risk_tier", "requires_approval", "action_digest"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "approval": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "approval" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "action_ref": { "$ref": "#/$defs/action_ref" },
+            "status": { "enum": ["approved", "denied", "not_required"] },
+            "authority": { "$ref": "#/$defs/identity" },
+            "reason_code": { "$ref": "#/$defs/identifier" },
+            "policy_ref": { "$ref": "#/$defs/policy_ref" },
+            "issued_at": { "$ref": "#/$defs/timestamp" },
+            "expires_at": {
+              "oneOf": [
+                { "$ref": "#/$defs/timestamp" },
+                { "type": "null" }
+              ]
+            },
+            "approved_scope": {
+              "oneOf": [
+                { "$ref": "#/$defs/scope" },
+                { "type": "null" }
+              ]
+            }
+          },
+          "required": ["record_type", "request_ref", "action_ref", "status", "authority", "reason_code", "policy_ref", "issued_at", "expires_at", "approved_scope"],
+          "allOf": [
+            {
+              "if": { "properties": { "status": { "const": "approved" } }, "required": ["status"] },
+              "then": {
+                "properties": {
+                  "expires_at": { "$ref": "#/$defs/timestamp" },
+                  "approved_scope": { "$ref": "#/$defs/scope" }
+                }
+              },
+              "else": {
+                "properties": {
+                  "expires_at": { "type": "null" },
+                  "approved_scope": { "type": "null" }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "policy_decision": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "policy_decision" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "action_ref": { "$ref": "#/$defs/action_ref" },
+            "approval_ref": { "$ref": "#/$defs/record_ref" },
+            "pdp_id": { "$ref": "#/$defs/identifier" },
+            "decision": { "enum": ["permit", "deny", "refer_to_human"] },
+            "authorization_basis": { "enum": ["approved", "not_required", "none"] },
+            "reason_code": { "$ref": "#/$defs/identifier" },
+            "policy_ref": { "$ref": "#/$defs/policy_ref" },
+            "obligations": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/identifier" },
+              "uniqueItems": true
+            }
+          },
+          "required": ["record_type", "request_ref", "action_ref", "approval_ref", "pdp_id", "decision", "authorization_basis", "reason_code", "policy_ref", "obligations"],
+          "allOf": [
+            {
+              "if": { "properties": { "decision": { "const": "permit" } }, "required": ["decision"] },
+              "then": { "properties": { "authorization_basis": { "enum": ["approved", "not_required"] } } },
+              "else": { "properties": { "authorization_basis": { "const": "none" } } }
+            }
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "execution_result": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "execution_result" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "action_ref": { "$ref": "#/$defs/action_ref" },
+            "decision_ref": { "$ref": "#/$defs/record_ref" },
+            "execution_environment": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "sandbox_id": { "$ref": "#/$defs/identifier" },
+                "profile_id": { "$ref": "#/$defs/identifier" },
+                "profile_digest": { "$ref": "#/$defs/digest" }
+              },
+              "required": ["sandbox_id", "profile_id", "profile_digest"]
+            },
+            "status": { "enum": ["succeeded", "failed", "not_executed"] },
+            "started_at": {
+              "oneOf": [
+                { "$ref": "#/$defs/timestamp" },
+                { "type": "null" }
+              ]
+            },
+            "completed_at": {
+              "oneOf": [
+                { "$ref": "#/$defs/timestamp" },
+                { "type": "null" }
+              ]
+            },
+            "output": { "type": "object" },
+            "output_digest": { "$ref": "#/$defs/digest" },
+            "error_code": {
+              "oneOf": [
+                { "$ref": "#/$defs/identifier" },
+                { "type": "null" }
+              ]
+            },
+            "side_effects": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "resource_id": { "$ref": "#/$defs/identifier" },
+                  "effect": { "$ref": "#/$defs/identifier" }
+                },
+                "required": ["resource_id", "effect"]
+              }
+            }
+          },
+          "required": ["record_type", "request_ref", "action_ref", "decision_ref", "execution_environment", "status", "started_at", "completed_at", "output", "output_digest", "error_code", "side_effects"],
+          "allOf": [
+            {
+              "if": { "properties": { "status": { "const": "succeeded" } }, "required": ["status"] },
+              "then": {
+                "properties": {
+                  "started_at": { "$ref": "#/$defs/timestamp" },
+                  "completed_at": { "$ref": "#/$defs/timestamp" },
+                  "error_code": { "type": "null" }
+                }
+              }
+            },
+            {
+              "if": { "properties": { "status": { "const": "failed" } }, "required": ["status"] },
+              "then": {
+                "properties": {
+                  "started_at": { "$ref": "#/$defs/timestamp" },
+                  "completed_at": { "$ref": "#/$defs/timestamp" },
+                  "error_code": { "$ref": "#/$defs/identifier" }
+                }
+              }
+            },
+            {
+              "if": { "properties": { "status": { "const": "not_executed" } }, "required": ["status"] },
+              "then": {
+                "properties": {
+                  "started_at": { "type": "null" },
+                  "completed_at": { "type": "null" },
+                  "error_code": { "type": "null" },
+                  "side_effects": { "maxItems": 0 }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "audit_event": {
+      "allOf": [
+        { "$ref": "#/$defs/record_header" },
+        {
+          "type": "object",
+          "properties": {
+            "record_type": { "const": "audit_event" },
+            "request_ref": { "$ref": "#/$defs/record_ref" },
+            "event_type": { "$ref": "#/$defs/identifier" },
+            "subject": { "$ref": "#/$defs/identity" },
+            "object_ref": { "$ref": "#/$defs/record_ref" },
+            "outcome": { "enum": ["success", "failure", "denied", "not_executed"] },
+            "source_records": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "record_type": { "enum": ["request", "context", "plan", "proposed_action", "approval", "policy_decision", "execution_result", "audit_event"] },
+                  "record_id": { "$ref": "#/$defs/identifier" },
+                  "record_digest": { "$ref": "#/$defs/digest" }
+                },
+                "required": ["record_type", "record_id", "record_digest"]
+              }
+            },
+            "details": { "type": "object" }
+          },
+          "required": ["record_type", "request_ref", "event_type", "subject", "object_ref", "outcome", "source_records", "details"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "record": {
+      "oneOf": [
+        { "$ref": "#/$defs/request" },
+        { "$ref": "#/$defs/context" },
+        { "$ref": "#/$defs/plan" },
+        { "$ref": "#/$defs/proposed_action" },
+        { "$ref": "#/$defs/approval" },
+        { "$ref": "#/$defs/policy_decision" },
+        { "$ref": "#/$defs/execution_result" },
+        { "$ref": "#/$defs/audit_event" }
+      ]
+    }
+  },
+  "$ref": "#/$defs/record"
+}

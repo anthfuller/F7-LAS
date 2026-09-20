@@ -30,7 +30,7 @@ Software supply-chain security is a cross-cutting supplemental domain, **Layer S
 - A draft [implementation guide](docs/f7-las-implementation-guide/README.md)
 - A draft [46-control catalog](docs/F7-LAS-Control-Catalog-v0.1.md)
 - Architecture diagrams and engineering review material
-- Illustrative prompts, policies, schemas, validators, and runtime stubs
+- Canonical v1.0.0 data contracts plus illustrative prompts, policies, validators, and runtime stubs
 - Structural CI checks and prototype tests
 
 The current code does **not** yet provide a coherent executable Layers 1–7 workflow. The existing golden-dataset runner validates scenario structure; it does not prove the described allow/deny behavior. Placeholder tests and incomplete examples are being replaced as part of the [overhaul roadmap](ROADMAP.md).
@@ -59,6 +59,7 @@ python -m pip install -r requirements.txt
 python scripts/validate-prompts.py
 python scripts/validate-policies.py
 python scripts/validate-settings.py config/settings.yaml
+python scripts/validate-contracts.py
 pytest -q
 ```
 
@@ -72,6 +73,7 @@ These commands validate the **current prototype and repository structure**. They
 - [Control catalog v0.1](docs/F7-LAS-Control-Catalog-v0.1.md)
 - [Engineering review checklist](docs/Engineering-Review-Checklist.md)
 - [Current QA and maturity statement](docs/F7-LAS-QA.md)
+- [Canonical data contracts v1.0.0](schemas/contracts/README.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
 

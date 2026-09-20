@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "F7-LAS Tool Call Schema",
-  "description": "Defines the required structure for tool calls compliant with F7-LAS Layer 4 & 5.",
+  "description": "Legacy illustrative tool-call shape. New canonical workflow records use schemas/contracts/f7las-records-v1.schema.json#/$defs/proposed_action.",
+  "deprecated": true,
   "type": "object",
   "properties": {
     "tool_name": {

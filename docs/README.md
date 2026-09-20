@@ -11,6 +11,7 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
 - [Control catalog v0.1](F7-LAS-Control-Catalog-v0.1.md) — 46 draft controls across Layers 1–7.
 - [Engineering review checklist](Engineering-Review-Checklist.md) — design-review aid.
 - [QA and maturity](F7-LAS-QA.md) — current repository truth and limitations.
+- [Canonical data contracts v1.0.0](../schemas/contracts/README.md) — machine-validated request-through-audit definitions for the future executable path.
 
 ## Architecture graphics
 
