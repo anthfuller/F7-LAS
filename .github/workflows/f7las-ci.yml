@@ -46,6 +46,8 @@ jobs:
       run: 'python scripts/validate-settings.py config/settings.yaml
 
         '
+    - name: Validate canonical data contracts
+      run: python scripts/validate-contracts.py
     - name: Run unit tests
       run: 'pytest -q
 

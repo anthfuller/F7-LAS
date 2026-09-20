@@ -4,6 +4,10 @@
 > **Note:** These schemas are based on research and prototyping.  
 > Implementers should validate them within their specific architecture and threat model.
 
+These telemetry examples are illustrative and are not the canonical executable-path
+contracts. The machine-validated canonical records are defined under
+[`schemas/contracts/`](../../../schemas/contracts/README.md).
+
 
 These schemas support F7-LAS Layers 1–7 and optional cross-layer coordination. Each is designed to be:
 

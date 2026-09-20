@@ -1,0 +1,310 @@
+{
+  "contract_set_version": "1.0.0",
+  "records": [
+    {
+      "schema_version": "1.0.0",
+      "record_type": "request",
+      "record_id": "request-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 1,
+      "occurred_at": "2026-01-15T12:00:00Z",
+      "previous_record_digest": null,
+      "mission": "Evaluate a read-only lab workspace-health action.",
+      "requester": {
+        "subject_id": "operator-0001",
+        "subject_type": "human",
+        "role": "soc-analyst"
+      },
+      "scope": {
+        "scope_id": "lab-boundary-0001",
+        "environment": "lab",
+        "resource_ids": ["workspace-0001"]
+      },
+      "constraints": {
+        "max_steps": 3,
+        "max_actions": 1,
+        "max_duration_seconds": 30,
+        "dry_run": true
+      },
+      "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "context",
+      "record_id": "context-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 2,
+      "occurred_at": "2026-01-15T12:00:01Z",
+      "previous_record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "actor": {
+        "subject_id": "investigator-0001",
+        "subject_type": "agent",
+        "role": "investigator"
+      },
+      "target": {
+        "scope_id": "lab-boundary-0001",
+        "environment": "lab",
+        "resource_ids": ["workspace-0001"]
+      },
+      "evidence": [
+        {
+          "evidence_id": "evidence-0001",
+          "source_id": "inventory-0001",
+          "content_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "retrieved_at": "2026-01-15T12:00:01Z",
+          "trust_basis_points": 10000
+        }
+      ],
+      "record_digest": "sha256:50a378e77f3edc20ccaadf94be4aa2e11d139b46fd02e24ef26bc6836cf75164"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "plan",
+      "record_id": "plan-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 3,
+      "occurred_at": "2026-01-15T12:00:02Z",
+      "previous_record_digest": "sha256:50a378e77f3edc20ccaadf94be4aa2e11d139b46fd02e24ef26bc6836cf75164",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "context_ref": {
+        "record_id": "context-0001",
+        "record_digest": "sha256:50a378e77f3edc20ccaadf94be4aa2e11d139b46fd02e24ef26bc6836cf75164"
+      },
+      "planner_id": "planner-0001",
+      "limits": {
+        "max_steps": 3,
+        "max_actions": 1,
+        "max_duration_seconds": 30
+      },
+      "steps": [
+        {
+          "step_id": "step-0001",
+          "order": 1,
+          "summary": "Propose one read-only workspace-health operation."
+        }
+      ],
+      "record_digest": "sha256:7f0923162a9bdf5e57770802676b83838a8e1c0f82f77872b557773b37357dae"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "proposed_action",
+      "record_id": "action-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 4,
+      "occurred_at": "2026-01-15T12:00:03Z",
+      "previous_record_digest": "sha256:7f0923162a9bdf5e57770802676b83838a8e1c0f82f77872b557773b37357dae",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "context_ref": {
+        "record_id": "context-0001",
+        "record_digest": "sha256:50a378e77f3edc20ccaadf94be4aa2e11d139b46fd02e24ef26bc6836cf75164"
+      },
+      "plan_ref": {
+        "record_id": "plan-0001",
+        "record_digest": "sha256:7f0923162a9bdf5e57770802676b83838a8e1c0f82f77872b557773b37357dae"
+      },
+      "step_id": "step-0001",
+      "actor_id": "investigator-0001",
+      "tool": {
+        "tool_id": "siem-query",
+        "version": "1.0.0"
+      },
+      "operation": "workspace-health",
+      "arguments": {
+        "workspace_id": "workspace-0001"
+      },
+      "target": {
+        "scope_id": "lab-boundary-0001",
+        "environment": "lab",
+        "resource_ids": ["workspace-0001"]
+      },
+      "risk_tier": "low",
+      "requires_approval": true,
+      "action_digest": "sha256:4d5a2c3a9bdd52a1089369040e0a0a4bde608fa2eee3baa44bfdf56fd8ed5355",
+      "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "approval",
+      "record_id": "approval-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 5,
+      "occurred_at": "2026-01-15T12:00:04Z",
+      "previous_record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "action_ref": {
+        "record_id": "action-0001",
+        "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5",
+        "action_digest": "sha256:4d5a2c3a9bdd52a1089369040e0a0a4bde608fa2eee3baa44bfdf56fd8ed5355"
+      },
+      "status": "approved",
+      "authority": {
+        "subject_id": "approver-0001",
+        "subject_type": "human",
+        "role": "security-reviewer"
+      },
+      "reason_code": "approved-readonly-lab-action",
+      "policy_ref": {
+        "policy_id": "constraints-default-v1",
+        "version": "v1.0",
+        "policy_digest": "sha256:091de3f0a96ec85a610f42456aaba98c8d04e148b9f910c570f96af37795b44d"
+      },
+      "issued_at": "2026-01-15T12:00:04Z",
+      "expires_at": "2026-01-15T12:05:04Z",
+      "approved_scope": {
+        "scope_id": "lab-boundary-0001",
+        "environment": "lab",
+        "resource_ids": ["workspace-0001"]
+      },
+      "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "policy_decision",
+      "record_id": "decision-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 6,
+      "occurred_at": "2026-01-15T12:00:05Z",
+      "previous_record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "action_ref": {
+        "record_id": "action-0001",
+        "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5",
+        "action_digest": "sha256:4d5a2c3a9bdd52a1089369040e0a0a4bde608fa2eee3baa44bfdf56fd8ed5355"
+      },
+      "approval_ref": {
+        "record_id": "approval-0001",
+        "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+      },
+      "pdp_id": "opa-pdp-0001",
+      "decision": "permit",
+      "authorization_basis": "approved",
+      "reason_code": "approved-readonly-lab-action",
+      "policy_ref": {
+        "policy_id": "constraints-default-v1",
+        "version": "v1.0",
+        "policy_digest": "sha256:091de3f0a96ec85a610f42456aaba98c8d04e148b9f910c570f96af37795b44d"
+      },
+      "obligations": ["audit-required", "sandbox-required"],
+      "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "execution_result",
+      "record_id": "result-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 7,
+      "occurred_at": "2026-01-15T12:00:06Z",
+      "previous_record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "action_ref": {
+        "record_id": "action-0001",
+        "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5",
+        "action_digest": "sha256:4d5a2c3a9bdd52a1089369040e0a0a4bde608fa2eee3baa44bfdf56fd8ed5355"
+      },
+      "decision_ref": {
+        "record_id": "decision-0001",
+        "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+      },
+      "execution_environment": {
+        "sandbox_id": "sandbox-0001",
+        "profile_id": "offline-dry-run",
+        "profile_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "status": "not_executed",
+      "started_at": null,
+      "completed_at": null,
+      "output": {
+        "dry_run": true,
+        "planned_operation": "workspace-health"
+      },
+      "output_digest": "sha256:8cd39e51bc8da562bf5a85cb483365d3f9b4b0e8232f5be1c6cbe7b675527ed5",
+      "error_code": null,
+      "side_effects": [],
+      "record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23"
+    },
+    {
+      "schema_version": "1.0.0",
+      "record_type": "audit_event",
+      "record_id": "audit-0001",
+      "workflow_id": "workflow-0001",
+      "sequence": 8,
+      "occurred_at": "2026-01-15T12:00:07Z",
+      "previous_record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23",
+      "request_ref": {
+        "record_id": "request-0001",
+        "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+      },
+      "event_type": "workflow-completed",
+      "subject": {
+        "subject_id": "investigator-0001",
+        "subject_type": "agent",
+        "role": "investigator"
+      },
+      "object_ref": {
+        "record_id": "action-0001",
+        "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5"
+      },
+      "outcome": "not_executed",
+      "source_records": [
+        {
+          "record_type": "request",
+          "record_id": "request-0001",
+          "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
+        },
+        {
+          "record_type": "context",
+          "record_id": "context-0001",
+          "record_digest": "sha256:50a378e77f3edc20ccaadf94be4aa2e11d139b46fd02e24ef26bc6836cf75164"
+        },
+        {
+          "record_type": "plan",
+          "record_id": "plan-0001",
+          "record_digest": "sha256:7f0923162a9bdf5e57770802676b83838a8e1c0f82f77872b557773b37357dae"
+        },
+        {
+          "record_type": "proposed_action",
+          "record_id": "action-0001",
+          "record_digest": "sha256:56c9ec2a211aeaa780730a0d7509b80efd7fa10feed17b4940dd220e8c5325d5"
+        },
+        {
+          "record_type": "approval",
+          "record_id": "approval-0001",
+          "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+        },
+        {
+          "record_type": "policy_decision",
+          "record_id": "decision-0001",
+          "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+        },
+        {
+          "record_type": "execution_result",
+          "record_id": "result-0001",
+          "record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23"
+        }
+      ],
+      "details": {
+        "message": "Deterministic dry-run example; no external tool was invoked."
+      },
+      "record_digest": "sha256:df1997656225af8f250fdd5cee5370ac15750f2c8be9864de8bbbf48c4aab0d6"
+    }
+  ]
+}
