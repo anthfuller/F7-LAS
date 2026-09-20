@@ -159,7 +159,7 @@
       "policy_ref": {
         "policy_id": "constraints-default-v1",
         "version": "v1.0",
-        "policy_digest": "sha256:091de3f0a96ec85a610f42456aaba98c8d04e148b9f910c570f96af37795b44d"
+        "policy_digest": "sha256:124eb62fbbf458a189184eafd09156be8bd764f26d65a51b7373db2cc61ce5b8"
       },
       "issued_at": "2026-01-15T12:00:04Z",
       "expires_at": "2026-01-15T12:05:04Z",
@@ -168,7 +168,7 @@
         "environment": "lab",
         "resource_ids": ["workspace-0001"]
       },
-      "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+      "record_digest": "sha256:d4d2019534c49063811ae731618f6bd0134b1dcfa2c951f09226d0817886a68f"
     },
     {
       "schema_version": "1.0.0",
@@ -177,7 +177,7 @@
       "workflow_id": "workflow-0001",
       "sequence": 6,
       "occurred_at": "2026-01-15T12:00:05Z",
-      "previous_record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9",
+      "previous_record_digest": "sha256:d4d2019534c49063811ae731618f6bd0134b1dcfa2c951f09226d0817886a68f",
       "request_ref": {
         "record_id": "request-0001",
         "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
@@ -189,7 +189,7 @@
       },
       "approval_ref": {
         "record_id": "approval-0001",
-        "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+        "record_digest": "sha256:d4d2019534c49063811ae731618f6bd0134b1dcfa2c951f09226d0817886a68f"
       },
       "pdp_id": "opa-pdp-0001",
       "decision": "permit",
@@ -198,10 +198,10 @@
       "policy_ref": {
         "policy_id": "constraints-default-v1",
         "version": "v1.0",
-        "policy_digest": "sha256:091de3f0a96ec85a610f42456aaba98c8d04e148b9f910c570f96af37795b44d"
+        "policy_digest": "sha256:124eb62fbbf458a189184eafd09156be8bd764f26d65a51b7373db2cc61ce5b8"
       },
       "obligations": ["audit-required", "sandbox-required"],
-      "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+      "record_digest": "sha256:0002be93d338e5013290940ac94ba246c2f83ca23200010f10b4efdff9a2d301"
     },
     {
       "schema_version": "1.0.0",
@@ -210,7 +210,7 @@
       "workflow_id": "workflow-0001",
       "sequence": 7,
       "occurred_at": "2026-01-15T12:00:06Z",
-      "previous_record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed",
+      "previous_record_digest": "sha256:0002be93d338e5013290940ac94ba246c2f83ca23200010f10b4efdff9a2d301",
       "request_ref": {
         "record_id": "request-0001",
         "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
@@ -222,7 +222,7 @@
       },
       "decision_ref": {
         "record_id": "decision-0001",
-        "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+        "record_digest": "sha256:0002be93d338e5013290940ac94ba246c2f83ca23200010f10b4efdff9a2d301"
       },
       "execution_environment": {
         "sandbox_id": "sandbox-0001",
@@ -239,7 +239,7 @@
       "output_digest": "sha256:8cd39e51bc8da562bf5a85cb483365d3f9b4b0e8232f5be1c6cbe7b675527ed5",
       "error_code": null,
       "side_effects": [],
-      "record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23"
+      "record_digest": "sha256:396b5feaaa48d651efc0214168fe90801d8ed410f25e104b26f3ce5c5b5aa5bc"
     },
     {
       "schema_version": "1.0.0",
@@ -248,7 +248,7 @@
       "workflow_id": "workflow-0001",
       "sequence": 8,
       "occurred_at": "2026-01-15T12:00:07Z",
-      "previous_record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23",
+      "previous_record_digest": "sha256:396b5feaaa48d651efc0214168fe90801d8ed410f25e104b26f3ce5c5b5aa5bc",
       "request_ref": {
         "record_id": "request-0001",
         "record_digest": "sha256:0fdf37fabbfd4b3364bf8377a83086afb92777126ef193330c6387125b1c1f58"
@@ -288,23 +288,23 @@
         {
           "record_type": "approval",
           "record_id": "approval-0001",
-          "record_digest": "sha256:7b3d00486cac26d09ad41d2f6cfeb1c11ef495bc31ddd6461570ef4aa64347e9"
+          "record_digest": "sha256:d4d2019534c49063811ae731618f6bd0134b1dcfa2c951f09226d0817886a68f"
         },
         {
           "record_type": "policy_decision",
           "record_id": "decision-0001",
-          "record_digest": "sha256:c3d41fd9f3c92bda6f178481428fae51cf1f92704889ce886602e12afe4947ed"
+          "record_digest": "sha256:0002be93d338e5013290940ac94ba246c2f83ca23200010f10b4efdff9a2d301"
         },
         {
           "record_type": "execution_result",
           "record_id": "result-0001",
-          "record_digest": "sha256:acc4aa7d3b41cffc442915e5d6e82c00f5e928872015048192136340cd078b23"
+          "record_digest": "sha256:396b5feaaa48d651efc0214168fe90801d8ed410f25e104b26f3ce5c5b5aa5bc"
         }
       ],
       "details": {
         "message": "Deterministic dry-run example; no external tool was invoked."
       },
-      "record_digest": "sha256:df1997656225af8f250fdd5cee5370ac15750f2c8be9864de8bbbf48c4aab0d6"
+      "record_digest": "sha256:015bd9f3e0011894ef0eaf48b4944f3ca2d971103166aa45dee1f0030199e681"
     }
   ]
 }

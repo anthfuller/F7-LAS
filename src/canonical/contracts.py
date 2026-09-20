@@ -43,3 +43,15 @@ def calculate_action_digest(action: dict[str, Any]) -> str:
 
 def calculate_output_digest(output: dict[str, Any]) -> str:
     return digest_payload("output", output)
+
+
+def calculate_policy_bundle_digest(metadata: dict[str, Any], rego_source: bytes) -> str:
+    """Bind versioned policy metadata to the exact executable Rego bytes."""
+
+    return digest_payload(
+        "policy-bundle",
+        {
+            "metadata": metadata,
+            "rego_sha256": f"sha256:{hashlib.sha256(rego_source).hexdigest()}",
+        },
+    )

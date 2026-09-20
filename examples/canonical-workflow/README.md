@@ -12,9 +12,11 @@ correlated canonical audit records (Layer 7). Layer 6 here is not an OS or
 container sandbox and does not enforce a network-isolation boundary.
 
 The synthetic approval is bound to the exact request and action references and
-digests, complete scope, complete policy reference, approving authority, issue
-time, and expiry. OPA validates the binding before permitting, and the
-in-process executor independently revalidates it at execution time. This is
+digests, complete scope, approving authority, issue time, expiry, and a
+versioned policy-bundle digest covering both policy metadata and the exact Rego
+bytes executed by OPA. The adapter verifies that bundle before invoking OPA,
+and the in-process executor independently revalidates the reference at execution
+time. This is
 deterministic approval evidence for the reference workflow, not an interactive
 human-approval service or identity proofing system.
 
@@ -60,3 +62,47 @@ OPA_BIN=opa pytest -q tests/test_behavioral_scenarios.py
 
 These are deterministic reference-workflow scenarios, not claims of production
 fault injection, infrastructure recovery, or OS/container isolation.
+
+## Evidence integrity
+
+Verify a canonical workflow output independently of the producer:
+
+```bash
+python -m src.canonical.evidence \
+  --evidence /tmp/f7las-canonical-records.json
+```
+
+Verification rejects duplicate JSON keys; schema or cross-record violations;
+broken record chains, references, action/output digests, or policy bindings;
+incomplete or reordered final audit sources; and audit summaries inconsistent
+with the policy decision or execution result. The reported evidence-set digest
+detects later mutation when compared with a previously trusted copy. It is not
+a signature, proof of origin, trusted timestamp, or external attestation; a
+party that can replace both evidence and its expected digest can construct a
+different self-consistent set.
+
+## Deterministic replay
+
+Replay the same admitted input through the canonical workflow and require the
+complete RFC 8785 canonical evidence document to match:
+
+```bash
+python -m src.canonical.replay \
+  --input examples/canonical-workflow/request.json \
+  --evidence /tmp/f7las-canonical-records.json \
+  --output /tmp/f7las-replayed-records.json \
+  --opa-binary opa
+```
+
+Replay first verifies the reviewed evidence, reruns the fixed synthetic action
+and offline policy evaluation, verifies the new evidence, and then compares the
+complete canonical documents. A reproduced denial is a successful replay; it
+does not become an allow decision. Exit status `4` indicates invalid evidence
+or a replay mismatch. The output path may not overwrite the input or reviewed
+evidence.
+
+Replay covers this deterministic, side-effect-free reference workflow only. It
+does not reproduce external systems, network calls, operating-system state,
+human identity proofing, or real-world side effects. Reproduction requires the
+reviewed input, repository policy identified by its digest, compatible Python
+dependencies, and the pinned OPA behavior.

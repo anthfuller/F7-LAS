@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -19,7 +18,6 @@ from .opa import OfflineOPA
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_POLICY_PATH = REPO_ROOT / "config" / "policies" / "canonical-workflow.rego"
-POLICY_DOCUMENT_PATH = REPO_ROOT / "config" / "policies" / "policy-constraints-default.json"
 EXPECTED_MISSION = "Evaluate synthetic lab workspace health."
 EXPECTED_REQUESTER = {
     "subject_id": "operator-0001",
@@ -94,15 +92,8 @@ class CanonicalWorkflow:
             raise WorkflowError("started_at must be whole-second RFC 3339 UTC") from exc
         return started_at.replace(tzinfo=timezone.utc)
 
-    @staticmethod
-    def _policy_ref() -> dict[str, str]:
-        with POLICY_DOCUMENT_PATH.open("r", encoding="utf-8") as handle:
-            document = json.load(handle)
-        return {
-            "policy_id": document["policy_id"],
-            "version": document["version"],
-            "policy_digest": digest_payload("policy", document),
-        }
+    def _policy_ref(self) -> dict[str, str]:
+        return self.opa.policy_ref()
 
     @staticmethod
     def _finalize(
@@ -154,7 +145,7 @@ class CanonicalWorkflow:
             or approval["issued_at"] != approval["occurred_at"]
             or approval["authority"] != EXPECTED_APPROVER
             or approval["approved_scope"] != action["target"]
-            or approval["policy_ref"] != CanonicalWorkflow._policy_ref()
+            or approval["policy_ref"] != OfflineOPA("opa", DEFAULT_POLICY_PATH).policy_ref()
             or approval["policy_ref"] != decision["policy_ref"]
             or decision["request_ref"] != _reference(request)
             or decision["approval_ref"] != _reference(approval)

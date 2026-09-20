@@ -140,7 +140,30 @@ def test_real_opa_policy_denies_invalid_approval_binding(path, value):
     result = OfflineOPA(OPA_BINARY, DEFAULT_POLICY_PATH).evaluate(policy_input)
 
     assert result["decision"] == "deny"
-    assert result["reason_code"] == "policy-denied"
+    expected_reason = (
+        "pdp-policy-bundle-mismatch"
+        if path == ("approval", "policy_ref", "version")
+        else "policy-denied"
+    )
+    assert result["reason_code"] == expected_reason
+
+
+def test_opa_rejects_modified_rego_before_subprocess(tmp_path, monkeypatch):
+    modified_policy = tmp_path / "modified.rego"
+    modified_policy.write_bytes(DEFAULT_POLICY_PATH.read_bytes() + b"\n# substituted policy\n")
+    monkeypatch.setattr(
+        subprocess,
+        "run",
+        lambda *args, **kwargs: pytest.fail("OPA executed before bundle verification"),
+    )
+
+    result = OfflineOPA("opa", modified_policy).evaluate(capture_policy_input())
+
+    assert result == {
+        "decision": "deny",
+        "reason_code": "pdp-policy-bundle-mismatch",
+        "obligations": ["audit-required"],
+    }
 
 
 @pytest.mark.skipif(OPA_BINARY is None, reason="OPA CLI is not installed")
@@ -348,7 +371,7 @@ def test_malformed_opa_response_fails_closed(monkeypatch):
     completed = subprocess.CompletedProcess(args=["opa"], returncode=0, stdout="{}", stderr="")
     monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: completed)
 
-    result = OfflineOPA("opa", DEFAULT_POLICY_PATH).evaluate({})
+    result = OfflineOPA("opa", DEFAULT_POLICY_PATH).evaluate(capture_policy_input())
 
     assert result == {
         "decision": "deny",
@@ -361,7 +384,7 @@ def test_opa_evaluation_error_fails_closed(monkeypatch):
     completed = subprocess.CompletedProcess(args=["opa"], returncode=2, stdout="", stderr="bad policy")
     monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: completed)
 
-    result = OfflineOPA("opa", DEFAULT_POLICY_PATH).evaluate({})
+    result = OfflineOPA("opa", DEFAULT_POLICY_PATH).evaluate(capture_policy_input())
 
     assert result["decision"] == "deny"
     assert result["reason_code"] == "pdp-evaluation-failed"
