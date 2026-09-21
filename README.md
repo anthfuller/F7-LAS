@@ -103,7 +103,7 @@ These commands validate the **current prototype and repository structure**. They
 - [Clean-user acceptance](docs/clean-user-acceptance.md)
 - [Architecture diagrams](docs/architecture-diagrams.md)
 - [Control-to-evidence traceability](config/control-traceability.json)
-- [4.0.0 release-candidate notes](RELEASE_NOTES.md)
+- [v4.0.0 release notes](RELEASE_NOTES.md)
 - [Release and exact-tag SBOM procedure](docs/release-process.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)

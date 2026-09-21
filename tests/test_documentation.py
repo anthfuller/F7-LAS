@@ -104,6 +104,23 @@ def test_whitepaper_publication_metadata_is_locked() -> None:
     )
 
 
+@pytest.mark.parametrize(
+    "stale_assertion",
+    [
+        "Repository version 4.0.0 is an unpublished release candidate.",
+        "Version 4.0.0 is not tagged or published.",
+        "The whitepaper remains v3.0.",
+    ],
+)
+def test_stale_current_status_assertions_are_rejected(
+    stale_assertion: str,
+) -> None:
+    with pytest.raises(
+        MODULE.DocumentationError, match="stale current-status assertion"
+    ):
+        MODULE.validate_no_stale_status(Path("README.md"), stale_assertion)
+
+
 def test_docx_whitepaper_is_rejected(tmp_path: Path) -> None:
     docs = tmp_path / "docs"
     whitepaper = docs / "whitepaper"

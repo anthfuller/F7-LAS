@@ -4,9 +4,9 @@
 
 F7-LAS is an established seven-layer reference model with a **prototype reference implementation**. The repository is not Beta and is not production-ready. The canonical Python + OPA workflow demonstrates one bounded, synthetic runtime control path; the broader repository remains illustrative and incomplete.
 
-## Approved target
+## Delivered target
 
-The target is an **Executable Reference Implementation**: one offline, deterministic Python + OPA workflow that demonstrates bounded behavior and correlated evidence across Layers 1–7. It will remain a reference implementation, not a production agent platform.
+The delivered **Executable Reference Implementation** provides one offline, deterministic Python + OPA workflow that demonstrates bounded behavior and correlated evidence across Layers 1–7. It remains a reference implementation, not a production agent platform.
 
 ## Milestones
 
@@ -23,7 +23,14 @@ The target is an **Executable Reference Implementation**: one offline, determini
 
 ## Release boundary
 
-Repository version **4.0.0** is prepared as an unpublished release candidate. The whitepaper remains **v3.0** until it is separately reviewed and revised. No milestone authorizes a merge to `main`, a tag, a release, or a Zenodo update without explicit approval. See [RELEASE_NOTES.md](RELEASE_NOTES.md) and the [release process](docs/release-process.md).
+Repository release **v4.0.0** is tagged and published from immutable commit
+`d6a413b878393d98cc2fb2581678f05801767134`. Whitepaper **v4.0** was reviewed
+and published separately at
+[10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553), then added
+to the repository after the `v4.0.0` tag. It is not part of that immutable
+repository release. Whitepaper v3.0 remains preserved as a historical
+artifact. See [RELEASE_NOTES.md](RELEASE_NOTES.md) and the
+[release process](docs/release-process.md).
 
 ## Completion standard
 

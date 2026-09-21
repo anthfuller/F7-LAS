@@ -70,6 +70,31 @@ RETIRED_PLACEHOLDERS = {
     Path("src/core/placeholder"),
     Path("src/tools/placeholder"),
 }
+CURRENT_STATUS_DOCUMENTS = {
+    Path("README.md"),
+    Path("RELEASE_NOTES.md"),
+    Path("ROADMAP.md"),
+    Path("docs/README.md"),
+    Path("docs/F7-LAS-QA.md"),
+    Path("docs/architecture-diagrams.md"),
+    Path("docs/corrections/whitepaper-v3.0-errata.md"),
+    Path("docs/f7-las-implementation-guide/README.md"),
+}
+STALE_STATUS_PATTERNS = {
+    "unpublished release candidate": re.compile(
+        r"unpublished\s+release[- ]candidate", re.IGNORECASE
+    ),
+    "not tagged or published": re.compile(
+        r"not\s+tagged\s+or\s+published", re.IGNORECASE
+    ),
+    "whitepaper remains v3.0": re.compile(
+        r"whitepaper\s+remains\s+(?:\*\*)?v3\.0", re.IGNORECASE
+    ),
+    "repository release candidate 4.0.0": re.compile(
+        r"repository\s+release[- ]candidate\s+(?:\*\*)?4\.0\.0",
+        re.IGNORECASE,
+    ),
+}
 
 
 class DocumentationError(ValueError):
@@ -269,7 +294,15 @@ def validate_whitepapers(root: Path) -> None:
         )
 
 
-def validate_release_candidate(root: Path) -> None:
+def validate_no_stale_status(relative: Path, text: str) -> None:
+    for label, pattern in STALE_STATUS_PATTERNS.items():
+        if pattern.search(text):
+            raise DocumentationError(
+                f"{relative} contains stale current-status assertion: {label}"
+            )
+
+
+def validate_release_status(root: Path) -> None:
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
     if version != EXPECTED_RELEASE_VERSION:
         raise DocumentationError(
@@ -277,8 +310,14 @@ def validate_release_candidate(root: Path) -> None:
         )
     required_version_documents = {
         Path("README.md"): "repository release **v4.0.0**",
-        Path("RELEASE_NOTES.md"): "Prepared but not tagged or published",
-        Path("ROADMAP.md"): "unpublished release candidate",
+        Path("RELEASE_NOTES.md"): "Published as the",
+        Path("ROADMAP.md"): "tagged and published",
+        Path("docs/F7-LAS-QA.md"): (
+            "prototype published in tagged repository release v4.0.0"
+        ),
+        Path("docs/f7-las-implementation-guide/README.md"): (
+            "bundled with repository release v4.0.0"
+        ),
         Path("docs/release-process.md"): "v4.0.0",
     }
     for relative, boundary in required_version_documents.items():
@@ -287,6 +326,23 @@ def validate_release_candidate(root: Path) -> None:
             raise DocumentationError(
                 f"{relative} does not state the {EXPECTED_RELEASE_VERSION} release boundary"
             )
+
+    release_notes = (root / "RELEASE_NOTES.md").read_text(encoding="utf-8")
+    for boundary in (
+        "Whitepaper v4.0 was published separately",
+        "not part of the immutable",
+        "The tag retains Whitepaper v3.0 as a historical artifact",
+    ):
+        if boundary not in release_notes:
+            raise DocumentationError(
+                f"RELEASE_NOTES.md is missing whitepaper/release separation: {boundary}"
+            )
+
+    for relative in CURRENT_STATUS_DOCUMENTS:
+        validate_no_stale_status(
+            relative, (root / relative).read_text(encoding="utf-8")
+        )
+
     for relative in RETIRED_PLACEHOLDERS:
         if (root / relative).exists():
             raise DocumentationError(f"retired placeholder returned: {relative}")
@@ -305,7 +361,7 @@ def validate_repository(root: Path = ROOT) -> None:
 
     validate_diagrams(root)
     validate_whitepapers(root)
-    validate_release_candidate(root)
+    validate_release_status(root)
 
     illustrative_opa = (
         root / "examples" / "layer5-policy-engines" / "opa-rego" / "README.md"

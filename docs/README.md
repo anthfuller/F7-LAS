@@ -11,7 +11,7 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
   repository integrity record for the published PDF.
 - [Whitepaper v3.0](F7-LAS-model-whitepaper_v3.0.pdf) — immutable historical publication.
 - [Whitepaper artifact record](whitepaper-v3.0-artifact.md) — integrity identifiers and handling rule.
-- [Whitepaper v3.0 errata](corrections/whitepaper-v3.0-errata.md) — corrections proposed for a future reviewed edition; does not alter the PDF.
+- [Historical Whitepaper v3.0 correction record](corrections/whitepaper-v3.0-errata.md): areas addressed or superseded by Whitepaper v4.0; does not alter the historical PDF.
 - [Implementation guide](f7-las-implementation-guide/README.md): draft engineering guidance bundled with repository release v4.0.0.
 - [Control catalog v0.1](F7-LAS-Control-Catalog-v0.1.md) — 46 core Layers 1–7 controls plus five supplemental Layer S controls; all remain draft controls in this repository.
 - [Engineering review checklist](Engineering-Review-Checklist.md) — design-review aid.

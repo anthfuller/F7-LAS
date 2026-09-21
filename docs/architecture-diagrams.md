@@ -77,5 +77,5 @@ F7-LAS trademark rights or imply endorsement.
 
 Legacy draft graphics were removed from the current documentation set because
 they contained ambiguous execution routing, private-reasoning terminology, or
-unsupported active-remediation claims. The immutable whitepaper PDF was not
-modified.
+unsupported active-remediation claims. The historical Whitepaper v3.0 PDF
+remains unchanged.

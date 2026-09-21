@@ -1,13 +1,19 @@
-# F7-LAS 4.0.0 Release Candidate
+# F7-LAS v4.0.0 Repository Release
 
-**Status:** Prepared but not tagged or published. This document does not
-authorize a GitHub release, Zenodo update, or change to the historical
-whitepaper.
+**Status:** Published as the
+[v4.0.0 GitHub repository release](https://github.com/anthfuller/F7-LAS/releases/tag/v4.0.0).
+The annotated tag targets commit
+`d6a413b878393d98cc2fb2581678f05801767134`.
 
-F7-LAS 4.0.0 is the intended repository release for the evidence-driven
+F7-LAS v4.0.0 is the published repository release for the evidence-driven
 overhaul. It packages the established seven-layer reference model with one
 bounded, deterministic, synthetic Python + OPA reference workflow. It remains
 a prototype reference implementation, not a production agent platform.
+
+Whitepaper v4.0 was published separately at
+[10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553) and added to
+the repository after the `v4.0.0` release. It is not part of the immutable
+`v4.0.0` tag. The tag retains Whitepaper v3.0 as a historical artifact.
 
 ## Release contents
 
@@ -36,22 +42,20 @@ a prototype reference implementation, not a production agent platform.
 - Evidence is digest-bound but not digitally signed, externally timestamped,
   or backed by a provenance service.
 - The control catalog and implementation guide remain draft authored content;
-  repository version 4.0.0 does not silently revise their independent versions
-  or the immutable whitepaper v3.0.
+  repository release v4.0.0 does not silently revise their independent
+  versions or either whitepaper publication.
 
-## Required publication gate
+## Publication verification
 
-Publication requires all of the following after the release-candidate branch
-is independently reviewed:
+The repository release completed the reviewed publication process:
 
-1. merge the exact approved tree through a protected pull request;
-2. verify the push-triggered `main` workflow against the resulting merge SHA;
-3. create `v4.0.0` at that exact approved `main` SHA without additional files;
-4. verify the tag-triggered workflow and its complete validation job;
-5. download the CycloneDX artifact produced by that tag run, verify its run,
-   commit, name, and digest, and attach it unchanged to the GitHub release;
-6. publish these notes only after the release assets and target SHA are
-   independently verified.
+1. the exact approved tree was merged through a protected pull request;
+2. the push-triggered `main` workflow passed against the merge commit;
+3. the annotated `v4.0.0` tag was created at the exact approved commit;
+4. the tag-triggered workflow passed all validation steps;
+5. the exact-tag CycloneDX SBOM and checksum manifest were verified and
+   attached unchanged to the GitHub release;
+6. the GitHub release was published from the existing immutable tag.
 
 The detailed procedure is in
 [`docs/release-process.md`](docs/release-process.md).
