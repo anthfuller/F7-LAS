@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
 from pathlib import Path
@@ -15,8 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 PIN_RE = re.compile(r"^([A-Za-z0-9_.-]+)==([^\s;\\]+)")
 HASH_RE = re.compile(r"--hash=sha256:[0-9a-f]{64}(?:\s|$)")
 ACTION_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?@[0-9a-f]{40}$")
+DOCKER_DIGEST_RE = re.compile(r"^docker://[^@\s]+@sha256:[0-9a-f]{64}$")
 VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+CFF_SCHEMA_PATH = Path("schemas/cff/cff-1.2.0.schema.json")
+CFF_SCHEMA_SHA256 = "0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b"
 
 
 class SupplyChainError(ValueError):
@@ -72,9 +76,10 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
 
     if "pull_request_target" in raw_text:
         raise SupplyChainError("pull_request_target is not allowed")
+    if "citation-file-format/cffconvert-github-action@" in raw_text:
+        raise SupplyChainError("CFF Action wrapper hides a mutable tag-only container")
     if data.get("permissions") != {"contents": "read"}:
         raise SupplyChainError("workflow permissions must be exactly contents: read")
-
     jobs = data.get("jobs")
     if not isinstance(jobs, dict) or not jobs:
         raise SupplyChainError("workflow has no jobs")
@@ -89,7 +94,9 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
             action = step.get("uses")
             if action and not str(action).startswith("./"):
                 action_ref = str(action)
-                if not ACTION_RE.fullmatch(action_ref):
+                if action_ref.startswith("docker://"):
+                    validate_docker_reference(action_ref)
+                elif not ACTION_RE.fullmatch(action_ref):
                     raise SupplyChainError(
                         f"external action is not pinned to a full SHA: {action_ref}"
                     )
@@ -123,6 +130,32 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
         raise SupplyChainError("pinned actions/checkout step not found")
     if not python_found:
         raise SupplyChainError("pinned actions/setup-python step not found")
+    for required_command in (
+        "python scripts/validate-citation.py",
+        "python scripts/validate-control-traceability.py",
+    ):
+        if required_command not in raw_text:
+            raise SupplyChainError(f"workflow is missing required validation: {required_command}")
+
+    push = data.get("on", {}).get("push", {})
+    if push.get("tags") != ["v*"]:
+        raise SupplyChainError("workflow must validate version tags matching v*")
+
+
+def validate_docker_reference(reference: str) -> None:
+    if not DOCKER_DIGEST_RE.fullmatch(reference):
+        raise SupplyChainError(
+            f"Docker action must use an exact SHA-256 image digest: {reference}"
+        )
+
+
+def validate_cff_schema_artifact(root: Path = ROOT) -> None:
+    path = root / CFF_SCHEMA_PATH
+    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    if actual != CFF_SCHEMA_SHA256:
+        raise SupplyChainError(
+            f"official CFF schema digest mismatch: expected {CFF_SCHEMA_SHA256}, found {actual}"
+        )
 
 
 def validate_dependabot(data: dict[str, Any]) -> None:
@@ -138,6 +171,7 @@ def validate_dependabot(data: dict[str, Any]) -> None:
 
 
 def validate_repository(root: Path = ROOT) -> None:
+    validate_cff_schema_artifact(root)
     requirements = validate_pinned_requirements(
         (root / "requirements.txt").read_text(encoding="utf-8"),
         require_hashes=False,

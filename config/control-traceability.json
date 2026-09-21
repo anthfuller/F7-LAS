@@ -1,0 +1,426 @@
+{
+  "schema_version": "1.0.0",
+  "catalog": {
+    "path": "docs/F7-LAS-Control-Catalog-v0.1.md",
+    "version": "0.1"
+  },
+  "scope": "Repository implementation status for the bounded synthetic F7-LAS reference workflow; this is not an assessment of any production deployment.",
+  "summary": {
+    "total": 51,
+    "core_layers_1_7": 46,
+    "supplemental_layer_s": 5,
+    "implemented": 6,
+    "partial": 29,
+    "not_implemented": 16
+  },
+  "controls": [
+    {
+      "control_id": "F7-L1-01",
+      "domain": "L1",
+      "title": "Prompt Version Control",
+      "status": "partial",
+      "limitations": "Prompt files are versioned in Git, but the repository is not a production prompt store and branch protection is a separate repository setting.",
+      "evidence": [{"kind": "configuration", "path": "config/prompts/system-prompt-v1.txt", "locator": "PSP-Version:"}]
+    },
+    {
+      "control_id": "F7-L1-02",
+      "domain": "L1",
+      "title": "Role & Scope Definition",
+      "status": "partial",
+      "limitations": "Structured role and scope placeholders exist, while the canonical workflow admits only one fixed synthetic actor and scope.",
+      "evidence": [{"kind": "configuration", "path": "config/prompts/system-prompt-v1.txt", "locator": "[ROLE]"}]
+    },
+    {
+      "control_id": "F7-L1-03",
+      "domain": "L1",
+      "title": "Prohibited Actions",
+      "status": "partial",
+      "limitations": "Prompt prohibitions are present as soft-policy templates; hard enforcement is demonstrated only for the fixed canonical action.",
+      "evidence": [{"kind": "configuration", "path": "config/prompts/system-prompt-v1.txt", "locator": "[PROHIBITED ACTIONS]"}]
+    },
+    {
+      "control_id": "F7-L1-04",
+      "domain": "L1",
+      "title": "Abstain & Escalate Behavior",
+      "status": "partial",
+      "limitations": "Escalation rules are represented in prompt templates, but no interactive agent or human escalation service is implemented.",
+      "evidence": [{"kind": "configuration", "path": "config/prompts/system-prompt-v1.txt", "locator": "[ESCALATION RULES]"}]
+    },
+    {
+      "control_id": "F7-L1-05",
+      "domain": "L1",
+      "title": "Prompt Change Control",
+      "status": "partial",
+      "limitations": "CI validates prompt structure, but production approval records and enforced repository protection remain outside the codebase.",
+      "evidence": [{"kind": "workflow", "path": ".github/workflows/f7las-ci.yml", "locator": "Validate prompts"}]
+    },
+    {
+      "control_id": "F7-L1-06",
+      "domain": "L1",
+      "title": "Prompt Security Testing",
+      "status": "not_implemented",
+      "limitations": "The repository has structural prompt validation but no periodic prompt-injection or jailbreak test program and findings workflow.",
+      "evidence": [{"kind": "documentation", "path": "examples/README.md", "locator": "illustrative prototype demonstrations"}]
+    },
+    {
+      "control_id": "F7-L2-01",
+      "domain": "L2",
+      "title": "RAG Source Inventory",
+      "status": "partial",
+      "limitations": "An illustrative source allowlist exists without owners, classifications, lifecycle governance, or a deployed retrieval inventory.",
+      "evidence": [{"kind": "configuration", "path": "examples/layer2-grounding/allowlist.json", "locator": "allowed_sources"}]
+    },
+    {
+      "control_id": "F7-L2-02",
+      "domain": "L2",
+      "title": "Access-Controlled RAG Gateway",
+      "status": "not_implemented",
+      "limitations": "No authenticated retrieval gateway, rate limiting, deployed source authorization, or retrieval-call logging is provided.",
+      "evidence": [{"kind": "documentation", "path": "examples/README.md", "locator": "not production implementations"}]
+    },
+    {
+      "control_id": "F7-L2-03",
+      "domain": "L2",
+      "title": "Curation & Retirement Process",
+      "status": "not_implemented",
+      "limitations": "No operational content-owner approval, scheduled review, update, or retirement workflow is implemented.",
+      "evidence": [{"kind": "documentation", "path": "docs/F7-LAS-QA.md", "locator": "not a production agent platform"}]
+    },
+    {
+      "control_id": "F7-L2-04",
+      "domain": "L2",
+      "title": "Poisoning Defenses",
+      "status": "not_implemented",
+      "limitations": "No deployed ingestion pipeline, restricted authorship mechanism, poisoning detector, or high-impact content review is implemented.",
+      "evidence": [{"kind": "documentation", "path": "docs/F7-LAS-QA.md", "locator": "not a production agent platform"}]
+    },
+    {
+      "control_id": "F7-L2-05",
+      "domain": "L2",
+      "title": "Treat Retrieved Content as Untrusted",
+      "status": "partial",
+      "limitations": "The canonical path records fixed synthetic evidence and never executes retrieved text, but it does not implement a live RAG pipeline.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "synthetic-inventory"}]
+    },
+    {
+      "control_id": "F7-L2-06",
+      "domain": "L2",
+      "title": "RAG Injection Testing",
+      "status": "not_implemented",
+      "limitations": "There is no adversarial retrieval index or automated retrieved-content injection evaluation in the supported workflow.",
+      "evidence": [{"kind": "documentation", "path": "examples/README.md", "locator": "illustrative prototype demonstrations"}]
+    },
+    {
+      "control_id": "F7-L3-01",
+      "domain": "L3",
+      "title": "Planner Identification",
+      "status": "partial",
+      "limitations": "The canonical deterministic planner is explicitly identified, but the illustrative planners are not a deployed orchestration architecture.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "deterministic-planner"}]
+    },
+    {
+      "control_id": "F7-L3-02",
+      "domain": "L3",
+      "title": "Planning Contracts",
+      "status": "partial",
+      "limitations": "The canonical plan has fixed action, step, and duration limits, but it is not a general per-agent contract with a configurable allowed-tool set.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "\"limits\": {\"max_steps\""}]
+    },
+    {
+      "control_id": "F7-L3-03",
+      "domain": "L3",
+      "title": "Bounded Reason–Act Loops",
+      "status": "partial",
+      "limitations": "The canonical path is structurally fixed to one step and one action; it does not implement a reusable loop counter, recursion limit, or runtime wall-clock controller.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "\"max_actions\": 1"}]
+    },
+    {
+      "control_id": "F7-L3-04",
+      "domain": "L3",
+      "title": "Explicit Stop Conditions",
+      "status": "partial",
+      "limitations": "Permit, denial, refusal, failure, and recovery outcomes are tested, but no general planner state machine records all catalog stop conditions.",
+      "evidence": [{"kind": "test", "path": "tests/behavioral_scenarios.json", "locator": "recovery"}]
+    },
+    {
+      "control_id": "F7-L3-05",
+      "domain": "L3",
+      "title": "Delegation Rules for Multi-Agent",
+      "status": "not_implemented",
+      "limitations": "The supported canonical workflow uses one fixed synthetic actor and contains no multi-agent delegation runtime or enforced call graph.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "single canonical executable path"}]
+    },
+    {
+      "control_id": "F7-L3-06",
+      "domain": "L3",
+      "title": "Planner Telemetry",
+      "status": "partial",
+      "limitations": "Plan and audit records preserve the deterministic planner output, but there is no production telemetry sink, dashboard, or retention control.",
+      "evidence": [{"kind": "schema", "path": "schemas/contracts/f7las-records-v1.schema.json", "locator": "\"plan\""}]
+    },
+    {
+      "control_id": "F7-L3-07",
+      "domain": "L3",
+      "title": "Goal/Role Drift Testing",
+      "status": "not_implemented",
+      "limitations": "The behavioral matrix covers fixed admission and authorization failures but does not provide a goal- or role-drift evaluation suite.",
+      "evidence": [{"kind": "documentation", "path": "docs/F7-LAS-QA.md", "locator": "golden-dataset evaluator"}]
+    },
+    {
+      "control_id": "F7-L4-01",
+      "domain": "L4",
+      "title": "Tool Catalog",
+      "status": "partial",
+      "limitations": "A validated illustrative allowlist records owners and risk tiers, while the canonical runtime registers only one fixed synthetic tool.",
+      "evidence": [{"kind": "configuration", "path": "config/tools/allowlist.json", "locator": "\"tools\""}]
+    },
+    {
+      "control_id": "F7-L4-02",
+      "domain": "L4",
+      "title": "Tool Risk Tiering",
+      "status": "partial",
+      "limitations": "Risk tiers are present in the illustrative allowlist and canonical action, but no general runtime routes all tools according to tier.",
+      "evidence": [{"kind": "configuration", "path": "config/tools/allowlist.json", "locator": "risk_tier"}]
+    },
+    {
+      "control_id": "F7-L4-03",
+      "domain": "L4",
+      "title": "Read/Write Separation",
+      "status": "partial",
+      "limitations": "The only canonical operation is a synthetic read, but distinct read and write identities or execution environments are not implemented.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "EXPECTED_OPERATION = \"workspace-health\""}]
+    },
+    {
+      "control_id": "F7-L4-04",
+      "domain": "L4",
+      "title": "Least-Privilege Tool Permissions",
+      "status": "not_implemented",
+      "limitations": "The offline synthetic executor has no external credential or IAM role, so real least-privilege permissions are not provisioned or reviewed.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "does not call an LLM"}]
+    },
+    {
+      "control_id": "F7-L4-05",
+      "domain": "L4",
+      "title": "Agent-to-Tool Access Control",
+      "status": "partial",
+      "limitations": "The canonical policy binds one actor to one exact tool action, but there is no configurable multi-agent tool entitlement service.",
+      "evidence": [{"kind": "configuration", "path": "config/policies/canonical-workflow.rego", "locator": "input.action.actor_id == input.actor.subject_id"}]
+    },
+    {
+      "control_id": "F7-L4-06",
+      "domain": "L4",
+      "title": "Tool Argument Validation",
+      "status": "implemented",
+      "limitations": "Implemented for the single canonical synthetic action only; it is not a generic validation service for illustrative tools.",
+      "evidence": [{"kind": "test", "path": "tests/test_canonical_workflow.py", "locator": "test_real_opa_policy_binds_arguments_and_action_digest"}]
+    },
+    {
+      "control_id": "F7-L4-07",
+      "domain": "L4",
+      "title": "Tool Call Telemetry",
+      "status": "partial",
+      "limitations": "Canonical proposed-action, result, and audit records are correlated, but no deployed telemetry pipeline or sanitization service exists.",
+      "evidence": [{"kind": "schema", "path": "schemas/contracts/f7las-records-v1.schema.json", "locator": "proposed_action"}]
+    },
+    {
+      "control_id": "F7-L4-08",
+      "domain": "L4",
+      "title": "HITL for Tier-3 Tools",
+      "status": "partial",
+      "limitations": "The allowlist represents a high-risk tool requiring HITL and the canonical path enforces synthetic approval, but no Tier-3 tool or live human workflow executes.",
+      "evidence": [{"kind": "configuration", "path": "config/tools/allowlist.json", "locator": "\"requires_hitl\": true"}]
+    },
+    {
+      "control_id": "F7-L5-01",
+      "domain": "L5",
+      "title": "External PDP/PEP Architecture",
+      "status": "implemented",
+      "limitations": "Implemented for one offline OPA decision and in-process PEP path; no network PDP service or production tool gateway is claimed.",
+      "evidence": [{"kind": "test", "path": "tests/test_canonical_workflow.py", "locator": "test_real_opa_path_is_deterministic_permitted_and_contract_valid"}]
+    },
+    {
+      "control_id": "F7-L5-02",
+      "domain": "L5",
+      "title": "Policy-as-Code",
+      "status": "implemented",
+      "limitations": "Implemented for the canonical Rego and reviewed policy metadata; other policy-engine examples remain illustrative.",
+      "evidence": [{"kind": "configuration", "path": "config/policies/canonical-workflow.rego", "locator": "package f7las.canonical"}]
+    },
+    {
+      "control_id": "F7-L5-03",
+      "domain": "L5",
+      "title": "Decision Outcomes",
+      "status": "partial",
+      "limitations": "The canonical PDP emits permit or deny with obligations; clarify and human referral are architecture outcomes rather than executable PDP results.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/opa.py", "locator": "result[\"decision\"] not in {\"permit\", \"deny\"}"}]
+    },
+    {
+      "control_id": "F7-L5-04",
+      "domain": "L5",
+      "title": "Tiered Policy Enforcement",
+      "status": "partial",
+      "limitations": "One fixed action always passes through OPA, but general Tier-2 and Tier-3 routing and differentiated obligations are not implemented.",
+      "evidence": [{"kind": "configuration", "path": "config/policies/canonical-workflow.rego", "locator": "input.action.risk_tier == \"low\""}]
+    },
+    {
+      "control_id": "F7-L5-05",
+      "domain": "L5",
+      "title": "Policy Change Management",
+      "status": "partial",
+      "limitations": "CI validates policy changes, while production deployment approval and enforced branch review are repository-administration responsibilities.",
+      "evidence": [{"kind": "workflow", "path": ".github/workflows/f7las-ci.yml", "locator": "Validate policies"}]
+    },
+    {
+      "control_id": "F7-L5-06",
+      "domain": "L5",
+      "title": "PDP/PEP Telemetry",
+      "status": "partial",
+      "limitations": "Policy decisions and execution results are correlated in local evidence, but no centralized production audit or incident-response ingestion exists.",
+      "evidence": [{"kind": "schema", "path": "schemas/contracts/f7las-records-v1.schema.json", "locator": "policy_decision"}]
+    },
+    {
+      "control_id": "F7-L6-01",
+      "domain": "L6",
+      "title": "Segmented Runtime Environment",
+      "status": "not_implemented",
+      "limitations": "Layer 6 is a synthetic in-process executor and provides no separate tenant, account, VM, container, or production segmentation boundary.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "Layer 6 here is not"}]
+    },
+    {
+      "control_id": "F7-L6-02",
+      "domain": "L6",
+      "title": "Network Egress Controls",
+      "status": "not_implemented",
+      "limitations": "The canonical action makes no network call, but no firewall, VNET, VPC, proxy, or enforced egress allowlist is deployed.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "does not enforce a network-isolation boundary"}]
+    },
+    {
+      "control_id": "F7-L6-03",
+      "domain": "L6",
+      "title": "Environment Separation (Read vs Remediate)",
+      "status": "not_implemented",
+      "limitations": "Only a read-only synthetic action exists; there is no separate write-capable remediation environment or identity boundary.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "single canonical executable path"}]
+    },
+    {
+      "control_id": "F7-L6-04",
+      "domain": "L6",
+      "title": "Identity Per Agent / Sandbox",
+      "status": "not_implemented",
+      "limitations": "Synthetic subject identifiers are evidence fields, not provisioned identities, credentials, or sandbox-specific roles.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "identity proofing system"}]
+    },
+    {
+      "control_id": "F7-L6-05",
+      "domain": "L6",
+      "title": "Sandbox Profile Definitions",
+      "status": "partial",
+      "limitations": "A profile configuration and deterministic profile digest exist, but OS, resource, filesystem, and network restrictions are not enforced by the in-process executor.",
+      "evidence": [{"kind": "configuration", "path": "config/policies/sandbox-profile.yaml", "locator": "egress_controls"}]
+    },
+    {
+      "control_id": "F7-L6-06",
+      "domain": "L6",
+      "title": "Ephemeral Sandboxes",
+      "status": "not_implemented",
+      "limitations": "No sandbox is created or destroyed; execution occurs in the current Python process using synthetic data.",
+      "evidence": [{"kind": "documentation", "path": "examples/canonical-workflow/README.md", "locator": "synthetic in-process executor"}]
+    },
+    {
+      "control_id": "F7-L6-07",
+      "domain": "L6",
+      "title": "Blast Radius Statement",
+      "status": "partial",
+      "limitations": "The canonical boundary documents no network or external side effects, but there is no deployment-specific risk acceptance or owner sign-off.",
+      "evidence": [{"kind": "implementation", "path": "src/canonical/workflow.py", "locator": "\"side_effects\": []"}]
+    },
+    {
+      "control_id": "F7-L7-01",
+      "domain": "L7",
+      "title": "Unified Telemetry Schema",
+      "status": "partial",
+      "limitations": "Eight canonical record schemas correlate the supported workflow, but they do not cover every production event type listed by the catalog.",
+      "evidence": [{"kind": "schema", "path": "schemas/contracts/README.md", "locator": "defines eight record types"}]
+    },
+    {
+      "control_id": "F7-L7-02",
+      "domain": "L7",
+      "title": "Central Telemetry Ingestion",
+      "status": "not_implemented",
+      "limitations": "Evidence is written to a local JSON file and is not sent to a SIEM, XDR, log pipeline, or centralized monitoring service.",
+      "evidence": [{"kind": "documentation", "path": "examples/layer7-monitoring/README.md", "locator": "not a full observability pipeline"}]
+    },
+    {
+      "control_id": "F7-L7-03",
+      "domain": "L7",
+      "title": "Detection Rules for Agent Misuse",
+      "status": "not_implemented",
+      "limitations": "No deployable misuse detections, alert rules, correlated incident logic, or alert-history evidence is included.",
+      "evidence": [{"kind": "documentation", "path": "examples/layer7-monitoring/README.md", "locator": "A production implementation would require"}]
+    },
+    {
+      "control_id": "F7-L7-04",
+      "domain": "L7",
+      "title": "Golden Dataset Evaluation",
+      "status": "partial",
+      "limitations": "CI enforces structural golden thresholds, but the runner does not execute the scenarios against the canonical workflow or score behavioral outcomes.",
+      "evidence": [{"kind": "implementation", "path": "src/demo_runner/run_golden_dataset.py", "locator": "structural-v1"}]
+    },
+    {
+      "control_id": "F7-L7-05",
+      "domain": "L7",
+      "title": "Red-Team & Adversarial Testing",
+      "status": "partial",
+      "limitations": "Negative behavioral tests cover authorization and tampering paths, but there is no periodic prompt, RAG, tool, or sandbox red-team exercise.",
+      "evidence": [{"kind": "test", "path": "tests/behavioral_scenarios.json", "locator": "tampered"}]
+    },
+    {
+      "control_id": "F7-L7-06",
+      "domain": "L7",
+      "title": "SLOs for Agent Safety",
+      "status": "not_implemented",
+      "limitations": "Draft SLO examples exist without measured service telemetry, owners, alert thresholds, review records, or an operating service.",
+      "evidence": [{"kind": "documentation", "path": "docs/f7-las-implementation-guide/05-metrics-and-slos.md", "locator": "Key SLOs"}]
+    },
+    {
+      "control_id": "F7-LS-01",
+      "domain": "LS",
+      "title": "SBOM Generation",
+      "status": "implemented",
+      "limitations": "CI generates a CycloneDX inventory for the locked Python graph; it does not inventory the full runner or establish signed provenance.",
+      "evidence": [{"kind": "workflow", "path": ".github/workflows/f7las-ci.yml", "locator": "Upload CycloneDX SBOM"}]
+    },
+    {
+      "control_id": "F7-LS-02",
+      "domain": "LS",
+      "title": "Dependency Vulnerability Scanning",
+      "status": "implemented",
+      "limitations": "The locked Python graph is audited for published vulnerabilities; runner OS and non-Python components are outside this scan.",
+      "evidence": [{"kind": "workflow", "path": ".github/workflows/f7las-ci.yml", "locator": "Audit dependencies and generate CycloneDX SBOM"}]
+    },
+    {
+      "control_id": "F7-LS-03",
+      "domain": "LS",
+      "title": "Framework Version Pinning",
+      "status": "implemented",
+      "limitations": "Python dependencies, Actions, OPA, and Gitleaks are pinned for CI; this does not attest the hosted runner image.",
+      "evidence": [{"kind": "configuration", "path": "requirements-ci.lock", "locator": "--hash=sha256:"}]
+    },
+    {
+      "control_id": "F7-LS-04",
+      "domain": "LS",
+      "title": "Plugin & Tool Framework Governance",
+      "status": "partial",
+      "limitations": "The illustrative tool allowlist contains owners and review metadata, but no production plugin admission workflow or enforced approval record exists.",
+      "evidence": [{"kind": "configuration", "path": "config/tools/allowlist.json", "locator": "review_metadata"}]
+    },
+    {
+      "control_id": "F7-LS-05",
+      "domain": "LS",
+      "title": "Framework Telemetry & Attestation",
+      "status": "partial",
+      "limitations": "CI associates an SBOM artifact with an exact commit SHA, but runtime telemetry lacks framework version and signed build-attestation identifiers.",
+      "evidence": [{"kind": "workflow", "path": ".github/workflows/f7las-ci.yml", "locator": "f7las-python-sbom-${{ github.sha }}"}]
+    }
+  ]
+}

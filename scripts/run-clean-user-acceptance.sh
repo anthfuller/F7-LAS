@@ -61,6 +61,8 @@ echo "[clean-user] Install the hash-locked dependency graph"
 
 echo "[clean-user] Validate documentation and repository invariants"
 "$python" scripts/validate-documentation.py
+"$python" scripts/validate-citation.py
+"$python" scripts/validate-control-traceability.py
 "$python" scripts/validate-supply-chain.py
 "$python" scripts/validate-prompts.py config/prompts
 "$python" scripts/validate-policies.py

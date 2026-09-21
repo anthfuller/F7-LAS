@@ -6,6 +6,9 @@
 
 > **Current status:** Established reference model with a **prototype reference implementation**. The repository is not a production agent platform, control plane, SOC product, SIEM/SOAR replacement, or production-ready implementation.
 
+Repository version **4.0.0** is prepared as an unpublished release candidate.
+No tag, GitHub release, or Zenodo update is implied by the version file.
+
 F7-LAS™ is Anthony Fuller's vendor-neutral, protocol-agnostic security model for designing, reviewing, and governing agentic AI systems. It separates security responsibilities across seven layers so that generative output is not treated as authority to act.
 
 This is independent personal work. It is not affiliated with, endorsed by, or representative of Microsoft or any other employer.
@@ -28,12 +31,14 @@ Software supply-chain security is a cross-cutting supplemental domain, **Layer S
 
 - The immutable [F7-LAS whitepaper v3.0](docs/F7-LAS-model-whitepaper_v3.0.pdf)
 - A draft [implementation guide](docs/f7-las-implementation-guide/README.md)
-- A draft [46-control catalog](docs/F7-LAS-Control-Catalog-v0.1.md)
+- A draft catalog of [46 core Layers 1–7 controls plus five supplemental Layer S controls](docs/F7-LAS-Control-Catalog-v0.1.md)
 - Current [architecture diagrams](docs/architecture-diagrams.md), with explicit implementation boundaries, and engineering review material
 - Canonical v1.0.0 data contracts and one synthetic, offline Python + OPA workflow
 - Illustrative prompts, additional policies, validators, and runtime stubs
 - Supply-chain CI, behavioral tests, evidence verification, deterministic replay,
   and a clean-user acceptance gate for the canonical path
+- Machine-readable [control-to-evidence traceability](config/control-traceability.json)
+  covering all 51 catalog controls
 
 The canonical workflow provides one deliberately constrained executable Layers 1–7 path. It does not make the other examples executable or production-ready. The behavioral scenario matrix exercises the canonical enforcement path; the separate golden-dataset runner validates scenario structure and does not prove the described allow/deny behavior. Non-canonical examples remain illustrative unless they are explicitly reclassified and tested.
 
@@ -63,6 +68,8 @@ source .venv/bin/activate
 python -m pip install --require-hashes -r requirements-ci.lock
 python scripts/validate-supply-chain.py
 python scripts/validate-documentation.py
+python scripts/validate-citation.py
+python scripts/validate-control-traceability.py
 python scripts/validate-prompts.py
 python scripts/validate-policies.py
 python scripts/allowlist-validator.py
@@ -87,6 +94,9 @@ These commands validate the **current prototype and repository structure**. They
 - [Supply-chain and CI controls](docs/supply-chain-and-ci.md)
 - [Clean-user acceptance](docs/clean-user-acceptance.md)
 - [Architecture diagrams](docs/architecture-diagrams.md)
+- [Control-to-evidence traceability](config/control-traceability.json)
+- [4.0.0 release-candidate notes](RELEASE_NOTES.md)
+- [Release and exact-tag SBOM procedure](docs/release-process.md)
 - [Roadmap](ROADMAP.md)
 - [Security policy](SECURITY.md)
 
@@ -98,10 +108,10 @@ Versions belong to individual artifacts:
 |---|---|
 | Seven-layer model | Established design baseline |
 | Whitepaper | v3.0, immutable historical artifact |
-| Implementation guide | Draft; version will be assigned at reviewed release |
+| Implementation guide | Draft; bundled with 4.0.0 but not independently versioned |
 | Control catalog | v0.1 draft |
-| Executable reference implementation | Prototype |
-| Repository overhaul target | 4.0.0 after all acceptance gates and approval |
+| Executable reference implementation | Prototype included in the 4.0.0 candidate |
+| Repository release candidate | 4.0.0; not tagged or published |
 
 Repository version numbers do not silently change the whitepaper, control catalog, or schema versions.
 

@@ -52,6 +52,12 @@ REQUIRED_DIAGRAM_NOTICES = {
     "distinct terminal outcomes",
     "Agent Planning",
 }
+EXPECTED_RELEASE_VERSION = "4.0.0"
+RETIRED_PLACEHOLDERS = {
+    Path("src/agents/placeholder"),
+    Path("src/core/placeholder"),
+    Path("src/tools/placeholder"),
+}
 
 
 class DocumentationError(ValueError):
@@ -172,12 +178,42 @@ def validate_diagrams(root: Path) -> None:
             )
 
 
+def validate_release_candidate(root: Path) -> None:
+    version = (root / "VERSION").read_text(encoding="utf-8").strip()
+    if version != EXPECTED_RELEASE_VERSION:
+        raise DocumentationError(
+            f"VERSION must be {EXPECTED_RELEASE_VERSION}; found {version!r}"
+        )
+    required_version_documents = {
+        Path("README.md"): "not tagged or published",
+        Path("RELEASE_NOTES.md"): "Prepared but not tagged or published",
+        Path("ROADMAP.md"): "unpublished release candidate",
+        Path("docs/release-process.md"): "v4.0.0",
+    }
+    for relative, boundary in required_version_documents.items():
+        text = (root / relative).read_text(encoding="utf-8")
+        if EXPECTED_RELEASE_VERSION not in text or boundary not in text:
+            raise DocumentationError(
+                f"{relative} does not state the {EXPECTED_RELEASE_VERSION} release boundary"
+            )
+    for relative in RETIRED_PLACEHOLDERS:
+        if (root / relative).exists():
+            raise DocumentationError(f"retired placeholder returned: {relative}")
+
+    readme = (root / "README.md").read_text(encoding="utf-8")
+    docs_index = (root / "docs" / "README.md").read_text(encoding="utf-8")
+    count_wording = "46 core Layers 1–7 controls plus five supplemental Layer S controls"
+    if count_wording not in readme or count_wording not in docs_index:
+        raise DocumentationError("control-catalog count wording is inconsistent")
+
+
 def validate_repository(root: Path = ROOT) -> None:
     for path in markdown_files(root):
         validate_links(path, root)
         validate_command_boundaries(path, root)
 
     validate_diagrams(root)
+    validate_release_candidate(root)
 
     illustrative_opa = (
         root / "examples" / "layer5-policy-engines" / "opa-rego" / "README.md"

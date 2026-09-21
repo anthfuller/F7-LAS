@@ -18,8 +18,12 @@ scenario and rubric structure; it does not execute or prove the stated security
 behavior.
 
 The canonical path has automated behavioral checks, evidence verification,
-deterministic replay, and a clean-user acceptance gate. Repository-wide control
-status is not yet machine-readable or evidence-linked.
+deterministic replay, and a clean-user acceptance gate. The
+[machine-readable traceability file](../config/control-traceability.json) covers
+all 46 core Layers 1–7 controls plus five supplemental Layer S controls and
+records implemented, partial, or not-implemented status, limitations, and
+verifiable repository evidence locators. Its status is scoped to this bounded
+repository implementation, not to a production deployment.
 
 ## Is the code production-ready?
 
@@ -116,8 +120,8 @@ Use it as a design-review lens, threat-modeling aid, draft control catalog, and 
 
 - Whitepaper: v3.0, immutable historical artifact.
 - Control catalog: v0.1 draft.
-- Implementation guide: draft; version assigned at reviewed release.
-- Reference code: prototype; intended to follow the future repository 4.0.0 release.
+- Implementation guide: draft; bundled with repository 4.0.0 but not independently versioned.
+- Reference code: prototype prepared as repository release candidate 4.0.0; not yet tagged or published.
 - Individual schemas: independently versioned.
 
 Repository release numbers do not silently revise the whitepaper or other artifacts.

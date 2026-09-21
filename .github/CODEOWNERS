@@ -1,3 +1,30 @@
+# Default ownership
+* @anthfuller
+
+# Canonical contracts, policy, workflow, and evidence
+/src/canonical/ @anthfuller
+/schemas/contracts/ @anthfuller
+/config/policies/ @anthfuller
+/examples/canonical-workflow/ @anthfuller
+/tests/test_canonical_workflow.py @anthfuller
+/tests/test_contracts.py @anthfuller
+/tests/test_evidence_replay.py @anthfuller
+/tests/test_behavioral_scenarios.py @anthfuller
+
+# Licensing, citation, diagrams, traceability, and release metadata
+/LICENSE* @anthfuller
+/CITATION.cff @anthfuller
+/schemas/cff/ @anthfuller
+/docs/images/ @anthfuller
+/docs/architecture-diagrams.md @anthfuller
+/config/control-traceability.json @anthfuller
+/scripts/validate-control-traceability.py @anthfuller
+/scripts/validate-citation.py @anthfuller
+/VERSION @anthfuller
+/RELEASE_NOTES.md @anthfuller
+/docs/release-process.md @anthfuller
+/ROADMAP.md @anthfuller
+
 # Golden dataset & CI guardrails
 /tests/golden_dataset/ @anthfuller
 /src/demo_runner/run_golden_dataset.py @anthfuller
