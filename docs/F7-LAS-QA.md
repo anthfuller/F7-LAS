@@ -31,7 +31,8 @@ No. Current planners, tools, sandboxing, telemetry, and policy adapters are inco
 
 ## What is canonical?
 
-The seven-layer model and whitepaper v3.0 are the design baseline. The canonical
+The seven-layer model and current Whitepaper v4.0 are the design baseline.
+Whitepaper v3.0 remains an immutable historical artifact. The canonical
 executable path is the offline, deterministic Python + OPA workflow under
 [`examples/canonical-workflow/`](../examples/canonical-workflow/README.md).
 Other policy-engine examples remain non-canonical illustrative patterns unless
@@ -118,13 +119,18 @@ Use it as a design-review lens, threat-modeling aid, draft control catalog, and 
 
 ## How are artifacts versioned?
 
-- Whitepaper: v3.0, immutable historical artifact.
+- Whitepaper: v4.0, current publication; v3.0 is preserved as an immutable
+  historical artifact.
 - Control catalog: v0.1 draft.
-- Implementation guide: draft; bundled with repository 4.0.0 but not independently versioned.
-- Reference code: prototype prepared as repository release candidate 4.0.0; not yet tagged or published.
+- Implementation guide: draft; bundled with repository release v4.0.0 but not
+  independently versioned.
+- Reference code: prototype published in tagged repository release v4.0.0.
 - Individual schemas: independently versioned.
 
-Repository release numbers do not silently revise the whitepaper or other artifacts.
+Repository release v4.0.0 and Whitepaper v4.0 are independently versioned.
+Whitepaper v4.0 was published separately and is not part of the immutable
+v4.0.0 tag. Repository release numbers do not silently revise a whitepaper or
+other artifact.
 
 ## Is this affiliated with Microsoft?
 

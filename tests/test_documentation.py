@@ -70,6 +70,84 @@ def test_substituted_canonical_diagram_is_rejected(tmp_path: Path) -> None:
         )
 
 
+def test_substituted_current_whitepaper_is_rejected(tmp_path: Path) -> None:
+    substituted = tmp_path / MODULE.CURRENT_WHITEPAPER_PATH.name
+    source = ROOT / MODULE.CURRENT_WHITEPAPER_PATH
+    substituted.write_bytes(source.read_bytes() + b"substituted")
+    with pytest.raises(MODULE.DocumentationError, match="whitepaper digest mismatch"):
+        MODULE.validate_pdf_digest(
+            substituted,
+            MODULE.CURRENT_WHITEPAPER_SHA256,
+            "current whitepaper",
+        )
+
+
+def test_whitepaper_checksum_manifest_is_exact() -> None:
+    manifest = (ROOT / MODULE.CURRENT_WHITEPAPER_CHECKSUM_PATH).read_text(
+        encoding="ascii"
+    )
+    assert manifest == (
+        f"{MODULE.CURRENT_WHITEPAPER_SHA256}  "
+        f"{MODULE.CURRENT_WHITEPAPER_PATH.name}\n"
+    )
+
+
+def test_whitepaper_publication_metadata_is_locked() -> None:
+    assert MODULE.CURRENT_WHITEPAPER_PATH == Path(
+        "docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf"
+    )
+    assert MODULE.CURRENT_WHITEPAPER_DOI == (
+        "https://doi.org/10.5281/zenodo.22867553"
+    )
+    assert MODULE.CURRENT_WHITEPAPER_SHA256 == (
+        "67bfbff70f60309608921a58b28ee472d7aca876146988600916af093c992fe7"
+    )
+
+
+@pytest.mark.parametrize(
+    "stale_assertion",
+    [
+        "Repository version 4.0.0 is an unpublished release candidate.",
+        "Version 4.0.0 is not tagged or published.",
+        "The whitepaper remains v3.0.",
+    ],
+)
+def test_stale_current_status_assertions_are_rejected(
+    stale_assertion: str,
+) -> None:
+    with pytest.raises(
+        MODULE.DocumentationError, match="stale current-status assertion"
+    ):
+        MODULE.validate_no_stale_status(Path("README.md"), stale_assertion)
+
+
+def test_docx_whitepaper_is_rejected(tmp_path: Path) -> None:
+    docs = tmp_path / "docs"
+    whitepaper = docs / "whitepaper"
+    whitepaper.mkdir(parents=True)
+    (whitepaper / MODULE.CURRENT_WHITEPAPER_PATH.name).write_bytes(
+        (ROOT / MODULE.CURRENT_WHITEPAPER_PATH).read_bytes()
+    )
+    (docs / MODULE.HISTORICAL_WHITEPAPER_PATH.name).write_bytes(
+        (ROOT / MODULE.HISTORICAL_WHITEPAPER_PATH).read_bytes()
+    )
+    (whitepaper / MODULE.CURRENT_WHITEPAPER_CHECKSUM_PATH.name).write_text(
+        f"{MODULE.CURRENT_WHITEPAPER_SHA256}  "
+        f"{MODULE.CURRENT_WHITEPAPER_PATH.name}\n",
+        encoding="ascii",
+    )
+    (whitepaper / "F7-LAS-Whitepaper-v4.0.docx").write_bytes(b"not public")
+    (tmp_path / "README.md").write_text(
+        (ROOT / "README.md").read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    (docs / "README.md").write_text(
+        (ROOT / "docs" / "README.md").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    with pytest.raises(MODULE.DocumentationError, match="DOCX whitepaper"):
+        MODULE.validate_whitepapers(tmp_path)
+
+
 def test_control_loop_semantics_are_required() -> None:
     expected = {
         "returns to the PDP for reevaluation",
