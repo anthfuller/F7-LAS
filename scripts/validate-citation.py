@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 import sys
 from datetime import date
@@ -11,10 +13,13 @@ from typing import Any
 from urllib.parse import urlsplit
 
 import yaml
+from jsonschema import Draft7Validator, FormatChecker
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CITATION_PATH = ROOT / "CITATION.cff"
+CFF_SCHEMA_PATH = ROOT / "schemas" / "cff" / "cff-1.2.0.schema.json"
+CFF_SCHEMA_SHA256 = "0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b"
 DOI_RE = re.compile(r"^10\.\d{4,9}/\S+$")
 SPDX_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+-]*$")
 
@@ -49,7 +54,37 @@ def _nonempty_string(value: Any, field: str) -> str:
     return value
 
 
-def validate_citation(path: Path = CITATION_PATH) -> None:
+def load_verified_schema(
+    path: Path = CFF_SCHEMA_PATH,
+    expected_sha256: str = CFF_SCHEMA_SHA256,
+) -> dict[str, Any]:
+    content = path.read_bytes()
+    actual = hashlib.sha256(content).hexdigest()
+    if actual != expected_sha256:
+        raise CitationError(
+            f"CFF schema SHA-256 mismatch: expected {expected_sha256}, found {actual}"
+        )
+    schema = json.loads(content, object_pairs_hook=_reject_json_duplicate_keys)
+    if not isinstance(schema, dict):
+        raise CitationError("CFF schema must be a JSON object")
+    Draft7Validator.check_schema(schema)
+    return schema
+
+
+def _reject_json_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise CitationError(f"duplicate CFF schema key: {key}")
+        result[key] = value
+    return result
+
+
+def validate_citation(
+    path: Path = CITATION_PATH,
+    schema_path: Path = CFF_SCHEMA_PATH,
+    expected_schema_sha256: str = CFF_SCHEMA_SHA256,
+) -> None:
     document = yaml.load(path.read_text(encoding="utf-8"), Loader=UniqueKeyLoader)
     if not isinstance(document, dict):
         raise CitationError("CITATION.cff must contain a YAML mapping")
@@ -98,6 +133,16 @@ def validate_citation(path: Path = CITATION_PATH) -> None:
         except ValueError as exc:
             raise CitationError("date-released is not a valid calendar date") from exc
 
+    schema = load_verified_schema(schema_path, expected_schema_sha256)
+    schema_errors = sorted(
+        Draft7Validator(schema, format_checker=FormatChecker()).iter_errors(document),
+        key=lambda error: list(error.absolute_path),
+    )
+    if schema_errors:
+        error = schema_errors[0]
+        location = ".".join(str(part) for part in error.absolute_path) or "<root>"
+        raise CitationError(f"official CFF 1.2.0 schema rejected {location}: {error.message}")
+
 
 def main() -> int:
     try:
@@ -105,7 +150,10 @@ def main() -> int:
     except (OSError, UnicodeError, yaml.YAMLError, CitationError) as exc:
         print(f"CFF validation failed: {exc}", file=sys.stderr)
         return 1
-    print("CITATION.cff validation PASSED for CFF 1.2.0.")
+    print(
+        "CITATION.cff validation PASSED against the checksum-verified "
+        "official CFF 1.2.0 schema."
+    )
     return 0
 
 

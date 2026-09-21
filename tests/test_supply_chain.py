@@ -39,18 +39,40 @@ def test_workflow_requires_release_readiness_validators() -> None:
         MODULE.validate_workflow(workflow, modified)
 
 
-def test_workflow_requires_official_cff_schema_validator() -> None:
-    path = ROOT / ".github" / "workflows" / "f7las-ci.yml"
-    text = path.read_text(encoding="utf-8")
-    workflow = yaml.safe_load(text)
-    workflow["jobs"]["validate"]["steps"] = [
-        step
-        for step in workflow["jobs"]["validate"]["steps"]
-        if step.get("uses") != MODULE.CFF_ACTION
-    ]
+def test_tag_only_docker_action_is_rejected() -> None:
+    with pytest.raises(MODULE.SupplyChainError, match="exact SHA-256 image digest"):
+        MODULE.validate_docker_reference("docker://citationcff/cffconvert:2.0.0")
 
-    with pytest.raises(MODULE.SupplyChainError, match="official CFF schema validator"):
-        MODULE.validate_workflow(workflow, text)
+
+def test_malformed_docker_digest_is_rejected() -> None:
+    with pytest.raises(MODULE.SupplyChainError, match="exact SHA-256 image digest"):
+        MODULE.validate_docker_reference("docker://citationcff/cffconvert@sha256:1234")
+
+
+def test_exact_docker_digest_is_accepted() -> None:
+    MODULE.validate_docker_reference(
+        "docker://citationcff/cffconvert@sha256:"
+        "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    )
+
+
+def test_cff_action_wrapper_is_rejected() -> None:
+    workflow = {"permissions": {"contents": "read"}, "jobs": {"validate": {}}}
+    with pytest.raises(MODULE.SupplyChainError, match="mutable tag-only container"):
+        MODULE.validate_workflow(
+            workflow,
+            "uses: citation-file-format/cffconvert-github-action@"
+            "4cf11baa70a673bfdf9dad0acc7ee33b3f4b6084",
+        )
+
+
+def test_modified_cff_schema_artifact_is_rejected(tmp_path) -> None:
+    target = tmp_path / MODULE.CFF_SCHEMA_PATH
+    target.parent.mkdir(parents=True)
+    target.write_bytes((ROOT / MODULE.CFF_SCHEMA_PATH).read_bytes() + b"\n")
+
+    with pytest.raises(MODULE.SupplyChainError, match="schema digest mismatch"):
+        MODULE.validate_cff_schema_artifact(tmp_path)
 
 
 def test_unpinned_requirement_is_rejected() -> None:

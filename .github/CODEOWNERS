@@ -14,6 +14,7 @@
 # Licensing, citation, diagrams, traceability, and release metadata
 /LICENSE* @anthfuller
 /CITATION.cff @anthfuller
+/schemas/cff/ @anthfuller
 /docs/images/ @anthfuller
 /docs/architecture-diagrams.md @anthfuller
 /config/control-traceability.json @anthfuller

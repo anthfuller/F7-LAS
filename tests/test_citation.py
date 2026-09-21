@@ -49,3 +49,22 @@ authors:
 
     with pytest.raises(citation.CitationError, match="duplicate YAML mapping key"):
         citation.validate_citation(path)
+
+
+def test_citation_rejects_modified_official_schema(tmp_path):
+    schema = tmp_path / "cff-schema.json"
+    schema.write_bytes(citation.CFF_SCHEMA_PATH.read_bytes() + b"\n")
+
+    with pytest.raises(citation.CitationError, match="schema SHA-256 mismatch"):
+        citation.validate_citation(schema_path=schema)
+
+
+def test_official_schema_rejects_unknown_cff_field(tmp_path):
+    path = tmp_path / "CITATION.cff"
+    path.write_text(
+        Path("CITATION.cff").read_text(encoding="utf-8") + "unknown-field: rejected\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(citation.CitationError, match="official CFF 1.2.0 schema rejected"):
+        citation.validate_citation(path)

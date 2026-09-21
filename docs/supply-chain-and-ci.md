@@ -65,6 +65,16 @@ SHA-256 before attaching the unchanged CycloneDX file and its checksum record.
 The complete non-publishing procedure is documented in
 [release-process.md](release-process.md).
 
+## Citation metadata validation
+
+CI validates `CITATION.cff` against the official CFF 1.2.0 schema vendored
+from immutable upstream commit `0c5b4aa07071490eaf261775ce96ccdd13a6e2d5`.
+The schema is accepted only when its SHA-256 is
+`0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b`.
+This avoids the CFF Action wrapper's mutable tag-only container dependency.
+Repository checks also reject any `docker://` Action reference that is not
+pinned directly by a complete `sha256:` image digest.
+
 ## Assurance boundary
 
 - Hash checking detects a downloaded Python distribution that does not match
