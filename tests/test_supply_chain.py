@@ -19,6 +19,40 @@ def test_repository_supply_chain_invariants() -> None:
     MODULE.validate_repository(ROOT)
 
 
+def test_workflow_requires_release_tag_validation() -> None:
+    path = ROOT / ".github" / "workflows" / "f7las-ci.yml"
+    text = path.read_text(encoding="utf-8")
+    workflow = yaml.safe_load(text)
+    workflow["on"]["push"].pop("tags")
+
+    with pytest.raises(MODULE.SupplyChainError, match="version tags"):
+        MODULE.validate_workflow(workflow, text)
+
+
+def test_workflow_requires_release_readiness_validators() -> None:
+    path = ROOT / ".github" / "workflows" / "f7las-ci.yml"
+    text = path.read_text(encoding="utf-8")
+    workflow = yaml.safe_load(text)
+    modified = text.replace("python scripts/validate-citation.py", "echo skipped-citation")
+
+    with pytest.raises(MODULE.SupplyChainError, match="validate-citation"):
+        MODULE.validate_workflow(workflow, modified)
+
+
+def test_workflow_requires_official_cff_schema_validator() -> None:
+    path = ROOT / ".github" / "workflows" / "f7las-ci.yml"
+    text = path.read_text(encoding="utf-8")
+    workflow = yaml.safe_load(text)
+    workflow["jobs"]["validate"]["steps"] = [
+        step
+        for step in workflow["jobs"]["validate"]["steps"]
+        if step.get("uses") != MODULE.CFF_ACTION
+    ]
+
+    with pytest.raises(MODULE.SupplyChainError, match="official CFF schema validator"):
+        MODULE.validate_workflow(workflow, text)
+
+
 def test_unpinned_requirement_is_rejected() -> None:
     with pytest.raises(MODULE.SupplyChainError, match="not exactly pinned"):
         MODULE.validate_pinned_requirements("requests>=2.34", require_hashes=False)

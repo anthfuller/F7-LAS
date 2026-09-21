@@ -418,3 +418,114 @@ def test_cli_returns_nonzero_for_denial_and_preserves_records(tmp_path, monkeypa
     assert record(document, "policy_decision")["decision"] == "deny"
     assert record(document, "execution_result")["status"] == "not_executed"
     assert_valid(document)
+
+
+def test_cli_rejects_duplicate_input_keys_without_emitting_records(tmp_path, monkeypatch):
+    input_path = tmp_path / "duplicate-input.json"
+    output_path = tmp_path / "records.json"
+    original = INPUT_PATH.read_text(encoding="utf-8")
+    input_path.write_text(
+        original.replace(
+            '"workflow_id": "workflow-0001",',
+            '"workflow_id": "workflow-other",\n  "workflow_id": "workflow-0001",',
+            1,
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "f7las-canonical",
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--opa-binary",
+            "/does/not/matter",
+        ],
+    )
+
+    assert cli.main() == 2
+    assert not output_path.exists()
+
+
+def test_cli_rejects_output_that_is_input_before_execution(tmp_path, monkeypatch):
+    input_path = tmp_path / "request.json"
+    input_path.write_bytes(INPUT_PATH.read_bytes())
+    original = input_path.read_bytes()
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "f7las-canonical",
+            "--input",
+            str(input_path),
+            "--output",
+            str(input_path),
+            "--opa-binary",
+            "/does/not/matter",
+        ],
+    )
+
+    assert cli.main() == 2
+    assert input_path.read_bytes() == original
+
+
+@pytest.mark.parametrize("alias_kind", ["hardlink", "symlink"])
+def test_cli_rejects_output_alias_to_input_before_execution(
+    tmp_path, monkeypatch, alias_kind
+):
+    input_path = tmp_path / "request.json"
+    output_path = tmp_path / "aliased-output.json"
+    input_path.write_bytes(INPUT_PATH.read_bytes())
+    original = input_path.read_bytes()
+    if alias_kind == "hardlink":
+        os.link(input_path, output_path)
+    else:
+        output_path.symlink_to(input_path)
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "f7las-canonical",
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--opa-binary",
+            "/does/not/matter",
+        ],
+    )
+
+    assert cli.main() == 2
+    assert input_path.read_bytes() == original
+
+
+def test_cli_rechecks_output_alias_after_execution_before_writing(tmp_path, monkeypatch):
+    input_path = tmp_path / "request.json"
+    output_path = tmp_path / "records.json"
+    input_path.write_bytes(INPUT_PATH.read_bytes())
+    original = input_path.read_bytes()
+
+    class AliasingWorkflow:
+        def __init__(self, opa_binary):
+            self.opa_binary = opa_binary
+
+        def run(self, workflow_input):
+            output_path.symlink_to(input_path)
+            return {"records": []}
+
+    monkeypatch.setattr(cli, "CanonicalWorkflow", AliasingWorkflow)
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "f7las-canonical",
+            "--input",
+            str(input_path),
+            "--output",
+            str(output_path),
+            "--opa-binary",
+            "/does/not/matter",
+        ],
+    )
+
+    assert cli.main() == 2
+    assert input_path.read_bytes() == original

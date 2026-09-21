@@ -5,7 +5,7 @@ reference implementation. It starts from repository files without Git metadata,
 creates a new virtual environment, installs only the reviewed hash-locked graph,
 and runs the documented validators, tests, canonical walkthrough, evidence
 verification, deterministic replay, golden structural evaluation, vulnerability
-audit, and SBOM generation.
+audit, CFF validation, complete control traceability, and SBOM generation.
 
 ## Exact prerequisites
 

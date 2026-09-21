@@ -81,6 +81,11 @@ a signature, proof of origin, trusted timestamp, or external attestation; a
 party that can replace both evidence and its expected digest can construct a
 different self-consistent set.
 
+Workflow input loading also rejects duplicate JSON keys. The CLI refuses an
+output path that resolves to, symlinks to, or is hard-linked to the input before
+policy evaluation or writing, so evidence generation cannot overwrite the
+admitted request through path aliasing.
+
 ## Deterministic replay
 
 Replay the same admitted input through the canonical workflow and require the

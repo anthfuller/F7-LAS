@@ -4,6 +4,8 @@ name: F7-LAS CI
   push:
     branches:
       - main
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - main
@@ -37,6 +39,17 @@ jobs:
 
       - name: Validate documentation
         run: python scripts/validate-documentation.py
+
+      - name: Validate citation metadata
+        run: python scripts/validate-citation.py
+
+      - name: Validate CITATION.cff against the CFF schema
+        uses: citation-file-format/cffconvert-github-action@4cf11baa70a673bfdf9dad0acc7ee33b3f4b6084 # 2.0.0
+        with:
+          args: "--validate"
+
+      - name: Validate control traceability
+        run: python scripts/validate-control-traceability.py
 
       - name: Audit dependencies and generate CycloneDX SBOM
         run: |

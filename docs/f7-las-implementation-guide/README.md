@@ -2,7 +2,7 @@
 
 This guide translates the seven-layer model into engineering guidance. It describes desired controls and patterns; it does **not** claim that the current repository implements or automatically verifies every requirement.
 
-The guide remains draft until it is reconciled with the canonical offline Python + OPA workflow, control-to-evidence traceability, clean-user validation, and independent review. Its release version will be assigned then.
+The guide remains draft authored content bundled with repository release candidate 4.0.0. It is reconciled with the canonical offline Python + OPA workflow and machine-readable control traceability, but it is not independently versioned or represented as fully implemented guidance.
 
 ## Contents
 

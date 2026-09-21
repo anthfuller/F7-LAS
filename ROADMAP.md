@@ -23,8 +23,8 @@ The target is an **Executable Reference Implementation**: one offline, determini
 
 ## Release boundary
 
-The intended repository release after all acceptance gates is **4.0.0**. The whitepaper remains **v3.0** until it is separately reviewed and revised. No milestone authorizes a merge to `main`, a release, or a Zenodo update without explicit approval.
+Repository version **4.0.0** is prepared as an unpublished release candidate. The whitepaper remains **v3.0** until it is separately reviewed and revised. No milestone authorizes a merge to `main`, a tag, a release, or a Zenodo update without explicit approval. See [RELEASE_NOTES.md](RELEASE_NOTES.md) and the [release process](docs/release-process.md).
 
 ## Completion standard
 
-Completion requires a clean-user install and walkthrough, meaningful behavior tests, control-to-evidence traceability, accurate diagrams, consistent licensing/versioning, independent review, and explicit merge approval. Test counts alone are not a maturity measure.
+Completion requires a clean-user install and walkthrough, meaningful behavior tests, validated control-to-evidence traceability, accurate diagrams, consistent licensing/versioning, protected-branch enforcement, independent review, and explicit merge and release approval. Test counts alone are not a maturity measure.

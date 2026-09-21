@@ -17,6 +17,10 @@ HASH_RE = re.compile(r"--hash=sha256:[0-9a-f]{64}(?:\s|$)")
 ACTION_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?@[0-9a-f]{40}$")
 VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+CFF_ACTION = (
+    "citation-file-format/cffconvert-github-action@"
+    "4cf11baa70a673bfdf9dad0acc7ee33b3f4b6084"
+)
 
 
 class SupplyChainError(ValueError):
@@ -74,13 +78,13 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
         raise SupplyChainError("pull_request_target is not allowed")
     if data.get("permissions") != {"contents": "read"}:
         raise SupplyChainError("workflow permissions must be exactly contents: read")
-
     jobs = data.get("jobs")
     if not isinstance(jobs, dict) or not jobs:
         raise SupplyChainError("workflow has no jobs")
 
     checkout_found = False
     python_found = False
+    cff_validator_found = False
     for job in jobs.values():
         if job.get("runs-on") == "ubuntu-latest":
             raise SupplyChainError("runner image must not use ubuntu-latest")
@@ -107,6 +111,8 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
                     version = str(step.get("with", {}).get("python-version", ""))
                     if not VERSION_RE.fullmatch(version):
                         raise SupplyChainError("Python must be pinned to an exact patch version")
+                if action_ref == CFF_ACTION:
+                    cff_validator_found = step.get("with", {}).get("args") == "--validate"
 
             run = str(step.get("run", ""))
             if "curl " in run and "sha256sum -c -" not in run:
@@ -123,6 +129,18 @@ def validate_workflow(data: dict[str, Any], raw_text: str) -> None:
         raise SupplyChainError("pinned actions/checkout step not found")
     if not python_found:
         raise SupplyChainError("pinned actions/setup-python step not found")
+    if not cff_validator_found:
+        raise SupplyChainError("official CFF schema validator is missing or misconfigured")
+    for required_command in (
+        "python scripts/validate-citation.py",
+        "python scripts/validate-control-traceability.py",
+    ):
+        if required_command not in raw_text:
+            raise SupplyChainError(f"workflow is missing required validation: {required_command}")
+
+    push = data.get("on", {}).get("push", {})
+    if push.get("tags") != ["v*"]:
+        raise SupplyChainError("workflow must validate version tags matching v*")
 
 
 def validate_dependabot(data: dict[str, Any]) -> None:
