@@ -53,6 +53,18 @@ REQUIRED_DIAGRAM_NOTICES = {
     "Agent Planning",
 }
 EXPECTED_RELEASE_VERSION = "4.0.0"
+CURRENT_WHITEPAPER_PATH = Path("docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf")
+CURRENT_WHITEPAPER_CHECKSUM_PATH = Path(
+    "docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256"
+)
+CURRENT_WHITEPAPER_SHA256 = (
+    "67bfbff70f60309608921a58b28ee472d7aca876146988600916af093c992fe7"
+)
+CURRENT_WHITEPAPER_DOI = "https://doi.org/10.5281/zenodo.22867553"
+HISTORICAL_WHITEPAPER_PATH = Path("docs/F7-LAS-model-whitepaper_v3.0.pdf")
+HISTORICAL_WHITEPAPER_SHA256 = (
+    "24f6e855fc8816edb200280c8cdf26fe41e3736a2544f87906bf2b2d273989fa"
+)
 RETIRED_PLACEHOLDERS = {
     Path("src/agents/placeholder"),
     Path("src/core/placeholder"),
@@ -178,6 +190,85 @@ def validate_diagrams(root: Path) -> None:
             )
 
 
+def validate_pdf_digest(path: Path, expected_digest: str, label: str) -> None:
+    try:
+        content = path.read_bytes()
+    except OSError as exc:
+        raise DocumentationError(f"missing {label}: {path}") from exc
+    if not content.startswith(b"%PDF-"):
+        raise DocumentationError(f"{label} is not a PDF: {path}")
+    if hashlib.sha256(content).hexdigest() != expected_digest:
+        raise DocumentationError(f"{label} digest mismatch: {path}")
+
+
+def validate_whitepapers(root: Path) -> None:
+    current = root / CURRENT_WHITEPAPER_PATH
+    validate_pdf_digest(current, CURRENT_WHITEPAPER_SHA256, "current whitepaper")
+    validate_pdf_digest(
+        root / HISTORICAL_WHITEPAPER_PATH,
+        HISTORICAL_WHITEPAPER_SHA256,
+        "historical whitepaper",
+    )
+
+    expected_manifest = (
+        f"{CURRENT_WHITEPAPER_SHA256}  {CURRENT_WHITEPAPER_PATH.name}\n"
+    )
+    try:
+        manifest = (root / CURRENT_WHITEPAPER_CHECKSUM_PATH).read_text(
+            encoding="ascii"
+        )
+    except OSError as exc:
+        raise DocumentationError(
+            f"missing current whitepaper checksum: {CURRENT_WHITEPAPER_CHECKSUM_PATH}"
+        ) from exc
+    if manifest != expected_manifest:
+        raise DocumentationError("current whitepaper checksum manifest mismatch")
+
+    whitepaper_directory = current.parent
+    if whitepaper_directory.exists() and any(
+        path.suffix.lower() == ".docx" for path in whitepaper_directory.iterdir()
+    ):
+        raise DocumentationError("DOCX whitepaper artifacts must not be published here")
+
+    required_references = {
+        Path("README.md"): {
+            f"(docs/whitepaper/{CURRENT_WHITEPAPER_PATH.name})",
+            f"(docs/whitepaper/{CURRENT_WHITEPAPER_CHECKSUM_PATH.name})",
+            CURRENT_WHITEPAPER_DOI,
+            "Whitepaper version **4.0**",
+            "repository release **v4.0.0**",
+        },
+        Path("docs/README.md"): {
+            f"(whitepaper/{CURRENT_WHITEPAPER_PATH.name})",
+            f"(whitepaper/{CURRENT_WHITEPAPER_CHECKSUM_PATH.name})",
+            CURRENT_WHITEPAPER_DOI,
+            "Whitepaper version **4.0**",
+            "repository release **v4.0.0**",
+        },
+    }
+    for relative, required in required_references.items():
+        text = (root / relative).read_text(encoding="utf-8")
+        missing = sorted(item for item in required if item not in text)
+        if missing:
+            raise DocumentationError(
+                f"{relative} has drifted from the current whitepaper metadata: {missing}"
+            )
+
+    citation = (root / "CITATION.cff").read_text(encoding="utf-8")
+    required_citation = {
+        'title: "Securing Agentic AI with F7-LAS"',
+        'version: "4.0"',
+        "doi: 10.5281/zenodo.22867553",
+    }
+    missing_citation = sorted(
+        item for item in required_citation if item not in citation
+    )
+    if missing_citation:
+        raise DocumentationError(
+            f"CITATION.cff has drifted from Whitepaper v4.0: {missing_citation}"
+        )
+
+
 def validate_release_candidate(root: Path) -> None:
     version = (root / "VERSION").read_text(encoding="utf-8").strip()
     if version != EXPECTED_RELEASE_VERSION:
@@ -185,7 +276,7 @@ def validate_release_candidate(root: Path) -> None:
             f"VERSION must be {EXPECTED_RELEASE_VERSION}; found {version!r}"
         )
     required_version_documents = {
-        Path("README.md"): "not tagged or published",
+        Path("README.md"): "repository release **v4.0.0**",
         Path("RELEASE_NOTES.md"): "Prepared but not tagged or published",
         Path("ROADMAP.md"): "unpublished release candidate",
         Path("docs/release-process.md"): "v4.0.0",
@@ -213,6 +304,7 @@ def validate_repository(root: Path = ROOT) -> None:
         validate_command_boundaries(path, root)
 
     validate_diagrams(root)
+    validate_whitepapers(root)
     validate_release_candidate(root)
 
     illustrative_opa = (
