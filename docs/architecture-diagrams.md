@@ -95,8 +95,8 @@ F7-LAS trademark rights or imply endorsement.
 
 | File | Dimensions | SHA-256 |
 |---|---:|---|
-| `images/F7-LAS-Executive-Control-Loop.png` | 1920 × 1080 | `9fc9d8043ca60f333b054f12b9b3fa807b029b63f2ad6cde0c9c842b97ef0c7e` |
-| `images/F7-LAS-Agentic-Execution-Control-Loop.png` | 1920 × 1080 | `eef6a619e5579167e155d308a58d3b0195a81e106d6c5377389d2d3d917da705` |
+| `images/F7-LAS-Executive-Control-Loop.png` | 1920 × 1080 | `0e250eff8f021973608a77df78f01b276ed8c1147f25d24e493f9d96bc8b38ff` |
+| `images/F7-LAS-Agentic-Execution-Control-Loop.png` | 1920 × 1080 | `777f4a5de48dcc98ea0332358c0d9272ca4ca13d12889143a3e42464d4e6187d` |
 
 Legacy draft graphics were removed from the current documentation set because
 they contained ambiguous execution routing, private-reasoning terminology, or
