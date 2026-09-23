@@ -66,7 +66,7 @@ def test_substituted_canonical_diagram_is_rejected(tmp_path: Path) -> None:
             MODULE.EXPECTED_DIAGRAMS[
                 Path("docs/images/F7-LAS-Executive-Control-Loop.png")
             ][0],
-            (1672, 941),
+            (1920, 1080),
         )
 
 
@@ -155,8 +155,23 @@ def test_control_loop_semantics_are_required() -> None:
         "PEP authorization occurs before tool access or execution",
         "distinct terminal outcomes",
         "Agent Planning",
+        "workflow compression",
+        "six-stage runtime flow governed across all seven F7-LAS layers",
+        "L7 Monitoring & Evaluation",
+        "result validation, audit, telemetry, evidence, and assurance",
+        "Layer 7 observes the complete lifecycle",
+        "governed feedback produced from Layer 7 observations",
+        "not an eighth layer",
     }
     assert expected <= MODULE.REQUIRED_DIAGRAM_NOTICES
+
+
+def test_control_loop_accessible_alt_text_is_required() -> None:
+    assert set(MODULE.REQUIRED_DIAGRAM_ALT_TEXT) == set(MODULE.EXPECTED_DIAGRAMS)
+    assert all(
+        "Layer 7" in alt_text
+        for alt_text in MODULE.REQUIRED_DIAGRAM_ALT_TEXT.values()
+    )
 
 
 def test_clean_user_gate_rejects_substituted_opa(tmp_path: Path) -> None:
