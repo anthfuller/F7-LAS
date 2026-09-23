@@ -25,12 +25,26 @@ RUNNABLE_COMMAND_DOCS = {
 IGNORED_DIRECTORIES = {".git", ".venv", "venv", "node_modules", "__pycache__"}
 EXPECTED_DIAGRAMS = {
     Path("docs/images/F7-LAS-Executive-Control-Loop.png"): (
-        "23449ac61fc65089d96956d5900916f69ee637960d83a46ff847093e3da59159",
-        (1672, 941),
+        "0e250eff8f021973608a77df78f01b276ed8c1147f25d24e493f9d96bc8b38ff",
+        (1920, 1080),
     ),
     Path("docs/images/F7-LAS-Agentic-Execution-Control-Loop.png"): (
-        "9f4400b86796f1f047e51f595f416be5c2c398801a146778833a821277cdd8d6",
-        (1672, 941),
+        "777f4a5de48dcc98ea0332358c0d9272ca4ca13d12889143a3e42464d4e6187d",
+        (1920, 1080),
+    ),
+}
+REQUIRED_DIAGRAM_ALT_TEXT = {
+    Path("docs/images/F7-LAS-Executive-Control-Loop.png"): (
+        "F7-LAS executive control loop showing six numbered runtime stages "
+        "governed across all seven layers, conditional human approval, PDP and "
+        "PEP gates, scoped execution, lifecycle-wide Layer 7 monitoring and "
+        "governed feedback"
+    ),
+    Path("docs/images/F7-LAS-Agentic-Execution-Control-Loop.png"): (
+        "F7-LAS technical execution control loop showing all seven "
+        "responsibility layers, permit-only PDP-to-PEP routing, Layer 4 tool "
+        "access inside the Layer 6 boundary, lifecycle-wide Layer 7 monitoring "
+        "and evaluation, and governed feedback"
     ),
 }
 RETIRED_DIAGRAMS = {
@@ -51,6 +65,13 @@ REQUIRED_DIAGRAM_NOTICES = {
     "PEP authorization occurs before tool access or execution",
     "distinct terminal outcomes",
     "Agent Planning",
+    "workflow compression",
+    "six-stage runtime flow governed across all seven F7-LAS layers",
+    "L7 Monitoring & Evaluation",
+    "result validation, audit, telemetry, evidence, and assurance",
+    "Layer 7 observes the complete lifecycle",
+    "governed feedback produced from Layer 7 observations",
+    "not an eighth layer",
 }
 EXPECTED_RELEASE_VERSION = "4.0.0"
 CURRENT_WHITEPAPER_PATH = Path("docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf")
@@ -207,6 +228,13 @@ def validate_diagrams(root: Path) -> None:
             raise DocumentationError(f"retired legacy diagram returned: {relative}")
 
     guide = (root / "docs" / "architecture-diagrams.md").read_text(encoding="utf-8")
+    for relative, alt_text in REQUIRED_DIAGRAM_ALT_TEXT.items():
+        guide_target = relative.relative_to("docs").as_posix()
+        expected_reference = f"![{alt_text}]({guide_target})"
+        if expected_reference not in guide:
+            raise DocumentationError(
+                f"architecture diagram guide is missing accessible alt text: {relative}"
+            )
     normalized_guide = " ".join(guide.split())
     for notice in REQUIRED_DIAGRAM_NOTICES:
         if notice not in normalized_guide:
