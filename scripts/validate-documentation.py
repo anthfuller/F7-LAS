@@ -74,14 +74,17 @@ REQUIRED_DIAGRAM_NOTICES = {
     "not an eighth layer",
 }
 EXPECTED_RELEASE_VERSION = "4.0.0"
-CURRENT_WHITEPAPER_PATH = Path("docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf")
+CURRENT_WHITEPAPER_PATH = Path("docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf")
 CURRENT_WHITEPAPER_CHECKSUM_PATH = Path(
-    "docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256"
+    "docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256"
 )
 CURRENT_WHITEPAPER_SHA256 = (
+    "b4d129783c190afdc65c49f86c4ba3822a04b9397f7110f8a45751d63a8e6201"
+)
+HISTORICAL_V4_WHITEPAPER_PATH = Path("docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf")
+HISTORICAL_V4_WHITEPAPER_SHA256 = (
     "67bfbff70f60309608921a58b28ee472d7aca876146988600916af093c992fe7"
 )
-CURRENT_WHITEPAPER_DOI = "https://doi.org/10.5281/zenodo.22867553"
 HISTORICAL_WHITEPAPER_PATH = Path("docs/F7-LAS-model-whitepaper_v3.0.pdf")
 HISTORICAL_WHITEPAPER_SHA256 = (
     "24f6e855fc8816edb200280c8cdf26fe41e3736a2544f87906bf2b2d273989fa"
@@ -158,6 +161,17 @@ def validate_links(path: Path, root: Path) -> None:
             raise DocumentationError(
                 f"{path.relative_to(root)}: unresolved relative link: {target}"
             )
+        # Resolve each spelling exactly, including on case-insensitive hosts.
+        exact = path.parent
+        for part in Path(relative).parts:
+            if part == "..":
+                exact = exact.parent
+            elif part != ".":
+                if part not in {child.name for child in exact.iterdir()}:
+                    raise DocumentationError(
+                        f"{path.relative_to(root)}: case-sensitive path mismatch: {target}"
+                    )
+                exact /= part
 
 
 def shell_blocks(path: Path, root: Path) -> list[tuple[int, str]]:
@@ -262,6 +276,11 @@ def validate_whitepapers(root: Path) -> None:
         HISTORICAL_WHITEPAPER_SHA256,
         "historical whitepaper",
     )
+    validate_pdf_digest(
+        root / HISTORICAL_V4_WHITEPAPER_PATH,
+        HISTORICAL_V4_WHITEPAPER_SHA256,
+        "historical v4.0 whitepaper",
+    )
 
     expected_manifest = (
         f"{CURRENT_WHITEPAPER_SHA256}  {CURRENT_WHITEPAPER_PATH.name}\n"
@@ -287,15 +306,13 @@ def validate_whitepapers(root: Path) -> None:
         Path("README.md"): {
             f"(docs/whitepaper/{CURRENT_WHITEPAPER_PATH.name})",
             f"(docs/whitepaper/{CURRENT_WHITEPAPER_CHECKSUM_PATH.name})",
-            CURRENT_WHITEPAPER_DOI,
-            "Whitepaper version **4.0**",
+            "Whitepaper version **4.1 — Restored Full Edition**",
             "repository release **v4.0.0**",
         },
         Path("docs/README.md"): {
             f"(whitepaper/{CURRENT_WHITEPAPER_PATH.name})",
             f"(whitepaper/{CURRENT_WHITEPAPER_CHECKSUM_PATH.name})",
-            CURRENT_WHITEPAPER_DOI,
-            "Whitepaper version **4.0**",
+            "Whitepaper version **4.1 — Restored Full Edition**",
             "repository release **v4.0.0**",
         },
     }
@@ -309,17 +326,19 @@ def validate_whitepapers(root: Path) -> None:
 
     citation = (root / "CITATION.cff").read_text(encoding="utf-8")
     required_citation = {
-        'title: "Securing Agentic AI with F7-LAS"',
-        'version: "4.0"',
-        "doi: 10.5281/zenodo.22867553",
+        'title: "F7-LAS Whitepaper v4.1 — Restored Full Edition"',
+        'version: "4.1"',
+        'date-released: "2026-09-25"',
     }
     missing_citation = sorted(
         item for item in required_citation if item not in citation
     )
     if missing_citation:
         raise DocumentationError(
-            f"CITATION.cff has drifted from Whitepaper v4.0: {missing_citation}"
+            f"CITATION.cff has drifted from Whitepaper v4.1: {missing_citation}"
         )
+    if "doi:" in citation or "zenodo.22867553" in citation:
+        raise DocumentationError("CITATION.cff must not assign the historical v4.0 DOI to v4.1")
 
 
 def validate_no_stale_status(relative: Path, text: str) -> None:

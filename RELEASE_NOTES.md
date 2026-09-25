@@ -1,5 +1,14 @@
 # F7-LAS v4.0.0 Repository Release
 
+## Current repository whitepaper
+
+The [F7-LAS Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+is the current repository whitepaper, dated 2026-09-25. It restores the full
+v3.0 long-form content and incorporates the corrected canonical control-loop
+diagrams. The published v4.0 and v3.0 editions remain historical records.
+This documentation update does not change the immutable v4.0.0 release.
+
+
 **Status:** Published as the
 [v4.0.0 GitHub repository release](https://github.com/anthfuller/F7-LAS/releases/tag/v4.0.0).
 The annotated tag targets commit
