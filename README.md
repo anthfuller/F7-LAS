@@ -1,4 +1,4 @@
-# F7-LAS™ — Fuller 7-Layer Agentic Security
+# F7-LAS™: Fuller 7-Layer Agentic Security
 
 [![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml)
 [![Current whitepaper](https://img.shields.io/badge/whitepaper-v4.1-blue.svg)](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
@@ -6,11 +6,7 @@
 
 > **Current status:** Established reference model with a **prototype reference implementation**. The repository is not a production agent platform, control plane, SOC product, SIEM/SOAR replacement, or production-ready implementation.
 
-Whitepaper version **4.1 — Restored Full Edition** is the current repository
-whitepaper and is distinct from repository release **v4.0.0**. It restores the
-complete long-form v3.0 coverage with the corrected canonical control-loop
-diagrams and their execution semantics. The v3.0 and v4.0 publications remain
-historical records; the v4.0 Zenodo DOI identifies only that historical edition.
+Whitepaper version **4.1** is the current repository whitepaper and is versioned independently from repository release **v4.0.0**. The v3.0 and v4.0 whitepapers remain available as historical records; the v4.0 Zenodo DOI identifies that earlier publication.
 
 F7-LAS™ is Anthony Fuller's vendor-neutral, protocol-agnostic security model for designing, reviewing, and governing agentic AI systems. It separates security responsibilities across seven layers so that generative output is not treated as authority to act.
 
@@ -20,19 +16,19 @@ This is independent personal work. It is not affiliated with, endorsed by, or re
 
 | Layer | Control concern |
 |---|---|
-| 1 | System Prompt — soft-policy intent and role boundaries |
-| 2 | Grounding / RAG — source and epistemic constraints |
-| 3 | Planner / Controller — bounded planning and delegation |
-| 4 | Tools & Integrations — proposed action surface and argument contracts |
-| 5 | External Policy Engine — deterministic PDP/PEP guardrails |
-| 6 | Sandboxed Execution — scope and blast-radius containment |
-| 7 | Monitoring & Evaluation — correlated evidence and assurance |
+| 1 | System Prompt: soft-policy intent and role boundaries |
+| 2 | Grounding / RAG: source and epistemic constraints |
+| 3 | Planner / Controller: bounded planning and delegation |
+| 4 | Tools & Integrations: proposed action surface and argument contracts |
+| 5 | External Policy Engine: deterministic PDP/PEP guardrails |
+| 6 | Sandboxed Execution: scope and blast-radius containment |
+| 7 | Monitoring & Evaluation: correlated evidence and assurance |
 
 Software supply-chain security is a cross-cutting supplemental domain, **Layer S**; it is not an eighth F7-LAS layer.
 
 ## What is in this repository now
 
-- The current [F7-LAS Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+- The current [F7-LAS Whitepaper v4.1](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
   and its [SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256)
 - The historical [v4.0 whitepaper](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf),
   published at [10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553)
@@ -91,7 +87,7 @@ These commands validate the **current prototype and repository structure**. They
 ## Start here
 
 - [Documentation index](docs/README.md)
-- [Current Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+- [Current Whitepaper v4.1](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
 - [Whitepaper v4.1 SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256)
 - [Historical Whitepaper v4.0](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf) and [its historical DOI](https://doi.org/10.5281/zenodo.22867553)
 - [Historical Whitepaper v4.0 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256)
@@ -118,7 +114,7 @@ Versions belong to individual artifacts:
 | Artifact | Current version/status |
 |---|---|
 | Seven-layer model | Established design baseline |
-| Whitepaper | v4.1 — Restored Full Edition, current repository edition; v3.0 and v4.0 preserved as historical artifacts |
+| Whitepaper | v4.1, current repository edition; v3.0 and v4.0 preserved as historical artifacts |
 | Implementation guide | Draft; bundled with 4.0.0 but not independently versioned |
 | Control catalog | v0.1 draft |
 | Executable reference implementation | Prototype included in repository release v4.0.0 |

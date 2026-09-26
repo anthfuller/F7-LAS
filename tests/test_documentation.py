@@ -105,7 +105,7 @@ def test_whitepaper_repository_metadata_is_locked() -> None:
         "docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf"
     )
     assert MODULE.CURRENT_WHITEPAPER_SHA256 == (
-        "b4d129783c190afdc65c49f86c4ba3822a04b9397f7110f8a45751d63a8e6201"
+        "95cf7f053f0fe021c9b0cc50f81a81afb33ba3dbdceae1cd7bbbeff407706456"
     )
     MODULE.validate_pdf_digest(
         ROOT / MODULE.HISTORICAL_V4_WHITEPAPER_PATH,
