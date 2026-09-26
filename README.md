@@ -6,7 +6,7 @@
 
 > **Current status:** Established reference model with a **prototype reference implementation**. The repository is not a production agent platform, control plane, SOC product, SIEM/SOAR replacement, or production-ready implementation.
 
-Whitepaper version **4.1 — Restored Full Edition** is the current repository
+Whitepaper version **4.1: Restored Full Edition** is the current repository
 whitepaper and is distinct from repository release **v4.0.0**. It restores the
 complete long-form v3.0 coverage with the corrected canonical control-loop
 diagrams and their execution semantics. The v3.0 and v4.0 publications remain
