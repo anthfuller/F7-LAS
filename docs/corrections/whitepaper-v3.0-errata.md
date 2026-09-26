@@ -17,7 +17,6 @@ current whitepaper or an amendment to that immutable artifact.
 - Clarify that Layer 4 proposed tool requests are not authorized invocations.
 - Clarify that monitoring feedback enters governed change control and cannot cause uncontrolled self-modification.
 
-Whitepaper v4.0 is the current publication. Its reviewed text and diagrams,
-rather than this historical list, define the current whitepaper content. Any
-future correction must use a new governed revision and must not overwrite the
-v3.0 or v4.0 publications.
+Whitepaper v4.1 — Restored Full Edition is the current repository edition.
+This historical correction record applies to the v3.0 and v4.0 publication
+history; neither historical PDF is changed by the restored edition.

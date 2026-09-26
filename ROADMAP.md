@@ -21,6 +21,13 @@ The delivered **Executable Reference Implementation** provides one offline, dete
 9. **F7-LAS-specific diagrams** — replace diagrams only after execution semantics are frozen.
 10. **Independent review** — review the complete branch diff and CI evidence before any merge, release, or Zenodo update.
 
+## Current whitepaper
+
+The [F7-LAS Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+is the current repository edition dated 2026-09-25. It restores complete
+v3.0 long-form coverage and embeds the corrected control-loop diagrams.
+The historical v3.0 and v4.0 editions remain unchanged.
+
 ## Release boundary
 
 Repository release **v4.0.0** is tagged and published from immutable commit

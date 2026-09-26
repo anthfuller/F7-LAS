@@ -3,8 +3,8 @@ message: "If you use F7-LAS, cite the current whitepaper below."
 authors:
   - family-names: Fuller
     given-names: Anthony L.
-title: "Securing Agentic AI with F7-LAS"
-version: "4.0"
-doi: 10.5281/zenodo.22867553
+title: "F7-LAS Whitepaper v4.1 — Restored Full Edition"
+version: "4.1"
+date-released: "2026-09-25"
 url: https://github.com/anthfuller/F7-LAS
 license: CC-BY-4.0

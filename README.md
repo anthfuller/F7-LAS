@@ -1,15 +1,16 @@
 # F7-LAS™ — Fuller 7-Layer Agentic Security
 
 [![CI](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml/badge.svg)](https://github.com/anthfuller/F7-LAS/actions/workflows/f7las-ci.yml)
-[![DOI](https://img.shields.io/badge/whitepaper-10.5281%2Fzenodo.22867553-blue.svg)](https://doi.org/10.5281/zenodo.22867553)
+[![Current whitepaper](https://img.shields.io/badge/whitepaper-v4.1-blue.svg)](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
 ![maturity](https://img.shields.io/badge/implementation-prototype-yellow)
 
 > **Current status:** Established reference model with a **prototype reference implementation**. The repository is not a production agent platform, control plane, SOC product, SIEM/SOAR replacement, or production-ready implementation.
 
-Whitepaper version **4.0** is the current publication and is distinct from
-repository release **v4.0.0**. Zenodo is the authoritative publication record
-for the whitepaper; the Git tag identifies the independently versioned
-repository release.
+Whitepaper version **4.1 — Restored Full Edition** is the current repository
+whitepaper and is distinct from repository release **v4.0.0**. It restores the
+complete long-form v3.0 coverage with the corrected canonical control-loop
+diagrams and their execution semantics. The v3.0 and v4.0 publications remain
+historical records; the v4.0 Zenodo DOI identifies only that historical edition.
 
 F7-LAS™ is Anthony Fuller's vendor-neutral, protocol-agnostic security model for designing, reviewing, and governing agentic AI systems. It separates security responsibilities across seven layers so that generative output is not treated as authority to act.
 
@@ -31,9 +32,10 @@ Software supply-chain security is a cross-cutting supplemental domain, **Layer S
 
 ## What is in this repository now
 
-- The current [F7-LAS Whitepaper v4.0](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf),
-  published at [10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553),
-  with a repository [SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256)
+- The current [F7-LAS Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+  and its [SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256)
+- The historical [v4.0 whitepaper](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf),
+  published at [10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553)
 - The immutable historical [F7-LAS whitepaper v3.0](docs/F7-LAS-model-whitepaper_v3.0.pdf)
 - A draft [implementation guide](docs/f7-las-implementation-guide/README.md)
 - A draft catalog of [46 core Layers 1–7 controls plus five supplemental Layer S controls](docs/F7-LAS-Control-Catalog-v0.1.md)
@@ -89,9 +91,10 @@ These commands validate the **current prototype and repository structure**. They
 ## Start here
 
 - [Documentation index](docs/README.md)
-- [Current Whitepaper v4.0](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf)
-- [Whitepaper v4.0 permanent DOI](https://doi.org/10.5281/zenodo.22867553)
-- [Whitepaper v4.0 SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256)
+- [Current Whitepaper v4.1 — Restored Full Edition](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf)
+- [Whitepaper v4.1 SHA-256 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256)
+- [Historical Whitepaper v4.0](docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf) and [its historical DOI](https://doi.org/10.5281/zenodo.22867553)
+- [Historical Whitepaper v4.0 checksum](docs/whitepaper/F7-LAS-Whitepaper-v4.0.sha256)
 - [Historical Whitepaper v3.0 artifact record](docs/whitepaper-v3.0-artifact.md)
 - [Implementation guide](docs/f7-las-implementation-guide/README.md)
 - [Control catalog v0.1](docs/F7-LAS-Control-Catalog-v0.1.md)
@@ -115,11 +118,11 @@ Versions belong to individual artifacts:
 | Artifact | Current version/status |
 |---|---|
 | Seven-layer model | Established design baseline |
-| Whitepaper | v4.0, current publication; v3.0 preserved as an immutable historical artifact |
+| Whitepaper | v4.1 — Restored Full Edition, current repository edition; v3.0 and v4.0 preserved as historical artifacts |
 | Implementation guide | Draft; bundled with 4.0.0 but not independently versioned |
 | Control catalog | v0.1 draft |
 | Executable reference implementation | Prototype included in repository release v4.0.0 |
-| Repository release | v4.0.0, independently versioned from Whitepaper v4.0 |
+| Repository release | v4.0.0, independently versioned from Whitepaper v4.1 |
 
 Repository version numbers do not silently change the whitepaper, control catalog, or schema versions.
 
@@ -130,10 +133,11 @@ Repository version numbers do not silently change the whitepaper, control catalo
 - [LICENSE.md](LICENSE.md) defines the file-level boundary for mixed directories.
 - F7-LAS™ is a trademark of Anthony L. Fuller. Copyright licenses do not grant trademark rights or imply endorsement.
 
-Preferred citation metadata is in [CITATION.cff](CITATION.cff). The current
-Whitepaper v4.0 DOI is
-[10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553). Historical
-Whitepaper v3.0 remains preserved unchanged in the repository.
+Preferred citation metadata for the current repository edition is in
+[CITATION.cff](CITATION.cff). No DOI is assigned to Whitepaper v4.1. The
+[10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553) DOI
+identifies only the historical Whitepaper v4.0 publication. Historical
+Whitepapers v3.0 and v4.0 remain preserved unchanged in the repository.
 
 ## Contributing
 

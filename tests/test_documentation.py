@@ -35,6 +35,14 @@ def test_unresolved_relative_link_is_rejected(tmp_path: Path) -> None:
         MODULE.validate_links(document, tmp_path)
 
 
+def test_case_sensitive_relative_link_is_required(tmp_path: Path) -> None:
+    (tmp_path / "Whitepaper.pdf").write_bytes(b"PDF")
+    document = tmp_path / "README.md"
+    document.write_text("[PDF](whitepaper.pdf)\n", encoding="utf-8")
+    with pytest.raises(MODULE.DocumentationError, match="unresolved relative link|case-sensitive path mismatch"):
+        MODULE.validate_links(document, tmp_path)
+
+
 def test_unclosed_fence_is_rejected(tmp_path: Path) -> None:
     document = tmp_path / "README.md"
     document.write_text("```bash\npython -m pytest -q\n", encoding="utf-8")
@@ -92,16 +100,19 @@ def test_whitepaper_checksum_manifest_is_exact() -> None:
     )
 
 
-def test_whitepaper_publication_metadata_is_locked() -> None:
+def test_whitepaper_repository_metadata_is_locked() -> None:
     assert MODULE.CURRENT_WHITEPAPER_PATH == Path(
-        "docs/whitepaper/F7-LAS-Whitepaper-v4.0.pdf"
-    )
-    assert MODULE.CURRENT_WHITEPAPER_DOI == (
-        "https://doi.org/10.5281/zenodo.22867553"
+        "docs/whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf"
     )
     assert MODULE.CURRENT_WHITEPAPER_SHA256 == (
-        "67bfbff70f60309608921a58b28ee472d7aca876146988600916af093c992fe7"
+        "b4d129783c190afdc65c49f86c4ba3822a04b9397f7110f8a45751d63a8e6201"
     )
+    MODULE.validate_pdf_digest(
+        ROOT / MODULE.HISTORICAL_V4_WHITEPAPER_PATH,
+        MODULE.HISTORICAL_V4_WHITEPAPER_SHA256,
+        "historical v4.0 whitepaper",
+    )
+    assert "doi:" not in (ROOT / "CITATION.cff").read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize(
@@ -131,12 +142,15 @@ def test_docx_whitepaper_is_rejected(tmp_path: Path) -> None:
     (docs / MODULE.HISTORICAL_WHITEPAPER_PATH.name).write_bytes(
         (ROOT / MODULE.HISTORICAL_WHITEPAPER_PATH).read_bytes()
     )
+    (whitepaper / MODULE.HISTORICAL_V4_WHITEPAPER_PATH.name).write_bytes(
+        (ROOT / MODULE.HISTORICAL_V4_WHITEPAPER_PATH).read_bytes()
+    )
     (whitepaper / MODULE.CURRENT_WHITEPAPER_CHECKSUM_PATH.name).write_text(
         f"{MODULE.CURRENT_WHITEPAPER_SHA256}  "
         f"{MODULE.CURRENT_WHITEPAPER_PATH.name}\n",
         encoding="ascii",
     )
-    (whitepaper / "F7-LAS-Whitepaper-v4.0.docx").write_bytes(b"not public")
+    (whitepaper / "F7-LAS-Whitepaper-v4.1.docx").write_bytes(b"not public")
     (tmp_path / "README.md").write_text(
         (ROOT / "README.md").read_text(encoding="utf-8"), encoding="utf-8"
     )

@@ -4,11 +4,14 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
 
 ## Authoritative artifacts
 
-- [Whitepaper v4.0](whitepaper/F7-LAS-Whitepaper-v4.0.pdf): current publication;
-  the authoritative record is the permanent
-  [Zenodo DOI 10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553).
-- [Whitepaper v4.0 SHA-256 checksum](whitepaper/F7-LAS-Whitepaper-v4.0.sha256):
-  repository integrity record for the published PDF.
+- [Whitepaper v4.1 — Restored Full Edition](whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.pdf): current
+  repository whitepaper, restoring v3.0 long-form coverage with the corrected
+  control-loop semantics.
+- [Whitepaper v4.1 SHA-256 checksum](whitepaper/F7-LAS-Whitepaper-v4.1-Restored-Full-Edition.sha256):
+  integrity record for the current PDF.
+- [Historical Whitepaper v4.0](whitepaper/F7-LAS-Whitepaper-v4.0.pdf): historical
+  publication identified by [Zenodo DOI 10.5281/zenodo.22867553](https://doi.org/10.5281/zenodo.22867553).
+- [Historical Whitepaper v4.0 checksum](whitepaper/F7-LAS-Whitepaper-v4.0.sha256).
 - [Whitepaper v3.0](F7-LAS-model-whitepaper_v3.0.pdf) — immutable historical publication.
 - [Whitepaper artifact record](whitepaper-v3.0-artifact.md) — integrity identifiers and handling rule.
 - [Historical Whitepaper v3.0 correction record](corrections/whitepaper-v3.0-errata.md): areas addressed or superseded by Whitepaper v4.0; does not alter the historical PDF.
@@ -24,8 +27,9 @@ This directory contains the governed documentation for the F7-LAS seven-layer re
 - [Control-to-evidence traceability](../config/control-traceability.json) — machine-readable status, limitations, and evidence locators for all 51 controls.
 - [Release process](release-process.md) — independent approval, exact-tag validation, and release-SBOM attachment procedure.
 
-Whitepaper version **4.0** is distinct from repository release **v4.0.0**.
-Publishing or revising either artifact does not silently revise the other.
+Whitepaper version **4.1 — Restored Full Edition** is the current repository
+edition and is distinct from repository release **v4.0.0**. The historical
+v3.0 and v4.0 publications remain unchanged.
 
 ## Architecture graphics
 
